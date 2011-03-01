@@ -1,3 +1,9 @@
+tmux (1.4-4~bpo60+1) squeeze-backports; urgency=low
+
+  * Rebuild for squeeze-backports.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Tue, 01 Mar 2011 10:53:33 +0100
+
 tmux (1.4-4) unstable; urgency=low
 
   * Drop build-conflicts against libevent-dev (>> 2.0).
