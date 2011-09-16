@@ -1,3 +1,61 @@
+tmux (1.5-1) unstable; urgency=low
+
+  [ Karl Ferdinand Ebert ]
+  * New upstream version 1.5 which fixes incorrect result from tmux
+    has-session (Closes: #621138).
+  * Rearrange all patches:
+    - Remove 08_layout_set.diff (applied upstream).
+    - Remove 09_fix_gnome_terminal_keycodes (included in upstream).
+    - Remove 99_upstream.diff (no difference now).
+    - New configure scripts forces to set install_prefix and support for HURD
+      and kFreeBSD else where.
+    - Refresh 07_fix_hyphen.diff and update series.
+
+  [ Romain Francoise ]
+  * debian/rules: Don't override dh_auto_clean.
+  * Remove debian/patches/01_install_prefix.diff.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 10 Jul 2011 13:10:23 +0200
+
+tmux (1.4-9) unstable; urgency=low
+
+  [ Dustin Kirkland ]
+  * debian/patches/09_fix_gnome_terminal_keycodes.diff:
+    - enable tmux handling of gnome-terminal's shift/ctrl/alt + F1-F4
+    - patch submitted and accepted upstream
+
+  [ Karl Ferdinand Ebert ]
+  * Bump standard version to 3.9.2 (no changes).
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sat, 25 Jun 2011 11:47:11 +0200
+
+tmux (1.4-8) unstable; urgency=low
+
+  * Fix "tmux segfaults with [lost server] if second pane is closed
+    after third pane has been broke out" by patch 99_upstream.diff 
+    (Closes: #622677).
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Tue, 10 May 2011 23:39:17 +0200
+
+tmux (1.4-7) unstable; urgency=low
+
+  [ Karl Ferdinand Ebert ]
+  * Drop Debian-specific socket handling changes:
+    + debian/patches/03_proper_socket_handling.diff,
+      debian/patches/04_dropping_unnecessary_privileges.diff: Dropped.
+    + debian/{init,tmux.lintian-overrides}: Removed, no longer necessary.
+    + debian/rules: Remove dh_installinit and dh_fixperms invocations.
+
+  [ Romain Francoise ]
+  * debian/control: Remove reference to /var/run as socket location.
+  * debian/copyright: Remove references to screen init script.
+  * debian/{preinst,postinst,postrm}: Deal with disappearance of the
+    /etc/init.d/tmux-cleanup script.
+  * debian/NEWS: Mention socket handling changes.
+  * Drop disabled patch debian/patches/06_hardening_write_return.diff.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 16 Apr 2011 19:41:04 +0200
+
 tmux (1.4-6~bpo60+1) squeeze-backports; urgency=low
 
   * Rebuild for squeeze-backports.
