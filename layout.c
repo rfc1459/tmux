@@ -1,4 +1,4 @@
-/* $Id: layout.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: layout.c 2686 2012-01-29 12:57:01Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -502,14 +502,14 @@ layout_resize_pane_mouse(struct client *c, struct mouse_event *mouse)
 				wp->yoff <= 1 + c->last_mouse.y &&
 				wp->yoff + wp->sy >= c->last_mouse.y) {
 				layout_resize_pane(wp, LAYOUT_LEFTRIGHT,
-								   mouse->x - c->last_mouse.x);
+				    mouse->x - c->last_mouse.x);
 				pane_border = 1;
 			}
 			if (wp->yoff + wp->sy == c->last_mouse.y &&
 				wp->xoff <= 1 + c->last_mouse.x &&
 				wp->xoff + wp->sx >= c->last_mouse.x) {
 				layout_resize_pane(wp, LAYOUT_TOPBOTTOM,
-								   mouse->y - c->last_mouse.y);
+				    mouse->y - c->last_mouse.y);
 				pane_border = 1;
 			}
 		}

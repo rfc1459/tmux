@@ -1,4 +1,4 @@
-/* $Id: options-table.c 2669 2012-01-21 19:36:40Z tcunha $ */
+/* $Id: options-table.c 2686 2012-01-29 12:57:01Z tcunha $ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -46,6 +46,9 @@ const char *options_table_status_keys_list[] = {
 };
 const char *options_table_status_justify_list[] = {
 	"left", "centre", "right", NULL
+};
+const char *options_table_status_position_list[] = {
+	"top", "bottom", NULL
 };
 const char *options_table_bell_action_list[] = {
 	"none", "any", "current", NULL
@@ -356,6 +359,12 @@ const struct options_table_entry session_options_table[] = {
 	  .minimum = 0,
 	  .maximum = SHRT_MAX,
 	  .default_num = 10
+	},
+
+	{ .name = "status-position",
+	  .type = OPTIONS_TABLE_CHOICE,
+	  .choices = options_table_status_position_list,
+	  .default_num = 1
 	},
 
 	{ .name = "status-right",

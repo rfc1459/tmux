@@ -1,4 +1,4 @@
-/* $Id: cmd-list-windows.c 2604 2011-10-02 11:30:26Z tcunha $ */
+/* $Id: cmd-list-windows.c 2689 2012-01-31 12:02:24Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -87,14 +87,14 @@ cmd_list_windows_session(
 			template = "#{window_index}: "
 			    "#{window_name} "
 			    "[#{window_width}x#{window_height}] "
-			    "[layout #{window_layout}]"
+			    "[layout #{window_layout}] #{window_id}"
 			    "#{?window_active, (active),}";
 			break;
 		case 1:
 			template = "#{session_name}:#{window_index}: "
 			    "#{window_name} "
 			    "[#{window_width}x#{window_height}] "
-			    "[layout #{window_layout}]"
+			    "[layout #{window_layout}] #{window_id}"
 			    "#{?window_active, (active),}";
 			break;
 		}
