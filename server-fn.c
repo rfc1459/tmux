@@ -1,4 +1,4 @@
-/* $Id: server-fn.c 2621 2011-10-23 15:10:22Z tcunha $ */
+/* $Id: server-fn.c 2685 2012-01-29 12:53:33Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -337,8 +337,8 @@ server_destroy_pane(struct window_pane *wp)
 
 	old_fd = wp->fd;
 	if (wp->fd != -1) {
-		close(wp->fd);
 		bufferevent_free(wp->event);
+		close(wp->fd);
 		wp->fd = -1;
 	}
 
