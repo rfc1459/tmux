@@ -1,4 +1,4 @@
-/* $Id: server-client.c 2686 2012-01-29 12:57:01Z tcunha $ */
+/* $Id: server-client.c 2695 2012-02-02 01:58:47Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -292,6 +292,8 @@ server_client_check_mouse(
 			}
 			return;
 		}
+		memcpy(&c->last_mouse, mouse, sizeof c->last_mouse);
+		return;
 	}
 
 	/*
