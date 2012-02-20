@@ -1,3 +1,17 @@
+tmux (1.7~svn2703-1) experimental; urgency=low
+
+  [ Romain Francoise ]
+  * New upstream snapshot from Subversion (r2703).
+
+  [ Colin Watson ]
+  * Use maintscript support in dh_installdeb rather than writing out
+    dpkg-maintscript-helper commands by hand.  We now simply Pre-Depend on a
+    new enough version of dpkg rather than using 'dpkg-maintscript-helper
+    supports' guards, leading to more predictable behaviour on upgrades
+    (closes: #659794).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 20 Feb 2012 21:15:09 +0100
+
 tmux (1.7~svn2691-1) experimental; urgency=low
 
   * New upstream snapshot from Subversion (r2691).
