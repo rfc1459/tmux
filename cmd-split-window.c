@@ -1,4 +1,4 @@
-/* $Id: cmd-split-window.c 2664 2012-01-20 21:21:32Z tcunha $ */
+/* $Id: cmd-split-window.c 2692 2012-02-02 01:55:34Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -32,8 +32,9 @@ int	cmd_split_window_exec(struct cmd *, struct cmd_ctx *);
 
 const struct cmd_entry cmd_split_window_entry = {
 	"split-window", "splitw",
-	"dl:hp:Pt:v", 0, 1,
-	"[-dhvP] [-p percentage|-l size] [-t target-pane] [command]",
+	"c:dl:hp:Pt:v", 0, 1,
+	"[-dhvP] [-c start-directory] [-p percentage|-l size] [-t target-pane] "
+	"[command]",
 	0,
 	cmd_split_window_key_binding,
 	NULL,
@@ -77,7 +78,7 @@ cmd_split_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 		cmd = options_get_string(&s->options, "default-command");
 	else
 		cmd = args->argv[0];
-	cwd = cmd_get_default_path(ctx);
+	cwd = cmd_get_default_path(ctx, args_get(args, 'c'));
 
 	type = LAYOUT_TOPBOTTOM;
 	if (args_has(args, 'h'))

@@ -1,4 +1,4 @@
-/* $Id: format.c 2688 2012-01-31 12:01:43Z tcunha $ */
+/* $Id: format.c 2694 2012-02-02 01:58:16Z tcunha $ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -303,8 +303,8 @@ format_client(struct format_tree *ft, struct client *c)
 	time_t	 t;
 
 	format_add(ft, "client_cwd", "%s", c->cwd);
-	format_add(ft, "client_height", "%u", c->tty.sx);
-	format_add(ft, "client_width", "%u", c->tty.sy);
+	format_add(ft, "client_height", "%u", c->tty.sy);
+	format_add(ft, "client_width", "%u", c->tty.sx);
 	format_add(ft, "client_tty", "%s", c->tty.path);
 	format_add(ft, "client_termname", "%s", c->tty.termname);
 

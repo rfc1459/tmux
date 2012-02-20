@@ -1,4 +1,4 @@
-/* $Id: cmd-new-session.c 2619 2011-10-23 15:05:20Z tcunha $ */
+/* $Id: cmd-new-session.c 2696 2012-02-02 02:00:12Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -217,8 +217,7 @@ cmd_new_session_exec(struct cmd *self, struct cmd_ctx *ctx)
 	if (cmd != NULL && args_has(args, 'n')) {
 		w = s->curw->window;
 
-		xfree(w->name);
-		w->name = xstrdup(args_get(args, 'n'));
+		window_set_name(w, args_get(args, 'n'));
 
 		options_set_number(&w->options, "automatic-rename", 0);
 	}
