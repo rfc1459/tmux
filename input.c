@@ -1,4 +1,4 @@
-/* $Id: input.c 2696 2012-02-02 02:00:12Z tcunha $ */
+/* $Id: input.c 2712 2012-03-07 13:36:19Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -1212,6 +1212,9 @@ input_csi_dispatch(struct input_ctx *ictx)
 		case 1049:
 			window_pane_alternate_off(wp, &ictx->cell);
 			break;
+		case 2004:
+			screen_write_bracketpaste(&ictx->ctx, 0);
+			break;
 		default:
 			log_debug("%s: unknown '%c'", __func__, ictx->ch);
 			break;
@@ -1263,6 +1266,9 @@ input_csi_dispatch(struct input_ctx *ictx)
 			break;
 		case 1049:
 			window_pane_alternate_on(wp, &ictx->cell);
+			break;
+		case 2004:
+			screen_write_bracketpaste(&ictx->ctx, 1);
 			break;
 		default:
 			log_debug("%s: unknown '%c'", __func__, ictx->ch);

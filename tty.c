@@ -1,4 +1,4 @@
-/* $Id: tty.c 2702 2012-02-15 19:32:12Z tcunha $ */
+/* $Id: tty.c 2712 2012-03-07 13:36:19Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -479,6 +479,12 @@ tty_update_mode(struct tty *tty, int mode, struct screen *s)
 			tty_putcode(tty, TTYC_SMKX);
 		else
 			tty_putcode(tty, TTYC_RMKX);
+	}
+	if (changed & MODE_BRACKETPASTE) {
+		if (mode & MODE_BRACKETPASTE)
+			tty_puts(tty, "\033[?2004h");
+		else
+			tty_puts(tty, "\033[?2004l");
 	}
 	tty->mode = mode;
 }

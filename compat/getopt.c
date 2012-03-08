@@ -1,4 +1,4 @@
-/* $Id: getopt.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: getopt.c 2706 2012-03-02 11:23:51Z nicm $ */
 
 /*
  * Copyright (c) 1987, 1993, 1994
@@ -52,10 +52,7 @@ char	*BSDoptarg;		/* argument associated with option */
  *	Parse argc/argv argument vector.
  */
 int
-BSDgetopt(nargc, nargv, ostr)
-	int nargc;
-	char * const *nargv;
-	const char *ostr;
+BSDgetopt(int nargc, char *const *nargv, const char *ostr)
 {
 	static char *place = EMSG;		/* option letter processing */
 	char *oli;				/* option letter list index */

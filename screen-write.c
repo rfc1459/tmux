@@ -1,4 +1,4 @@
-/* $Id: screen-write.c 2666 2012-01-21 19:31:59Z tcunha $ */
+/* $Id: screen-write.c 2712 2012-03-07 13:36:19Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -876,6 +876,18 @@ screen_write_mousemode_on(struct screen_write_ctx *ctx, int mode)
 
 	s->mode &= ~ALL_MOUSE_MODES;
 	s->mode |= mode;
+}
+
+/* Set bracketed paste mode. */
+void
+screen_write_bracketpaste(struct screen_write_ctx *ctx, int state)
+{
+	struct screen	*s = ctx->s;
+
+	if (state)
+		s->mode |= MODE_BRACKETPASTE;
+	else
+		s->mode &= ~MODE_BRACKETPASTE;
 }
 
 /* Line feed. */

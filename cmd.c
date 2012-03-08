@@ -1,4 +1,4 @@
-/* $Id: cmd.c 2701 2012-02-15 19:31:35Z tcunha $ */
+/* $Id: cmd.c 2710 2012-03-03 09:19:40Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -67,6 +67,7 @@ const struct cmd_entry *cmd_table[] = {
 	&cmd_lock_client_entry,
 	&cmd_lock_server_entry,
 	&cmd_lock_session_entry,
+	&cmd_move_pane_entry,
 	&cmd_move_window_entry,
 	&cmd_new_session_entry,
 	&cmd_new_window_entry,
