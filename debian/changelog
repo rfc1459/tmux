@@ -1,3 +1,12 @@
+tmux (1.7~svn2717-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2717).
+  * Quote backslash in examples/screen-keys.conf to avoid syntax error
+    (closes: #662250).
+  * Bump Standards-Version to 3.9.3.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 08 Mar 2012 20:19:30 +0100
+
 tmux (1.7~svn2703-1) experimental; urgency=low
 
   [ Romain Francoise ]
