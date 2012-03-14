@@ -1,4 +1,4 @@
-/* $Id: server-client.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: server-client.c 2674 2012-01-23 12:24:00Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -170,6 +170,8 @@ server_client_lost(struct client *c)
 	if (c->cwd != NULL)
 		xfree(c->cwd);
 
+	environ_free(&c->environ);
+
 	close(c->ibuf.fd);
 	imsg_clear(&c->ibuf);
 	event_del(&c->event);
@@ -270,9 +272,7 @@ server_client_handle_key(int key, struct mouse_event *mouse, void *data)
 	struct options		*oo;
 	struct timeval		 tv;
 	struct key_binding	*bd;
-	struct keylist		*keylist;
 	int		      	 xtimeout, isprefix;
-	u_int			 i;
 
 	/* Check the client is good to accept input. */
 	if ((c->flags & (CLIENT_DEAD|CLIENT_SUSPENDED)) != 0)
@@ -317,6 +317,8 @@ server_client_handle_key(int key, struct mouse_event *mouse, void *data)
 		if (c->flags & CLIENT_READONLY)
 			return;
 		if (options_get_number(oo, "mouse-select-pane") &&
+		    (!(options_get_number(oo, "status") &&
+		       mouse->y + 1 == c->tty.sy)) &&
 		    ((!(mouse->b & MOUSE_DRAG) && mouse->b != MOUSE_UP) ||
 		    wp->mode != &window_copy_mode)) {
 			/*
@@ -355,14 +357,12 @@ server_client_handle_key(int key, struct mouse_event *mouse, void *data)
 	}
 
 	/* Is this a prefix key? */
-	keylist = options_get_data(&c->session->options, "prefix");
-	isprefix = 0;
-	for (i = 0; i < ARRAY_LENGTH(keylist); i++) {
-		if (key == ARRAY_ITEM(keylist, i)) {
-			isprefix = 1;
-			break;
-		}
-	}
+	if (key == options_get_number(&c->session->options, "prefix"))
+		isprefix = 1;
+	else if (key == options_get_number(&c->session->options, "prefix2"))
+		isprefix = 1;
+	else
+		isprefix = 0;
 
 	/* No previous prefix key. */
 	if (!(c->flags & CLIENT_PREFIX)) {
@@ -558,50 +558,6 @@ server_client_check_exit(struct client *c)
 	server_write_client(c, MSG_EXIT, &exitdata, sizeof exitdata);
 
 	c->flags &= ~CLIENT_EXIT;
-}
-
-/*
- * Check if the client should backoff. During backoff, data from external
- * programs is not written to the terminal. When the existing data drains, the
- * client is redrawn.
- *
- * There are two backoff phases - both the tty and client have backoff flags -
- * the first to allow existing data to drain and the latter to ensure backoff
- * is disabled until the redraw has finished and prevent the redraw triggering
- * another backoff.
- */
-void
-server_client_check_backoff(struct client *c)
-{
-	struct tty	*tty = &c->tty;
-	size_t		 used;
-
-	used = EVBUFFER_LENGTH(tty->event->output);
-
-	/*
-	 * If in the second backoff phase (redrawing), don't check backoff
-	 * until the redraw has completed (or enough of it to drop below the
-	 * backoff threshold).
-	 */
-	if (c->flags & CLIENT_BACKOFF) {
-		if (used > BACKOFF_THRESHOLD)
-			return;
-		c->flags &= ~CLIENT_BACKOFF;
-		return;
-	}
-
-	/* Once drained, allow data through again and schedule redraw. */
-	if (tty->flags & TTY_BACKOFF) {
-		if (used != 0)
-			return;
-		tty->flags &= ~TTY_BACKOFF;
-		c->flags |= (CLIENT_BACKOFF|CLIENT_REDRAWWINDOW|CLIENT_STATUS);
-		return;
-	}
-
-	/* If too much data, start backoff. */
-	if (used > BACKOFF_THRESHOLD)
-		tty->flags |= TTY_BACKOFF;
 }
 
 /* Check for client redraws. */

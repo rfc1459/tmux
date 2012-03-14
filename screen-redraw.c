@@ -1,4 +1,4 @@
-/* $Id: screen-redraw.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: screen-redraw.c 2673 2012-01-23 12:23:27Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -264,7 +264,7 @@ screen_redraw_draw_number(struct client *c, struct window_pane *wp)
 {
 	struct tty		*tty = &c->tty;
 	struct session		*s = c->session;
-	struct options	        *oo = &s->options;
+	struct options		*oo = &s->options;
 	struct window		*w = wp->window;
 	struct grid_cell	 gc;
 	u_int			 idx, px, py, i, j, xoff, yoff;
@@ -272,7 +272,8 @@ screen_redraw_draw_number(struct client *c, struct window_pane *wp)
 	char			 buf[16], *ptr;
 	size_t			 len;
 
-	idx = window_pane_index(w, wp);
+	if (window_pane_index(wp, &idx) != 0)
+		fatalx("index not found");
 	len = xsnprintf(buf, sizeof buf, "%u", idx);
 
 	if (wp->sx < len)
@@ -285,15 +286,7 @@ screen_redraw_draw_number(struct client *c, struct window_pane *wp)
 
 	if (wp->sx < len * 6 || wp->sy < 5) {
 		tty_cursor(tty, xoff + px - len / 2, yoff + py);
-		memcpy(&gc, &grid_default_cell, sizeof gc);
-		gc.data = '_'; /* not space */
-		if (w->active == wp)
-			colour_set_fg(&gc, active_colour);
-		else
-			colour_set_fg(&gc, colour);
-		tty_attributes(tty, &gc);
-		tty_puts(tty, buf);
-		return;
+		goto draw_text;
 	}
 
 	px -= len * 3;
@@ -320,4 +313,21 @@ screen_redraw_draw_number(struct client *c, struct window_pane *wp)
 		}
 		px += 6;
 	}
+
+	len = xsnprintf(buf, sizeof buf, "%ux%u", wp->sx, wp->sy);
+	if (wp->sx < len || wp->sy < 6)
+		return;
+	tty_cursor(tty, xoff + wp->sx - len, yoff);
+
+draw_text:
+	memcpy(&gc, &grid_default_cell, sizeof gc);
+	gc.data = '_'; /* not space */
+	if (w->active == wp)
+		colour_set_fg(&gc, active_colour);
+	else
+		colour_set_fg(&gc, colour);
+	tty_attributes(tty, &gc);
+	tty_puts(tty, buf);
+
+	tty_cursor(tty, 0, 0);
 }

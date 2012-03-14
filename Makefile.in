@@ -15,16 +15,16 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.am 2556 2011-07-09 13:45:24Z tcunha $
+# $Id: Makefile.am 2592 2011-09-21 16:32:31Z tcunha $
 
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
-install_sh_DATA = $(install_sh) -c -m 644
-install_sh_PROGRAM = $(install_sh) -c
-install_sh_SCRIPT = $(install_sh) -c
+install_sh_DATA = ${SHELL} $(install_sh) -c -m 644
+install_sh_PROGRAM = ${SHELL} $(install_sh) -c
+install_sh_SCRIPT = ${SHELL} $(install_sh) -c
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = $(program_transform_name)
 NORMAL_INSTALL = :
@@ -58,30 +58,28 @@ bin_PROGRAMS = tmux$(EXEEXT)
 @IS_DEBUG_TRUE@@IS_GCC4_TRUE@@IS_GCC_TRUE@am__append_6 = -Wno-pointer-sign
 @IS_GCC4_FALSE@@IS_GCC_TRUE@am__append_7 = -I. -I- -I/usr/local/include
 
-# Set flags for static.
-@IS_STATIC_TRUE@am__append_8 = -static
-
 # Set flags for Solaris.
-@IS_SUNOS_TRUE@am__append_9 = -D_XPG4_2 -D__EXTENSIONS__ -D_POSIX_PTHREAD_SEMANTICS
+@IS_SUNOS_TRUE@am__append_8 = -D_XPG4_2 -D__EXTENSIONS__ -D_POSIX_PTHREAD_SEMANTICS
 
 # Set flags for Sun CC.
-@IS_SUNCC_TRUE@am__append_10 = -erroff=E_EMPTY_DECLARATION
+@IS_SUNCC_TRUE@am__append_9 = -erroff=E_EMPTY_DECLARATION
 
 # Pile in all the compat/ stuff that is needed.
-@NO_FORKPTY_TRUE@am__append_11 = compat/forkpty-@PLATFORM@.c
-@NO_IMSG_TRUE@am__append_12 = compat/imsg.c compat/imsg-buffer.c
-@NO_CLOSEFROM_TRUE@am__append_13 = compat/closefrom.c
-@NO_DAEMON_TRUE@am__append_14 = compat/daemon.c
-@NO_SETENV_TRUE@am__append_15 = compat/setenv.c
-@NO_STRLCAT_TRUE@am__append_16 = compat/strlcat.c
-@NO_STRLCPY_TRUE@am__append_17 = compat/strlcpy.c
-@NO_ASPRINTF_TRUE@am__append_18 = compat/asprintf.c
-@NO_FGETLN_TRUE@am__append_19 = compat/fgetln.c
-@NO_GETOPT_TRUE@am__append_20 = compat/getopt.c
-@NO_STRCASESTR_TRUE@am__append_21 = compat/strcasestr.c
-@NO_STRSEP_TRUE@am__append_22 = compat/strsep.c
-@NO_VIS_TRUE@am__append_23 = compat/vis.c compat/unvis.c
-@NO_STRTONUM_TRUE@am__append_24 = compat/strtonum.c
+@NO_FORKPTY_TRUE@am__append_10 = compat/forkpty-@PLATFORM@.c
+@NO_IMSG_TRUE@am__append_11 = compat/imsg.c compat/imsg-buffer.c
+@NO_CLOSEFROM_TRUE@am__append_12 = compat/closefrom.c
+@NO_DAEMON_TRUE@am__append_13 = compat/daemon.c
+@NO_SETENV_TRUE@am__append_14 = compat/setenv.c
+@NO_STRLCAT_TRUE@am__append_15 = compat/strlcat.c
+@NO_STRLCPY_TRUE@am__append_16 = compat/strlcpy.c
+@NO_ASPRINTF_TRUE@am__append_17 = compat/asprintf.c
+@NO_FGETLN_TRUE@am__append_18 = compat/fgetln.c
+@NO_GETOPT_TRUE@am__append_19 = compat/getopt.c
+@NO_STRCASESTR_TRUE@am__append_20 = compat/strcasestr.c
+@NO_STRSEP_TRUE@am__append_21 = compat/strsep.c
+@NO_VIS_TRUE@am__append_22 = compat/vis.c compat/unvis.c
+@NO_STRTONUM_TRUE@am__append_23 = compat/strtonum.c
+@NO_B64_NTOP_TRUE@am__append_24 = compat/b64_ntop.c
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(dist_man1_MANS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
@@ -137,15 +135,15 @@ dist_tmux_OBJECTS = arguments.$(OBJEXT) attributes.$(OBJEXT) \
 	cmd-swap-pane.$(OBJEXT) cmd-swap-window.$(OBJEXT) \
 	cmd-switch-client.$(OBJEXT) cmd-unbind-key.$(OBJEXT) \
 	cmd-unlink-window.$(OBJEXT) cmd.$(OBJEXT) colour.$(OBJEXT) \
-	environ.$(OBJEXT) grid-utf8.$(OBJEXT) grid-view.$(OBJEXT) \
-	grid.$(OBJEXT) input-keys.$(OBJEXT) input.$(OBJEXT) \
-	job.$(OBJEXT) key-bindings.$(OBJEXT) key-string.$(OBJEXT) \
-	layout-custom.$(OBJEXT) layout-set.$(OBJEXT) layout.$(OBJEXT) \
-	log.$(OBJEXT) mode-key.$(OBJEXT) names.$(OBJEXT) \
-	options-table.$(OBJEXT) options.$(OBJEXT) paste.$(OBJEXT) \
-	resize.$(OBJEXT) screen-redraw.$(OBJEXT) \
-	screen-write.$(OBJEXT) screen.$(OBJEXT) \
-	server-client.$(OBJEXT) server-fn.$(OBJEXT) \
+	environ.$(OBJEXT) format.$(OBJEXT) grid-utf8.$(OBJEXT) \
+	grid-view.$(OBJEXT) grid.$(OBJEXT) input-keys.$(OBJEXT) \
+	input.$(OBJEXT) job.$(OBJEXT) key-bindings.$(OBJEXT) \
+	key-string.$(OBJEXT) layout-custom.$(OBJEXT) \
+	layout-set.$(OBJEXT) layout.$(OBJEXT) log.$(OBJEXT) \
+	mode-key.$(OBJEXT) names.$(OBJEXT) options-table.$(OBJEXT) \
+	options.$(OBJEXT) paste.$(OBJEXT) resize.$(OBJEXT) \
+	screen-redraw.$(OBJEXT) screen-write.$(OBJEXT) \
+	screen.$(OBJEXT) server-client.$(OBJEXT) server-fn.$(OBJEXT) \
 	server-window.$(OBJEXT) server.$(OBJEXT) session.$(OBJEXT) \
 	signal.$(OBJEXT) status.$(OBJEXT) tmux.$(OBJEXT) \
 	tty-acs.$(OBJEXT) tty-keys.$(OBJEXT) tty-term.$(OBJEXT) \
@@ -166,12 +164,13 @@ dist_tmux_OBJECTS = arguments.$(OBJEXT) attributes.$(OBJEXT) \
 @NO_STRSEP_TRUE@am__objects_12 = strsep.$(OBJEXT)
 @NO_VIS_TRUE@am__objects_13 = vis.$(OBJEXT) unvis.$(OBJEXT)
 @NO_STRTONUM_TRUE@am__objects_14 = strtonum.$(OBJEXT)
+@NO_B64_NTOP_TRUE@am__objects_15 = b64_ntop.$(OBJEXT)
 nodist_tmux_OBJECTS = osdep-@PLATFORM@.$(OBJEXT) $(am__objects_1) \
 	$(am__objects_2) $(am__objects_3) $(am__objects_4) \
 	$(am__objects_5) $(am__objects_6) $(am__objects_7) \
 	$(am__objects_8) $(am__objects_9) $(am__objects_10) \
 	$(am__objects_11) $(am__objects_12) $(am__objects_13) \
-	$(am__objects_14)
+	$(am__objects_14) $(am__objects_15)
 tmux_OBJECTS = $(dist_tmux_OBJECTS) $(nodist_tmux_OBJECTS)
 tmux_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -208,12 +207,12 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@ $(am__append_1) $(am__append_2) $(am__append_3) \
-	$(am__append_6) $(am__append_10)
+	$(am__append_6) $(am__append_9)
 CPP = @CPP@
 
 # Preprocessor flags.
 CPPFLAGS = @CPPFLAGS@ @XOPEN_DEFINES@ $(am__append_4) $(am__append_5) \
-	$(am__append_7) $(am__append_9)
+	$(am__append_7) $(am__append_8)
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -228,7 +227,9 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-LDFLAGS = @LDFLAGS@ $(am__append_8)
+LDFLAGS = @LDFLAGS@
+LIBEVENT_CFLAGS = @LIBEVENT_CFLAGS@
+LIBEVENT_LIBS = @LIBEVENT_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
@@ -243,6 +244,7 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
 PLATFORM = @PLATFORM@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -390,6 +392,7 @@ dist_tmux_SOURCES = \
 	cmd.c \
 	colour.c \
 	environ.c \
+	format.c \
 	grid-utf8.c \
 	grid-view.c \
 	grid.c \
@@ -431,12 +434,12 @@ dist_tmux_SOURCES = \
 	xmalloc.c \
 	xterm-keys.c
 
-nodist_tmux_SOURCES = osdep-@PLATFORM@.c $(am__append_11) \
-	$(am__append_12) $(am__append_13) $(am__append_14) \
-	$(am__append_15) $(am__append_16) $(am__append_17) \
-	$(am__append_18) $(am__append_19) $(am__append_20) \
-	$(am__append_21) $(am__append_22) $(am__append_23) \
-	$(am__append_24)
+nodist_tmux_SOURCES = osdep-@PLATFORM@.c $(am__append_10) \
+	$(am__append_11) $(am__append_12) $(am__append_13) \
+	$(am__append_14) $(am__append_15) $(am__append_16) \
+	$(am__append_17) $(am__append_18) $(am__append_19) \
+	$(am__append_20) $(am__append_21) $(am__append_22) \
+	$(am__append_23) $(am__append_24)
 all: all-am
 
 .SUFFIXES:
@@ -510,6 +513,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arguments.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/asprintf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/attributes.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/b64_ntop.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cfg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clock.Po@am__quote@
@@ -593,6 +597,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/environ.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fgetln.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/forkpty-@PLATFORM@.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/format.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid-utf8.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid-view.Po@am__quote@
@@ -883,6 +888,20 @@ strtonum.obj: compat/strtonum.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='compat/strtonum.c' object='strtonum.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o strtonum.obj `if test -f 'compat/strtonum.c'; then $(CYGPATH_W) 'compat/strtonum.c'; else $(CYGPATH_W) '$(srcdir)/compat/strtonum.c'; fi`
+
+b64_ntop.o: compat/b64_ntop.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT b64_ntop.o -MD -MP -MF $(DEPDIR)/b64_ntop.Tpo -c -o b64_ntop.o `test -f 'compat/b64_ntop.c' || echo '$(srcdir)/'`compat/b64_ntop.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/b64_ntop.Tpo $(DEPDIR)/b64_ntop.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='compat/b64_ntop.c' object='b64_ntop.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o b64_ntop.o `test -f 'compat/b64_ntop.c' || echo '$(srcdir)/'`compat/b64_ntop.c
+
+b64_ntop.obj: compat/b64_ntop.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT b64_ntop.obj -MD -MP -MF $(DEPDIR)/b64_ntop.Tpo -c -o b64_ntop.obj `if test -f 'compat/b64_ntop.c'; then $(CYGPATH_W) 'compat/b64_ntop.c'; else $(CYGPATH_W) '$(srcdir)/compat/b64_ntop.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/b64_ntop.Tpo $(DEPDIR)/b64_ntop.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='compat/b64_ntop.c' object='b64_ntop.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o b64_ntop.obj `if test -f 'compat/b64_ntop.c'; then $(CYGPATH_W) 'compat/b64_ntop.c'; else $(CYGPATH_W) '$(srcdir)/compat/b64_ntop.c'; fi`
 install-man1: $(man1_MANS) $(man_MANS)
 	@$(NORMAL_INSTALL)
 	test -z "$(man1dir)" || $(MKDIR_P) "$(DESTDIR)$(man1dir)"
