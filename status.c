@@ -1,4 +1,4 @@
-/* $Id: status.c 2714 2012-03-07 13:37:44Z tcunha $ */
+/* $Id: status.c 2736 2012-03-18 01:59:34Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -776,7 +776,8 @@ status_message_set(struct client *c, const char *fmt, ...)
 	tv.tv_sec = delay / 1000;
 	tv.tv_usec = (delay % 1000) * 1000L;
 
-	evtimer_del(&c->message_timer);
+	if (event_initialized (&c->message_timer))
+		evtimer_del(&c->message_timer);
 	evtimer_set(&c->message_timer, status_message_callback, c);
 	evtimer_add(&c->message_timer, &tv);
 

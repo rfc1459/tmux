@@ -1,4 +1,4 @@
-# $Id: Makefile.am 2592 2011-09-21 16:32:31Z tcunha $
+# $Id: Makefile.am 2748 2012-03-18 02:24:33Z tcunha $
 
 # Obvious program stuff.
 bin_PROGRAMS = tmux
@@ -151,6 +151,7 @@ dist_tmux_SOURCES = \
 	log.c \
 	mode-key.c \
 	names.c \
+	notify.c \
 	options-table.c \
 	options.c \
 	paste.c \

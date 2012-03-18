@@ -1,4 +1,4 @@
-/* $Id: cmd-split-window.c 2717 2012-03-07 13:40:08Z tcunha $ */
+/* $Id: cmd-split-window.c 2747 2012-03-18 02:22:09Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -155,6 +155,7 @@ cmd_split_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 
 		format_free(ft);
 	}
+	notify_window_layout_changed(w);
 	return (0);
 
 error:

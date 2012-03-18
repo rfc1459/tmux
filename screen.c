@@ -1,4 +1,4 @@
-/* $Id: screen.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: screen.c 2744 2012-03-18 02:11:27Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -97,7 +97,7 @@ screen_reset_tabs(struct screen *s)
 void
 screen_set_cursor_style(struct screen *s, u_int style)
 {
-	if (style <= 4)
+	if (style <= 6)
 		s->cstyle = style;
 }
 

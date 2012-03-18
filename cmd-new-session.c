@@ -1,4 +1,4 @@
-/* $Id: cmd-new-session.c 2696 2012-02-02 02:00:12Z tcunha $ */
+/* $Id: cmd-new-session.c 2747 2012-03-18 02:22:09Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -244,6 +244,7 @@ cmd_new_session_exec(struct cmd *self, struct cmd_ctx *ctx)
 			if (old_s != NULL)
 				ctx->cmdclient->last_session = old_s;
 			ctx->cmdclient->session = s;
+			notify_attached_session_changed(ctx->cmdclient);
 			session_update_activity(s);
 			server_redraw_client(ctx->cmdclient);
 		} else {
@@ -251,6 +252,7 @@ cmd_new_session_exec(struct cmd *self, struct cmd_ctx *ctx)
 			if (old_s != NULL)
 				ctx->curclient->last_session = old_s;
 			ctx->curclient->session = s;
+			notify_attached_session_changed(ctx->curclient);
 			session_update_activity(s);
 			server_redraw_client(ctx->curclient);
 		}

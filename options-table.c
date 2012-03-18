@@ -1,4 +1,4 @@
-/* $Id: options-table.c 2708 2012-03-03 09:16:52Z tcunha $ */
+/* $Id: options-table.c 2745 2012-03-18 02:12:24Z tcunha $ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -666,6 +666,11 @@ const struct options_table_entry window_options_table[] = {
 	{ .name = "window-status-format",
 	  .type = OPTIONS_TABLE_STRING,
 	  .default_str = "#I:#W#F"
+	},
+
+	{ .name = "wrap-search",
+	  .type = OPTIONS_TABLE_FLAG,
+	  .default_num = 1
 	},
 
 	{ .name = "xterm-keys",

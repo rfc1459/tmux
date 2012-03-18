@@ -1,4 +1,4 @@
-/* $Id: layout.c 2710 2012-03-03 09:19:40Z tcunha $ */
+/* $Id: layout.c 2747 2012-03-18 02:22:09Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -483,6 +483,7 @@ layout_resize_pane(struct window_pane *wp, enum layout_type type, int change)
 	/* Fix cell offsets. */
 	layout_fix_offsets(wp->window->layout_root);
 	layout_fix_panes(wp->window, wp->window->sx, wp->window->sy);
+	notify_window_layout_changed(wp->window);
 }
 
 void
@@ -742,4 +743,5 @@ layout_close_pane(struct window_pane *wp)
 		layout_fix_offsets(wp->window->layout_root);
 		layout_fix_panes(wp->window, wp->window->sx, wp->window->sy);
 	}
+	notify_window_layout_changed(wp->window);
 }
