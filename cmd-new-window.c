@@ -1,4 +1,4 @@
-/* $Id: cmd-new-window.c 2717 2012-03-07 13:40:08Z tcunha $ */
+/* $Id: cmd-new-window.c 2747 2012-03-18 02:22:09Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -89,6 +89,7 @@ cmd_new_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 		 * Can't use session_detach as it will destroy session if this
 		 * makes it empty.
 		 */
+		notify_window_unlinked(s, wl->window);
 		wl->flags &= ~WINLINK_ALERTFLAGS;
 		winlink_stack_remove(&s->lastw, wl);
 		winlink_remove(&s->windows, wl);

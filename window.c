@@ -1,4 +1,4 @@
-/* $Id: window.c 2696 2012-02-02 02:00:12Z tcunha $ */
+/* $Id: window.c 2747 2012-03-18 02:22:09Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -347,7 +347,8 @@ window_destroy(struct window *w)
 	if (w->layout_root != NULL)
 		layout_free(w);
 
-	evtimer_del(&w->name_timer);
+	if (event_initialized(&w->name_timer))
+		evtimer_del(&w->name_timer);
 
 	options_free(&w->options);
 
@@ -364,6 +365,7 @@ window_set_name(struct window *w, const char *new_name)
 	if (w->name != NULL)
 		xfree(w->name);
 	w->name = xstrdup(new_name);
+	notify_window_renamed(w);
 }
 
 void

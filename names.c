@@ -1,4 +1,4 @@
-/* $Id: names.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: names.c 2736 2012-03-18 01:59:34Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -36,7 +36,8 @@ queue_window_name(struct window *w)
 	tv.tv_sec = 0;
 	tv.tv_usec = NAME_INTERVAL * 1000L;
 
-	evtimer_del(&w->name_timer);
+	if (event_initialized(&w->name_timer))
+		evtimer_del(&w->name_timer);
 	evtimer_set(&w->name_timer, window_name_callback, w);
 	evtimer_add(&w->name_timer, &tv);
 }
@@ -78,13 +79,11 @@ window_name_callback(unused int fd, unused short events, void *data)
 		wname = name;
 	}
 
-	if (strcmp(wname, w->name) == 0)
-		xfree(wname);
-	else {
-		xfree(w->name);
-		w->name = wname;
+	if (strcmp(wname, w->name)) {
+		window_set_name(w, wname);
 		server_status_window(w);
 	}
+	xfree(wname);
 }
 
 char *

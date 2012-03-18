@@ -1,4 +1,4 @@
-/* $Id: cmd-rename-session.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: cmd-rename-session.c 2747 2012-03-18 02:22:09Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -64,6 +64,7 @@ cmd_rename_session_exec(struct cmd *self, struct cmd_ctx *ctx)
 	RB_INSERT(sessions, &sessions, s);
 
 	server_status_session(s);
+	notify_session_renamed(s);
 
 	return (0);
 }

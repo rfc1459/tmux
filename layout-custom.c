@@ -1,4 +1,4 @@
-/* $Id: layout-custom.c 2700 2012-02-15 19:30:51Z tcunha $ */
+/* $Id: layout-custom.c 2747 2012-03-18 02:22:09Z tcunha $ */
 
 /*
  * Copyright (c) 2010 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -171,6 +171,8 @@ layout_parse(struct window *w, const char *layout)
 	window_resize(w, sx, sy);
 
 	layout_print_cell(lc, __func__, 0);
+
+	notify_window_layout_changed(w);
 
 	return (0);
 
