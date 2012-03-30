@@ -1,4 +1,4 @@
-/* $Id: options-table.c 2745 2012-03-18 02:12:24Z tcunha $ */
+/* $Id: options-table.c 2753 2012-03-29 21:05:53Z tcunha $ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -462,6 +462,21 @@ const struct options_table_entry window_options_table[] = {
 	{ .name = "automatic-rename",
 	  .type = OPTIONS_TABLE_FLAG,
 	  .default_num = 1
+	},
+
+
+	{ .name = "c0-change-trigger",
+	  .type = OPTIONS_TABLE_NUMBER,
+	  .default_num = 250,
+	  .minimum = 0,
+	  .maximum = USHRT_MAX
+	},
+
+	{ .name = "c0-change-interval",
+	  .type = OPTIONS_TABLE_NUMBER,
+	  .default_num = 100,
+	  .minimum = 1,
+	  .maximum = USHRT_MAX
 	},
 
 	{ .name = "clock-mode-colour",
