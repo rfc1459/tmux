@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tmux.1
 +++ b/tmux.1
-@@ -450,7 +450,7 @@
+@@ -451,7 +451,7 @@
  .Ql -
  may be followed by an offset, for example:
  .Bd -literal -offset indent
@@ -13,7 +13,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  When dealing with a session that doesn't contain sequential window indexes,
-@@ -505,13 +505,13 @@
+@@ -506,13 +506,13 @@
  .Nm
  commands include:
  .Bd -literal -offset indent
@@ -31,7 +31,7 @@ Forwarded: not-needed
  
  bind-key R source-file ~/.tmux.conf \e; \e
  	display-message "source-file done"
-@@ -520,11 +520,11 @@
+@@ -521,11 +521,11 @@
  Or from
  .Xr sh 1 :
  .Bd -literal -offset indent
@@ -46,7 +46,7 @@ Forwarded: not-needed
  .Ed
  .Sh CLIENTS AND SESSIONS
  The
-@@ -1041,7 +1041,7 @@
+@@ -1050,7 +1050,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -55,7 +55,7 @@ Forwarded: not-needed
  This command works only from inside
  .Nm .
  .It Xo
-@@ -1058,7 +1058,7 @@
+@@ -1067,7 +1067,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -64,7 +64,7 @@ Forwarded: not-needed
  This command works only from inside
  .Nm .
  .It Xo
-@@ -1075,7 +1075,7 @@
+@@ -1084,7 +1084,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -73,7 +73,7 @@ Forwarded: not-needed
  This command works only from inside
  .Nm .
  .It Ic display-panes Op Fl t Ar target-client
-@@ -1317,7 +1317,7 @@
+@@ -1373,7 +1373,7 @@
  option only opens a new pipe if no previous pipe exists, allowing a pipe to
  be toggled with a single key, for example:
  .Bd -literal -offset indent
@@ -82,7 +82,7 @@ Forwarded: not-needed
  .Ed
  .It Xo Ic previous-layout
  .Op Fl t Ar target-window
-@@ -2180,7 +2180,7 @@
+@@ -2251,7 +2251,7 @@
  Examples are:
  .Bd -literal -offset indent
  #(sysctl vm.loadavg)
@@ -91,7 +91,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  Where appropriate, special character sequences may be prefixed with a number to
-@@ -2398,7 +2398,7 @@
+@@ -2474,7 +2474,7 @@
  or with a terminal escape sequence.
  It may be switched off globally with:
  .Bd -literal -offset indent
@@ -99,8 +99,8 @@ Forwarded: not-needed
 +set-window-option \-g automatic-rename off
  .Ed
  .Pp
- .It Ic clock-mode-colour Ar colour
-@@ -3019,7 +3019,7 @@
+ .It Ic c0-change-interval Ar interval
+@@ -3125,7 +3125,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -109,7 +109,7 @@ Forwarded: not-needed
  This command works only from inside
  .Nm .
  .It Ic clear-history Op Fl t Ar target-pane
-@@ -3226,29 +3226,29 @@
+@@ -3336,29 +3336,29 @@
  .Pp
  Changing the default prefix key:
  .Bd -literal -offset indent
