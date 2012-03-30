@@ -1,4 +1,4 @@
-/* $Id: tty.c 2749 2012-03-18 02:25:26Z tcunha $ */
+/* $Id: tty.c 2752 2012-03-29 21:05:16Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -661,7 +661,7 @@ tty_write(
 
 	if (wp->window->flags & WINDOW_REDRAW || wp->flags & PANE_REDRAW)
 		return;
-	if (!window_pane_visible(wp))
+	if (!window_pane_visible(wp) || wp->flags & PANE_DROP)
 		return;
 
 	for (i = 0; i < ARRAY_LENGTH(&clients); i++) {

@@ -1,4 +1,4 @@
-/* $Id: cmd-save-buffer.c 2620 2011-10-23 15:08:58Z tcunha $ */
+/* $Id: cmd-save-buffer.c 2757 2012-03-29 21:08:44Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Tiago Cunha <me@tiagocunha.org>
@@ -33,7 +33,7 @@ int	cmd_save_buffer_exec(struct cmd *, struct cmd_ctx *);
 const struct cmd_entry cmd_save_buffer_entry = {
 	"save-buffer", "saveb",
 	"ab:", 1, 1,
-	"[-a] " CMD_BUFFER_USAGE,
+	"[-a] " CMD_BUFFER_USAGE " path",
 	0,
 	NULL,
 	NULL,
