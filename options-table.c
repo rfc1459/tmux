@@ -1,4 +1,4 @@
-/* $Id: options-table.c 2753 2012-03-29 21:05:53Z tcunha $ */
+/* $Id: options-table.c 2766 2012-04-10 09:52:45Z tcunha $ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -502,6 +502,13 @@ const struct options_table_entry window_options_table[] = {
 	  .minimum = 0,
 	  .maximum = INT_MAX,
 	  .default_num = 0
+	},
+
+	{ .name = "layout-history-limit",
+	  .type = OPTIONS_TABLE_NUMBER,
+	  .minimum = 1,
+	  .maximum = USHRT_MAX,
+	  .default_num = 20
 	},
 
 	{ .name = "main-pane-height",

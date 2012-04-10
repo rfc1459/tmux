@@ -1,4 +1,4 @@
-/* $Id: format.c 2694 2012-02-02 01:58:16Z tcunha $ */
+/* $Id: format.c 2765 2012-04-10 09:50:32Z tcunha $ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -389,6 +389,7 @@ format_window_pane(struct format_tree *ft, struct window_pane *wp)
 		format_add(ft, "pane_start_command", "%s", wp->cmd);
 	if (wp->cwd != NULL)
 		format_add(ft, "pane_start_path", "%s", wp->cwd);
+	format_add(ft, "pane_current_path", "%s", osdep_get_cwd(wp->pid));
 	format_add(ft, "pane_pid", "%ld", (long) wp->pid);
 	format_add(ft, "pane_tty", "%s", wp->tty);
 }

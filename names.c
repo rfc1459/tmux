@@ -1,4 +1,4 @@
-/* $Id: names.c 2736 2012-03-18 01:59:34Z tcunha $ */
+/* $Id: names.c 2773 2012-04-10 09:57:08Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -49,9 +49,7 @@ window_name_callback(unused int fd, unused short events, void *data)
 	struct window	*w = data;
 	char		*name, *wname;
 
-	queue_window_name(w);	/* XXX even if the option is off? */
-	if (!options_get_number(&w->options, "automatic-rename"))
-		return;
+	queue_window_name(w); /* stopped when option turned off */
 
 	if (w->active->screen != &w->active->base)
 		name = NULL;

@@ -1,4 +1,4 @@
-/* $Id: cmd-join-pane.c 2747 2012-03-18 02:22:09Z tcunha $ */
+/* $Id: cmd-join-pane.c 2769 2012-04-10 09:54:29Z tcunha $ */
 
 /*
  * Copyright (c) 2011 George Nachman <tmux@georgester.com>
@@ -70,7 +70,7 @@ cmd_join_pane_key_binding(struct cmd *self, int key)
 int
 cmd_join_pane_exec(struct cmd *self, struct cmd_ctx *ctx)
 {
-	return join_pane(self, ctx, self->entry == &cmd_join_pane_entry);
+	return (join_pane(self, ctx, self->entry == &cmd_join_pane_entry));
 }
 
 int

@@ -1,4 +1,4 @@
-/* $Id: cmd-resize-pane.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: cmd-resize-pane.c 2766 2012-04-10 09:52:45Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -103,6 +103,7 @@ cmd_resize_pane_exec(struct cmd *self, struct cmd_ctx *ctx)
 		}
 	}
 
+	layout_list_add(wp->window);
 	if (args_has(self->args, 'L'))
 		layout_resize_pane(wp, LAYOUT_LEFTRIGHT, -adjust);
 	else if (args_has(self->args, 'R'))
