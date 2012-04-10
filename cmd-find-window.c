@@ -1,4 +1,4 @@
-/* $Id: cmd-find-window.c 2756 2012-03-29 21:08:14Z tcunha $ */
+/* $Id: cmd-find-window.c 2769 2012-04-10 09:54:29Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -75,7 +75,7 @@ cmd_find_window_match_flags(struct args *args)
 	if (match_flags == 0)
 		match_flags = CMD_FIND_WINDOW_ALL;
 
-	return match_flags;
+	return (match_flags);
 }
 
 int
@@ -142,6 +142,7 @@ cmd_find_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 
 			ARRAY_ADD(&list_idx, wm->idx);
 			ARRAY_ADD(&list_ctx, sctx);
+			break;
 		}
 	}
 	xfree(searchstr);
