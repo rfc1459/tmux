@@ -1,4 +1,4 @@
-/* $Id: server-fn.c 2747 2012-03-18 02:22:09Z tcunha $ */
+/* $Id: server-fn.c 2786 2012-05-03 17:51:04Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -263,6 +263,9 @@ server_kill_window(struct window *w)
 			} else
 				server_redraw_session_group(s);
 		}
+
+		if (options_get_number(&s->options, "renumber-windows"))
+			session_renumber_windows(s);
 	}
 }
 

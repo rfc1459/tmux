@@ -1,4 +1,4 @@
-/* $Id: options-table.c 2766 2012-04-10 09:52:45Z tcunha $ */
+/* $Id: options-table.c 2786 2012-05-03 17:51:04Z tcunha $ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -271,6 +271,11 @@ const struct options_table_entry session_options_table[] = {
 	{ .name = "prefix2",
 	  .type = OPTIONS_TABLE_KEY,
 	  .default_num = KEYC_NONE,
+	},
+
+	{ .name = "renumber-windows",
+	  .type = OPTIONS_TABLE_FLAG,
+	  .default_num = 0
 	},
 
 	{ .name = "repeat-time",
@@ -688,6 +693,11 @@ const struct options_table_entry window_options_table[] = {
 	{ .name = "window-status-format",
 	  .type = OPTIONS_TABLE_STRING,
 	  .default_str = "#I:#W#F"
+	},
+
+	{ .name = "window-status-separator",
+	  .type = OPTIONS_TABLE_STRING,
+	  .default_str = " "
 	},
 
 	{ .name = "wrap-search",

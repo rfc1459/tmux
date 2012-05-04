@@ -1,4 +1,4 @@
-/* $Id: server-client.c 2743 2012-03-18 02:10:50Z tcunha $ */
+/* $Id: server-client.c 2774 2012-04-12 12:43:40Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -189,6 +189,8 @@ server_client_lost(struct client *c)
 	if (i == ARRAY_LENGTH(&dead_clients))
 		ARRAY_ADD(&dead_clients, c);
 	c->flags |= CLIENT_DEAD;
+
+	server_add_accept(0); /* may be more file descriptors now */
 
 	recalculate_sizes();
 	server_check_unattached();
