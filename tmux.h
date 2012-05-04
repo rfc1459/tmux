@@ -1,4 +1,4 @@
-/* $Id: tmux.h 2772 2012-04-10 09:56:04Z tcunha $ */
+/* $Id: tmux.h 2786 2012-05-03 17:51:04Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -773,6 +773,12 @@ struct input_ctx {
 #define INPUT_DISCARD 0x1
 
 	const struct input_state *state;
+
+	/*
+	 * All input received since we were last in the ground state. Sent to
+	 * control clients on connection.
+	 */
+	struct evbuffer	 	*since_ground;
 };
 
 /*
@@ -1709,6 +1715,7 @@ extern struct clients dead_clients;
 extern struct paste_stack global_buffers;
 int	 server_start(int, char *);
 void	 server_update_socket(void);
+void	 server_add_accept(int);
 
 /* server-client.c */
 void	 server_client_create(int);
@@ -2105,6 +2112,7 @@ void		 session_group_remove(struct session *);
 void		 session_group_synchronize_to(struct session *);
 void		 session_group_synchronize_from(struct session *);
 void		 session_group_synchronize1(struct session *, struct session *);
+void		 session_renumber_windows(struct session *);
 
 /* utf8.c */
 void	utf8_build(void);
