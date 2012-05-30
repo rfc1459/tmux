@@ -1,4 +1,4 @@
-/* $Id: input-keys.c 2770 2012-04-10 09:54:59Z tcunha $ */
+/* $Id: input-keys.c 2794 2012-05-12 14:59:17Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -222,7 +222,8 @@ input_mouse(struct window_pane *wp, struct mouse_event *m)
 		return;
 	}
 
-	if (options_get_number(&wp->window->options, "mode-mouse") == 1) {
+	if ((m->b & 3) != 1 &&
+	    options_get_number(&wp->window->options, "mode-mouse") == 1) {
 		if (window_pane_set_mode(wp, &window_copy_mode) == 0) {
 			window_copy_init_from_pane(wp);
 			if (wp->mode->mouse != NULL)

@@ -1,4 +1,4 @@
-/* $Id: tty-term.c 2645 2011-12-06 18:48:45Z tcunha $ */
+/* $Id: tty-term.c 2802 2012-05-22 20:58:33Z tcunha $ */
 
 /*
  * Copyright (c) 2008 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -177,7 +177,6 @@ const struct tty_term_code_entry tty_term_codes[NTTYCODE] = {
 	{ TTYC_RI, TTYCODE_STRING, "ri" },
 	{ TTYC_RMACS, TTYCODE_STRING, "rmacs" },
 	{ TTYC_RMCUP, TTYCODE_STRING, "rmcup" },
-	{ TTYC_RMIR, TTYCODE_STRING, "rmir" },
 	{ TTYC_RMKX, TTYCODE_STRING, "rmkx" },
 	{ TTYC_SETAB, TTYCODE_STRING, "setab" },
 	{ TTYC_SETAF, TTYCODE_STRING, "setaf" },
@@ -185,7 +184,6 @@ const struct tty_term_code_entry tty_term_codes[NTTYCODE] = {
 	{ TTYC_SITM, TTYCODE_STRING, "sitm" },
 	{ TTYC_SMACS, TTYCODE_STRING, "smacs" },
 	{ TTYC_SMCUP, TTYCODE_STRING, "smcup" },
-	{ TTYC_SMIR, TTYCODE_STRING, "smir" },
 	{ TTYC_SMKX, TTYCODE_STRING, "smkx" },
 	{ TTYC_SMSO, TTYCODE_STRING, "smso" },
 	{ TTYC_SMUL, TTYCODE_STRING, "smul" },

@@ -1,4 +1,4 @@
-/* $Id: cmd-save-buffer.c 2757 2012-03-29 21:08:44Z tcunha $ */
+/* $Id: cmd-save-buffer.c 2800 2012-05-22 20:56:35Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Tiago Cunha <me@tiagocunha.org>
@@ -79,7 +79,8 @@ cmd_save_buffer_exec(struct cmd *self, struct cmd_ctx *ctx)
 			ctx->error(ctx, "%s: can't write to stdout", path);
 			return (-1);
 		}
-		bufferevent_write(c->stdout_event, pb->data, pb->size);
+		evbuffer_add(c->stdout_data, pb->data, pb->size);
+		server_push_stdout(c);
 	} else {
 		if (c != NULL)
 			wd = c->cwd;

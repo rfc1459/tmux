@@ -1,4 +1,4 @@
-/* $Id: cmd-split-window.c 2747 2012-03-18 02:22:09Z tcunha $ */
+/* $Id: cmd-split-window.c 2805 2012-05-22 21:03:25Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -138,9 +138,8 @@ cmd_split_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 	environ_free(&env);
 
 	if (args_has(args, 'P')) {
-		template = "#{session_name}:#{window_index}.#{pane_index}";
-		if (args_has(args, 'F'))
-			template = args_get(args, 'F');
+		if ((template = args_get(args, 'F')) == NULL)
+			template = DEFAULT_PANE_INFO_TEMPLATE;
 
 		ft = format_create();
 		if ((c = cmd_find_client(ctx, NULL)) != NULL)
