@@ -12,7 +12,7 @@ Forwarded: not-needed
 
 --- a/tmux.h
 +++ b/tmux.h
-@@ -394,6 +394,22 @@
+@@ -421,6 +421,22 @@
  	char		argv[COMMAND_LENGTH];
  };
  
