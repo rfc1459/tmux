@@ -1,4 +1,4 @@
-/* $Id: cmd-break-pane.c 2728 2012-03-18 01:38:27Z tcunha $ */
+/* $Id: cmd-break-pane.c 2805 2012-05-22 21:03:25Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -93,9 +93,10 @@ cmd_break_pane_exec(struct cmd *self, struct cmd_ctx *ctx)
 	server_status_session_group(s);
 
 	if (args_has(args, 'P')) {
-		template = "#{session_name}:#{window_index}";
-		if (args_has(args, 'F'))
-			template = args_get(args, 'F');
+
+		if ((template = args_get(args, 'F')) == NULL)
+			template = DEFAULT_PANE_INFO_TEMPLATE;
+
 		ft = format_create();
 		if ((c = cmd_find_client(ctx, NULL)) != NULL)
 			format_client(ft, c);

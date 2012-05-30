@@ -1,4 +1,4 @@
-/* $Id: client.c 2783 2012-04-24 16:24:37Z tcunha $ */
+/* $Id: client.c 2811 2012-05-30 13:42:57Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -35,6 +35,7 @@
 
 struct imsgbuf	client_ibuf;
 struct event	client_event;
+struct event	client_stdin;
 enum {
 	CLIENT_EXIT_NONE,
 	CLIENT_EXIT_DETACHED,
@@ -56,6 +57,7 @@ void		client_send_environ(void);
 void		client_write_server(enum msgtype, void *, size_t);
 void		client_update_event(void);
 void		client_signal(int, short, void *);
+void		client_stdin_callback(int, short, void *);
 void		client_callback(int, short, void *);
 int		client_dispatch_attached(void);
 int		client_dispatch_wait(void *);
@@ -207,15 +209,15 @@ client_main(int argc, char **argv, int flags)
 	if (shell_cmd == NULL && environ_path != NULL &&
 	    (cmdflags & CMD_CANTNEST) &&
 	    strcmp(socket_path, environ_path) == 0) {
-		log_warnx("sessions should be nested with care. "
-		    "unset $TMUX to force.");
+		fprintf(stderr, "sessions should be nested with care, "
+		    "unset $TMUX to force\n");
 		return (1);
 	}
 
 	/* Initialise the client socket and start the server. */
 	fd = client_connect(socket_path, cmdflags & CMD_STARTSERVER);
 	if (fd == -1) {
-		log_warn("failed to connect to server");
+		fprintf(stderr, "failed to connect to server\n");
 		return (1);
 	}
 
@@ -228,6 +230,11 @@ client_main(int argc, char **argv, int flags)
 	/* Create imsg. */
 	imsg_init(&client_ibuf, fd);
 	event_set(&client_event, fd, EV_READ, client_callback, shell_cmd);
+
+	/* Create stdin handler. */
+	setblocking(STDIN_FILENO, 0);
+	event_set(&client_stdin, STDIN_FILENO, EV_READ|EV_PERSIST,
+	    client_stdin_callback, NULL);
 
 	/* Establish signal handlers. */
 	set_signals(client_signal);
@@ -247,7 +254,7 @@ client_main(int argc, char **argv, int flags)
 		cmddata.argc = argc;
 		if (cmd_pack_argv(
 		    argc, argv, cmddata.argv, sizeof cmddata.argv) != 0) {
-			log_warnx("command too long");
+			fprintf(stderr, "command too long\n");
 			return (1);
 		}
 
@@ -257,6 +264,7 @@ client_main(int argc, char **argv, int flags)
 
 	/* Set the event and dispatch. */
 	client_update_event();
+	event_add (&client_stdin, NULL);
 	event_dispatch();
 
 	/* Print the exit message, if any, and exit. */
@@ -268,6 +276,7 @@ client_main(int argc, char **argv, int flags)
 		if (client_exittype == MSG_DETACHKILL && ppid > 1)
 			kill(ppid, SIGHUP);
 	}
+	setblocking(STDIN_FILENO, 1);
 	return (client_exitval);
 }
 
@@ -289,20 +298,11 @@ client_send_identify(int flags)
 	    strlcpy(data.term, term, sizeof data.term) >= sizeof data.term)
 		*data.term = '\0';
 
-	if ((fd = dup(STDOUT_FILENO)) == -1)
-		fatal("dup failed");
-	imsg_compose(&client_ibuf,
-	    MSG_STDOUT, PROTOCOL_VERSION, -1, fd, NULL, 0);
-
-	if ((fd = dup(STDERR_FILENO)) == -1)
-		fatal("dup failed");
-	imsg_compose(&client_ibuf,
-	    MSG_STDERR, PROTOCOL_VERSION, -1, fd, NULL, 0);
-
 	if ((fd = dup(STDIN_FILENO)) == -1)
 		fatal("dup failed");
 	imsg_compose(&client_ibuf,
 	    MSG_IDENTIFY, PROTOCOL_VERSION, -1, fd, &data, sizeof data);
+	client_update_event();
 }
 
 /* Forward entire environment to server. */
@@ -324,6 +324,7 @@ void
 client_write_server(enum msgtype type, void *buf, size_t len)
 {
 	imsg_compose(&client_ibuf, type, PROTOCOL_VERSION, -1, -1, buf, len);
+	client_update_event();
 }
 
 /* Update client event based on whether it needs to read or read and write. */
@@ -423,6 +424,23 @@ lost_server:
 	event_loopexit(NULL);
 }
 
+/* Callback for client stdin read events. */
+/* ARGSUSED */
+void
+client_stdin_callback(unused int fd, unused short events, unused void *data1)
+{
+	struct msg_stdin_data	data;
+
+	data.size = read(STDIN_FILENO, data.data, sizeof data.data);
+	if (data.size < 0 && (errno == EINTR || errno == EAGAIN))
+		return;
+
+	client_write_server(MSG_STDIN, &data, sizeof data);
+	if (data.size <= 0)
+		event_del(&client_stdin);
+	client_update_event();
+}
+
 /* Dispatch imsgs when in wait state (before MSG_READY). */
 int
 client_dispatch_wait(void *data)
@@ -431,10 +449,9 @@ client_dispatch_wait(void *data)
 	ssize_t			n, datalen;
 	struct msg_shell_data	shelldata;
 	struct msg_exit_data	exitdata;
+	struct msg_stdout_data	stdoutdata;
+	struct msg_stderr_data	stderrdata;
 	const char             *shellcmd = data;
-
-	if ((n = imsg_read(&client_ibuf)) == -1 || n == 0)
-		fatalx("imsg_read failed");
 
 	for (;;) {
 		if ((n = imsg_get(&client_ibuf, &imsg)) == -1)
@@ -443,6 +460,7 @@ client_dispatch_wait(void *data)
 			return (0);
 		datalen = imsg.hdr.len - IMSG_HEADER_SIZE;
 
+		log_debug("got %d from server", imsg.hdr.type);
 		switch (imsg.hdr.type) {
 		case MSG_EXIT:
 		case MSG_SHUTDOWN:
@@ -459,14 +477,30 @@ client_dispatch_wait(void *data)
 			if (datalen != 0)
 				fatalx("bad MSG_READY size");
 
+			event_del(&client_stdin);
 			client_attached = 1;
+			break;
+		case MSG_STDOUT:
+			if (datalen != sizeof stdoutdata)
+				fatalx("bad MSG_STDOUT");
+			memcpy(&stdoutdata, imsg.data, sizeof stdoutdata);
+
+			fwrite(stdoutdata.data, stdoutdata.size, 1, stdout);
+			break;
+		case MSG_STDERR:
+			if (datalen != sizeof stderrdata)
+				fatalx("bad MSG_STDERR");
+			memcpy(&stderrdata, imsg.data, sizeof stderrdata);
+
+			fwrite(stderrdata.data, stderrdata.size, 1, stderr);
 			break;
 		case MSG_VERSION:
 			if (datalen != 0)
 				fatalx("bad MSG_VERSION size");
 
-			log_warnx("protocol version mismatch (client %u, "
-			    "server %u)", PROTOCOL_VERSION, imsg.hdr.peerid);
+			fprintf(stderr, "protocol version mismatch "
+			    "(client %u, server %u)\n", PROTOCOL_VERSION,
+			    imsg.hdr.peerid);
 			client_exitval = 1;
 
 			imsg_free(&imsg);
@@ -506,7 +540,7 @@ client_dispatch_attached(void)
 			return (0);
 		datalen = imsg.hdr.len - IMSG_HEADER_SIZE;
 
-		log_debug("client got %d", imsg.hdr.type);
+		log_debug("got %d from server", imsg.hdr.type);
 		switch (imsg.hdr.type) {
 		case MSG_DETACHKILL:
 		case MSG_DETACH:

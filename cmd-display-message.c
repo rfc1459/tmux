@@ -1,4 +1,4 @@
-/* $Id: cmd-display-message.c 2713 2012-03-07 13:36:57Z tcunha $ */
+/* $Id: cmd-display-message.c 2805 2012-05-22 21:03:25Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Tiago Cunha <me@tiagocunha.org>
@@ -75,7 +75,7 @@ cmd_display_message_exec(struct cmd *self, struct cmd_ctx *ctx)
 	if (args->argc != 0)
 		template = args->argv[0];
 	if (template == NULL)
-		template = "[#S] #I:#W, current pane #P - (%H:%M %d-%b-%y)";
+		template = DEFAULT_DISPLAY_MESSAGE_TEMPLATE;
 
 	ft = format_create();
 	format_client(ft, c);

@@ -1,4 +1,4 @@
-/* $Id: tmux.c 2669 2012-01-21 19:36:40Z tcunha $ */
+/* $Id: tmux.c 2819 2012-05-30 15:01:57Z nicm $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -73,10 +73,9 @@ logfile(const char *name)
 {
 	char	*path;
 
-	log_close();
 	if (debug_level > 0) {
 		xasprintf(&path, "tmux-%s-%ld.log", name, (long) getpid());
-		log_open_file(debug_level, path);
+		log_open(debug_level, path);
 		xfree(path);
 	}
 }
@@ -300,8 +299,6 @@ main(int argc, char **argv)
 	if (shell_cmd != NULL && argc != 0)
 		usage();
 
-	log_open_tty(debug_level);
-
 	if (!(flags & IDENTIFY_UTF8)) {
 		/*
 		 * If the user has set whichever of LC_ALL, LC_CTYPE or LANG
@@ -385,7 +382,7 @@ main(int argc, char **argv)
 		/* -L or default set. */
 		if (label != NULL) {
 			if ((path = makesocketpath(label)) == NULL) {
-				log_warn("can't create socket");
+				fprintf(stderr, "can't create socket\n");
 				exit(1);
 			}
 		}
