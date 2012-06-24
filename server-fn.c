@@ -1,4 +1,4 @@
-/* $Id: server-fn.c 2804 2012-05-22 20:59:58Z tcunha $ */
+/* $Id: server-fn.c 2826 2012-06-18 15:23:01Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -49,6 +49,8 @@ server_fill_environ(struct session *s, struct environ *env)
 void
 server_write_ready(struct client *c)
 {
+	if (c->flags & CLIENT_CONTROL)
+		return;
 	server_write_client(c, MSG_READY, NULL, 0);
 }
 

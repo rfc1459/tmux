@@ -1,4 +1,4 @@
-# $Id: Makefile.am 2748 2012-03-18 02:24:33Z tcunha $
+# $Id: Makefile.am 2827 2012-06-18 15:24:17Z tcunha $
 
 # Obvious program stuff.
 bin_PROGRAMS = tmux
@@ -135,6 +135,7 @@ dist_tmux_SOURCES = \
 	cmd-unlink-window.c \
 	cmd.c \
 	colour.c \
+	control.c \
 	environ.c \
 	format.c \
 	grid-utf8.c \

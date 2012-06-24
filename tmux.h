@@ -1,4 +1,4 @@
-/* $Id: tmux.h 2813 2012-05-30 13:45:16Z tcunha $ */
+/* $Id: tmux.h 2826 2012-06-18 15:23:01Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -429,6 +429,8 @@ struct msg_identify_data {
 #define IDENTIFY_UTF8 0x1
 #define IDENTIFY_256COLOURS 0x2
 #define IDENTIFY_88COLOURS 0x4
+#define IDENTIFY_CONTROL 0x8
+#define IDENTIFY_TERMIOS 0x10
 	int		flags;
 };
 
@@ -1228,6 +1230,7 @@ struct client {
 #define CLIENT_BORDERS 0x400
 #define CLIENT_READONLY 0x800
 #define CLIENT_REDRAWWINDOW 0x1000
+#define CLIENT_CONTROL 0x2000
 	int		 flags;
 
 	struct event	 identify_timer;
@@ -2126,6 +2129,9 @@ char		*default_window_name(struct window *);
 /* signal.c */
 void set_signals(void(*)(int, short, void *));
 void clear_signals(int);
+
+/* control.c */
+void control_callback(struct client *, int, void*);
 
 /* session.c */
 extern struct sessions sessions;
