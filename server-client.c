@@ -1,4 +1,4 @@
-/* $Id: server-client.c 2807 2012-05-22 21:05:30Z tcunha $ */
+/* $Id: server-client.c 2826 2012-06-18 15:23:01Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -106,6 +106,9 @@ server_client_open(struct client *c, struct session *s, char **cause)
 {
 	struct options	*oo = s != NULL ? &s->options : &global_s_options;
 	char		*overrides;
+
+	if (c->flags & CLIENT_CONTROL)
+		return (0);
 
 	if (!(c->flags & CLIENT_TERMINAL)) {
 		*cause = xstrdup ("not a terminal");
@@ -892,6 +895,17 @@ server_client_msg_identify(
 	data->cwd[(sizeof data->cwd) - 1] = '\0';
 	if (*data->cwd != '\0')
 		c->cwd = xstrdup(data->cwd);
+
+	if (data->flags & IDENTIFY_CONTROL) {
+		c->stdin_callback = control_callback;
+		c->flags |= (CLIENT_CONTROL|CLIENT_SUSPENDED);
+
+		c->tty.fd = -1;
+		c->tty.log_fd = -1;
+
+		close(fd);
+		return;
+	}
 
 	if (!isatty(fd))
 	    return;
