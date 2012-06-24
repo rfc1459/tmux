@@ -1,3 +1,9 @@
+tmux (1.7~svn2829-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2829).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 24 Jun 2012 21:39:54 +0200
+
 tmux (1.7~svn2819-1) experimental; urgency=low
 
   * New upstream snapshot from Subversion (r2819).
