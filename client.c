@@ -1,4 +1,4 @@
-/* $Id: client.c 2829 2012-06-18 16:23:42Z tcunha $ */
+/* $Id: client.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -122,7 +122,7 @@ retry:
 		if (unlink(path) != 0 && errno != ENOENT)
 			return (-1);
 		fd = server_start(lockfd, lockfile);
-		xfree(lockfile);
+		free(lockfile);
 		close(lockfd);
 	}
 

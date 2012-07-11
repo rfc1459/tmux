@@ -1,4 +1,4 @@
-/* $Id: tty-keys.c 2807 2012-05-22 21:05:30Z tcunha $ */
+/* $Id: tty-keys.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -384,7 +384,7 @@ tty_keys_free1(struct tty_key *tk)
 		tty_keys_free1(tk->left);
 	if (tk->right != NULL)
 		tty_keys_free1(tk->right);
-	xfree(tk);
+	free(tk);
 }
 
 /* Lookup a key in the tree. */

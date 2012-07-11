@@ -1,4 +1,4 @@
-# $Id: Makefile.am 2827 2012-06-18 15:24:17Z tcunha $
+# $Id: Makefile.am 2839 2012-07-11 17:15:23Z tcunha $
 
 # Obvious program stuff.
 bin_PROGRAMS = tmux
@@ -66,8 +66,7 @@ dist_tmux_SOURCES = \
 	cmd-capture-pane.c \
 	cmd-choose-buffer.c \
 	cmd-choose-client.c \
-	cmd-choose-session.c \
-	cmd-choose-window.c \
+	cmd-choose-tree.c \
 	cmd-clear-history.c \
 	cmd-clock-mode.c \
 	cmd-command-prompt.c \

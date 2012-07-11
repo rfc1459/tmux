@@ -1,4 +1,4 @@
-/* $Id: layout.c 2771 2012-04-10 09:55:27Z tcunha $ */
+/* $Id: layout.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -78,7 +78,7 @@ layout_free_cell(struct layout_cell *lc)
 		break;
 	}
 
-	xfree(lc);
+	free(lc);
 }
 
 void
@@ -781,8 +781,8 @@ layout_list_add(struct window *w)
 		TAILQ_REMOVE(&w->layout_list, ll, entry);
 		w->layout_list_size--;
 
-		xfree(ll->layout);
-		xfree(ll);
+		free(ll->layout);
+		free(ll);
 	}
 }
 

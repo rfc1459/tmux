@@ -1,4 +1,4 @@
-/* $Id: cmd-find-window.c 2805 2012-05-22 21:03:25Z tcunha $ */
+/* $Id: cmd-find-window.c 2844 2012-07-11 19:37:32Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -19,6 +19,7 @@
 #include <sys/types.h>
 
 #include <fnmatch.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "tmux.h"
@@ -27,11 +28,11 @@
  * Find window containing text.
  */
 
-int	cmd_find_window_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_find_window_exec(struct cmd *, struct cmd_ctx *);
 
 u_int	cmd_find_window_match_flags(struct args *);
-void	cmd_find_window_callback(void *, int);
-void	cmd_find_window_free(void *);
+void	cmd_find_window_callback(struct window_choose_data *);
+void	cmd_find_window_free(struct window_choose_data *);
 
 /* Flags for determining matching behavior. */
 #define CMD_FIND_WINDOW_BY_TITLE   0x1
@@ -43,7 +44,6 @@ void	cmd_find_window_free(void *);
 	 CMD_FIND_WINDOW_BY_CONTENT |	\
 	 CMD_FIND_WINDOW_BY_NAME)
 
-
 const struct cmd_entry cmd_find_window_entry = {
 	"find-window", "findw",
 	"F:CNt:T", 1, 4,
@@ -52,10 +52,6 @@ const struct cmd_entry cmd_find_window_entry = {
 	NULL,
 	NULL,
 	cmd_find_window_exec
-};
-
-struct cmd_find_window_data {
-	struct session	*session;
 };
 
 u_int
@@ -78,30 +74,28 @@ cmd_find_window_match_flags(struct args *args)
 	return (match_flags);
 }
 
-int
+enum cmd_retval
 cmd_find_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 {
 	struct args			*args = self->args;
-	struct cmd_find_window_data	*cdata;
+	struct window_choose_data	*cdata;
 	struct session			*s;
 	struct winlink			*wl, *wm;
 	struct window_pane		*wp;
-	struct format_tree		*ft;
 	ARRAY_DECL(, u_int)	 	 list_idx;
 	ARRAY_DECL(, char *)	 	 list_ctx;
 	char				*str, *sres, *sctx, *searchstr;
-	char				*find_line;
 	const char			*template;
 	u_int				 i, line, match_flags;
 
 	if (ctx->curclient == NULL) {
 		ctx->error(ctx, "must be run interactively");
-		return (-1);
+		return (CMD_RETURN_ERROR);
 	}
 	s = ctx->curclient->session;
 
 	if ((wl = cmd_find_window(ctx, args_get(args, 't'), NULL)) == NULL)
-		return (-1);
+		return (CMD_RETURN_ERROR);
 
 	if ((template = args_get(args, 'F')) == NULL)
 		template = DEFAULT_FIND_WINDOW_TEMPLATE;
@@ -141,7 +135,7 @@ cmd_find_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 					xasprintf(&sctx,
 					    "pane %u line %u: \"%s\"", i - 1,
 					    line + 1, sres);
-					xfree(sres);
+					free(sres);
 				}
 			}
 
@@ -150,13 +144,13 @@ cmd_find_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 			break;
 		}
 	}
-	xfree(searchstr);
+	free(searchstr);
 
 	if (ARRAY_LENGTH(&list_idx) == 0) {
 		ctx->error(ctx, "no windows matching: %s", str);
 		ARRAY_FREE(&list_idx);
 		ARRAY_FREE(&list_ctx);
-		return (-1);
+		return (CMD_RETURN_ERROR);
 	}
 
 	if (ARRAY_LENGTH(&list_idx) == 1) {
@@ -173,57 +167,58 @@ cmd_find_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 		wm = winlink_find_by_index(
 		    &s->windows, ARRAY_ITEM(&list_idx, i));
 
-		ft = format_create();
-		format_add(ft, "line", "%u", i);
-		format_add(ft, "window_find_matches", "%s",
+		cdata = window_choose_data_create(ctx);
+		cdata->idx = wm->idx;
+		cdata->client->references++;
+
+		cdata->ft_template = xstrdup(template);
+		format_add(cdata->ft, "line", "%u", i);
+		format_add(cdata->ft, "window_find_matches", "%s",
 			ARRAY_ITEM(&list_ctx, i));
-		format_session(ft, s);
-		format_winlink(ft, s, wm);
+		format_session(cdata->ft, s);
+		format_winlink(cdata->ft, s, wm);
 
-		find_line = format_expand(ft, template);
-
-		window_choose_add(wl->window->active, wm->idx, "%s", find_line);
-
-		xfree(find_line);
-		format_free(ft);
+		window_choose_add(wl->window->active, cdata);
 	}
 
-	cdata = xmalloc(sizeof *cdata);
-	cdata->session = s;
-	cdata->session->references++;
-
 	window_choose_ready(wl->window->active,
-	    0, cmd_find_window_callback, cmd_find_window_free, cdata);
+	    0, cmd_find_window_callback, cmd_find_window_free);
 
 out:
+
 	ARRAY_FREE(&list_idx);
 	ARRAY_FREE(&list_ctx);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }
 
 void
-cmd_find_window_callback(void *data, int idx)
+cmd_find_window_callback(struct window_choose_data *cdata)
 {
-	struct cmd_find_window_data	*cdata = data;
-	struct session			*s = cdata->session;
+	struct session	*s;
 
-	if (idx == -1)
+	if (cdata == NULL)
 		return;
+
+	s = cdata->session;
 	if (!session_alive(s))
 		return;
 
-	if (session_select(s, idx) == 0) {
+	if (session_select(s, cdata->idx) == 0) {
 		server_redraw_session(s);
 		recalculate_sizes();
 	}
 }
 
 void
-cmd_find_window_free(void *data)
+cmd_find_window_free(struct window_choose_data *cdata)
 {
-	struct cmd_find_window_data	*cdata = data;
+	if (cdata == NULL)
+		return;
 
 	cdata->session->references--;
-	xfree(cdata);
+
+	free(cdata->ft_template);
+	format_free(cdata->ft);
+	free(cdata);
 }

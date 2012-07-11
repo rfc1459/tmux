@@ -1,4 +1,4 @@
-/* $Id: input-keys.c 2794 2012-05-12 14:59:17Z tcunha $ */
+/* $Id: input-keys.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -163,7 +163,7 @@ input_key(struct window_pane *wp, int key)
 	if (options_get_number(&wp->window->options, "xterm-keys")) {
 		if ((out = xterm_keys_lookup(key)) != NULL) {
 			bufferevent_write(wp->event, out, strlen(out));
-			xfree(out);
+			free(out);
 			return;
 		}
 	}

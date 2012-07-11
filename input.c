@@ -1,4 +1,4 @@
-/* $Id: input.c 2784 2012-05-03 16:55:48Z tcunha $ */
+/* $Id: input.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -853,7 +853,7 @@ input_reply(struct input_ctx *ictx, const char *fmt, ...)
 	va_end(ap);
 
 	bufferevent_write(ictx->wp->event, reply, strlen(reply));
-	xfree(reply);
+	free(reply);
 }
 
 /* Clear saved state. */

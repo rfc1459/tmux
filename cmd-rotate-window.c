@@ -1,4 +1,4 @@
-/* $Id: cmd-rotate-window.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: cmd-rotate-window.c 2844 2012-07-11 19:37:32Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -24,8 +24,8 @@
  * Rotate the panes in a window.
  */
 
-void	cmd_rotate_window_key_binding(struct cmd *, int);
-int	cmd_rotate_window_exec(struct cmd *, struct cmd_ctx *);
+void		 cmd_rotate_window_key_binding(struct cmd *, int);
+enum cmd_retval	 cmd_rotate_window_exec(struct cmd *, struct cmd_ctx *);
 
 const struct cmd_entry cmd_rotate_window_entry = {
 	"rotate-window", "rotatew",
@@ -45,7 +45,7 @@ cmd_rotate_window_key_binding(struct cmd *self, int key)
 		args_set(self->args, 'D', NULL);
 }
 
-int
+enum cmd_retval
 cmd_rotate_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 {
 	struct args		*args = self->args;
@@ -56,7 +56,7 @@ cmd_rotate_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 	u_int			 sx, sy, xoff, yoff;
 
 	if ((wl = cmd_find_window(ctx, args_get(args, 't'), NULL)) == NULL)
-		return (-1);
+		return (CMD_RETURN_ERROR);
 	w = wl->window;
 
 	if (args_has(self->args, 'D')) {
@@ -115,5 +115,5 @@ cmd_rotate_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 		server_redraw_window(w);
 	}
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }
