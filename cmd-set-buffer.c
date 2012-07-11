@@ -1,4 +1,4 @@
-/* $Id: cmd-set-buffer.c 2616 2011-10-23 15:02:20Z tcunha $ */
+/* $Id: cmd-set-buffer.c 2844 2012-07-11 19:37:32Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -18,6 +18,7 @@
 
 #include <sys/types.h>
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "tmux.h"
@@ -26,7 +27,7 @@
  * Add or set a paste buffer.
  */
 
-int	cmd_set_buffer_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_set_buffer_exec(struct cmd *, struct cmd_ctx *);
 
 const struct cmd_entry cmd_set_buffer_entry = {
 	"set-buffer", "setb",
@@ -38,7 +39,7 @@ const struct cmd_entry cmd_set_buffer_entry = {
 	cmd_set_buffer_exec
 };
 
-int
+enum cmd_retval
 cmd_set_buffer_exec(struct cmd *self, struct cmd_ctx *ctx)
 {
 	struct args	*args = self->args;
@@ -54,22 +55,22 @@ cmd_set_buffer_exec(struct cmd *self, struct cmd_ctx *ctx)
 
 	if (!args_has(args, 'b')) {
 		paste_add(&global_buffers, pdata, psize, limit);
-		return (0);
+		return (CMD_RETURN_NORMAL);
 	}
 
 	buffer = args_strtonum(args, 'b', 0, INT_MAX, &cause);
 	if (cause != NULL) {
 		ctx->error(ctx, "buffer %s", cause);
-		xfree(cause);
-		xfree(pdata);
-		return (-1);
+		free(cause);
+		free(pdata);
+		return (CMD_RETURN_ERROR);
 	}
 
 	if (paste_replace(&global_buffers, buffer, pdata, psize) != 0) {
 		ctx->error(ctx, "no buffer %d", buffer);
-		xfree(pdata);
-		return (-1);
+		free(pdata);
+		return (CMD_RETURN_ERROR);
 	}
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

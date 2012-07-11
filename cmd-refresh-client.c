@@ -1,4 +1,4 @@
-/* $Id: cmd-refresh-client.c 2607 2011-10-02 11:33:14Z tcunha $ */
+/* $Id: cmd-refresh-client.c 2844 2012-07-11 19:37:32Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -24,7 +24,7 @@
  * Refresh client.
  */
 
-int	cmd_refresh_client_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_refresh_client_exec(struct cmd *, struct cmd_ctx *);
 
 const struct cmd_entry cmd_refresh_client_entry = {
 	"refresh-client", "refresh",
@@ -36,14 +36,14 @@ const struct cmd_entry cmd_refresh_client_entry = {
 	cmd_refresh_client_exec
 };
 
-int
+enum cmd_retval
 cmd_refresh_client_exec(struct cmd *self, struct cmd_ctx *ctx)
 {
 	struct args	*args = self->args;
 	struct client	*c;
 
 	if ((c = cmd_find_client(ctx, args_get(args, 't'))) == NULL)
-		return (-1);
+		return (CMD_RETURN_ERROR);
 
 	if (args_has(args, 'S')) {
 		status_update_jobs(c);
@@ -51,5 +51,5 @@ cmd_refresh_client_exec(struct cmd *self, struct cmd_ctx *ctx)
 	} else
 		server_redraw_client(c);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

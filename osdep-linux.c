@@ -1,4 +1,4 @@
-/* $Id: osdep-linux.c 2647 2011-12-09 16:37:29Z nicm $ */
+/* $Id: osdep-linux.c 2845 2012-07-11 19:50:46Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -40,10 +40,10 @@ osdep_get_name(int fd, unused char *tty)
 
 	xasprintf(&path, "/proc/%lld/cmdline", (long long) pgrp);
 	if ((f = fopen(path, "r")) == NULL) {
-		xfree(path);
+		free(path);
 		return (NULL);
 	}
-	xfree(path);
+	free(path);
 
 	len = 0;
 	buf = NULL;
@@ -69,7 +69,7 @@ osdep_get_cwd(pid_t pid)
 
 	xasprintf(&path, "/proc/%d/cwd", pid);
 	n = readlink(path, target, MAXPATHLEN);
-	xfree(path);
+	free(path);
 	if (n > 0) {
 		target[n] = '\0';
 		return (target);

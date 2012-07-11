@@ -1,4 +1,4 @@
-/* $Id: tmux.h 2826 2012-06-18 15:23:01Z tcunha $ */
+/* $Id: tmux.h 2844 2012-07-11 19:37:32Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -842,6 +842,21 @@ struct window_mode {
 	void	(*timer)(struct window_pane *);
 };
 
+/* Structures for choose mode. */
+struct window_choose_data {
+	struct client		*client;
+	struct session		*session;
+	struct format_tree	*ft;
+	char		        *ft_template;
+	char			*command;
+	u_int			 idx;
+};
+
+struct window_choose_mode_item {
+    struct window_choose_data   *wcd;
+    char                        *name;
+};
+
 /* Child window structure. */
 struct window_pane {
 	u_int		 id;
@@ -1312,6 +1327,13 @@ struct cmd_list {
 	TAILQ_HEAD(, cmd) 	 list;
 };
 
+enum cmd_retval {
+	CMD_RETURN_ERROR = -1,
+	CMD_RETURN_NORMAL = 0,
+	CMD_RETURN_YIELD,
+	CMD_RETURN_ATTACH
+};
+
 struct cmd_entry {
 	const char	*name;
 	const char	*alias;
@@ -1330,7 +1352,7 @@ struct cmd_entry {
 
 	void		 (*key_binding)(struct cmd *, int);
 	int		 (*check)(struct args *);
-	int		 (*exec)(struct cmd *, struct cmd_ctx *);
+	enum cmd_retval	 (*exec)(struct cmd *, struct cmd_ctx *);
 };
 
 /* Key binding. */
@@ -1622,7 +1644,7 @@ int		 cmd_unpack_argv(char *, size_t, int, char ***);
 char	       **cmd_copy_argv(int, char *const *);
 void		 cmd_free_argv(int, char **);
 struct cmd	*cmd_parse(int, char **, char **);
-int		 cmd_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_exec(struct cmd *, struct cmd_ctx *);
 void		 cmd_free(struct cmd *);
 size_t		 cmd_print(struct cmd *, char *, size_t);
 struct session	*cmd_current_session(struct cmd_ctx *, int);
@@ -1645,6 +1667,7 @@ extern const struct cmd_entry cmd_capture_pane_entry;
 extern const struct cmd_entry cmd_choose_buffer_entry;
 extern const struct cmd_entry cmd_choose_client_entry;
 extern const struct cmd_entry cmd_choose_session_entry;
+extern const struct cmd_entry cmd_choose_tree_entry;
 extern const struct cmd_entry cmd_choose_window_entry;
 extern const struct cmd_entry cmd_clear_history_entry;
 extern const struct cmd_entry cmd_clock_mode_entry;
@@ -1725,7 +1748,7 @@ extern const struct cmd_entry cmd_up_pane_entry;
 
 /* cmd-list.c */
 struct cmd_list	*cmd_list_parse(int, char **, char **);
-int		 cmd_list_exec(struct cmd_list *, struct cmd_ctx *);
+enum cmd_retval	 cmd_list_exec(struct cmd_list *, struct cmd_ctx *);
 void		 cmd_list_free(struct cmd_list *);
 size_t		 cmd_list_print(struct cmd_list *, char *, size_t);
 
@@ -2057,6 +2080,7 @@ struct window_pane *window_pane_find_down(struct window_pane *);
 struct window_pane *window_pane_find_left(struct window_pane *);
 struct window_pane *window_pane_find_right(struct window_pane *);
 void		 window_set_name(struct window *, const char *);
+void		 winlink_clear_flags(struct winlink *);
 
 /* layout.c */
 u_int		 layout_count_cells(struct layout_cell *);
@@ -2115,12 +2139,19 @@ void		 window_copy_pageup(struct window_pane *);
 
 /* window-choose.c */
 extern const struct window_mode window_choose_mode;
-void		 window_choose_vadd(
-		     struct window_pane *, int, const char *, va_list);
-void printflike3 window_choose_add(
-		     struct window_pane *, int, const char *, ...);
+void		 window_choose_add(struct window_pane *,
+			 struct window_choose_data *);
 void		 window_choose_ready(struct window_pane *,
-		     u_int, void (*)(void *, int), void (*)(void *), void *);
+		     u_int, void (*)(struct window_choose_data *),
+		     void (*)(struct window_choose_data *));
+struct window_choose_data	*window_choose_data_create(struct cmd_ctx *);
+void		 window_choose_ctx(struct window_choose_data *);
+struct window_choose_data	*window_choose_add_window(struct window_pane *,
+			struct cmd_ctx *, struct session *, struct winlink *,
+			const char *, char *, u_int);
+struct window_choose_data	*window_choose_add_session(struct window_pane *,
+			struct cmd_ctx *, struct session *, const char *,
+			char *, u_int);
 
 /* names.c */
 void		 queue_window_name(struct window *);
@@ -2197,7 +2228,6 @@ char		*xstrdup(const char *);
 void		*xcalloc(size_t, size_t);
 void		*xmalloc(size_t);
 void		*xrealloc(void *, size_t, size_t);
-void		 xfree(void *);
 int printflike2	 xasprintf(char **, const char *, ...);
 int		 xvasprintf(char **, const char *, va_list);
 int printflike3	 xsnprintf(char *, size_t, const char *, ...);

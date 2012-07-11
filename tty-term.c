@@ -1,4 +1,4 @@
-/* $Id: tty-term.c 2802 2012-05-22 20:58:33Z tcunha $ */
+/* $Id: tty-term.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2008 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -255,7 +255,7 @@ tty_term_override(struct tty_term *term, const char *overrides)
 				*ptr++ = '\0';
 				val = xstrdup(ptr);
 				if (strunvis(val, ptr) == -1) {
-					xfree(val);
+					free(val);
 					val = xstrdup(ptr);
 				}
 			} else if (entstr[strlen(entstr) - 1] == '@') {
@@ -281,7 +281,7 @@ tty_term_override(struct tty_term *term, const char *overrides)
 					break;
 				case TTYCODE_STRING:
 					if (code->type == TTYCODE_STRING)
-						xfree(code->value.string);
+						free(code->value.string);
 					code->value.string = xstrdup(val);
 					code->type = ent->type;
 					break;
@@ -299,12 +299,11 @@ tty_term_override(struct tty_term *term, const char *overrides)
 				}
 			}
 
-			if (val != NULL)
-				xfree(val);
+			free(val);
 		}
 	}
 
-	xfree(s);
+	free(s);
 }
 
 struct tty_term *
@@ -468,10 +467,10 @@ tty_term_free(struct tty_term *term)
 
 	for (i = 0; i < NTTYCODE; i++) {
 		if (term->codes[i].type == TTYCODE_STRING)
-			xfree(term->codes[i].value.string);
+			free(term->codes[i].value.string);
 	}
-	xfree(term->name);
-	xfree(term);
+	free(term->name);
+	free(term);
 }
 
 int

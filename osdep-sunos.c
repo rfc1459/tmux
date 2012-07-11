@@ -1,4 +1,4 @@
-/* $Id: osdep-sunos.c 2647 2011-12-09 16:37:29Z nicm $ */
+/* $Id: osdep-sunos.c 2845 2012-07-11 19:50:46Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Todd Carson <toc@daybefore.net>
@@ -49,7 +49,7 @@ osdep_get_name(int fd, char *tty)
 
 	xasprintf(&path, "/proc/%u/psinfo", (u_int) pgrp);
 	f = open(path, O_RDONLY);
-	xfree(path);
+	free(path);
 	if (f < 0)
 		return (NULL);
 
@@ -73,7 +73,7 @@ osdep_get_cwd(pid_t pid)
 
 	xasprintf(&path, "/proc/%u/path/cwd", (u_int) pid);
 	n = readlink(path, target, MAXPATHLEN);
-	xfree(path);
+	free(path);
 	if (n > 0) {
 		target[n] = '\0';
 		return (target);

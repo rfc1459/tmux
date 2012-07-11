@@ -1,4 +1,4 @@
-/* $Id: tty.c 2807 2012-05-22 21:05:30Z tcunha $ */
+/* $Id: tty.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -345,11 +345,11 @@ tty_free(struct tty *tty)
 {
 	tty_close(tty);
 
-	xfree(tty->ccolour);
+	free(tty->ccolour);
 	if (tty->path != NULL)
-		xfree(tty->path);
+		free(tty->path);
 	if (tty->termname != NULL)
-		xfree(tty->termname);
+		free(tty->termname);
 }
 
 void
@@ -468,7 +468,7 @@ tty_force_cursor_colour(struct tty *tty, const char *ccolour)
 		tty_putcode(tty, TTYC_CR);
 	else
 		tty_putcode_ptr1(tty, TTYC_CC, ccolour);
-	xfree(tty->ccolour);
+	free(tty->ccolour);
 	tty->ccolour = xstrdup(ccolour);
 }
 
@@ -668,7 +668,6 @@ tty_write(
 	struct window_pane	*wp = ctx->wp;
 	struct client		*c;
 	struct session		*s;
-	struct options		*oo;
 	u_int		 	 i;
 
 	/* wp can be NULL if updating the screen but not the terminal. */
@@ -693,7 +692,6 @@ tty_write(
 				continue;
 			if (c->tty.flags & TTY_FREEZE)
 				continue;
-			oo = &s->options;
 
 			ctx->xoff = wp->xoff;
 			ctx->yoff = wp->yoff;
@@ -1101,7 +1099,7 @@ tty_cmd_setselection(struct tty *tty, const struct tty_ctx *ctx)
 	b64_ntop(ctx->ptr, ctx->num, buf, off);
 	tty_putcode_ptr2(tty, TTYC_MS, "", buf);
 
-	xfree(buf);
+	free(buf);
 }
 
 void

@@ -1,4 +1,4 @@
-/* $Id: server-client.c 2826 2012-06-18 15:23:01Z tcunha $ */
+/* $Id: server-client.c 2844 2012-07-11 19:37:32Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -20,6 +20,7 @@
 
 #include <event.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -150,31 +151,25 @@ server_client_lost(struct client *c)
 	status_free_jobs(&c->status_old);
 	screen_free(&c->status);
 
-	if (c->title != NULL)
-		xfree(c->title);
+	free(c->title);
 
 	evtimer_del(&c->repeat_timer);
 
 	if (event_initialized(&c->identify_timer))
 		evtimer_del(&c->identify_timer);
 
-	if (c->message_string != NULL)
-		xfree(c->message_string);
+	free(c->message_string);
 	if (event_initialized (&c->message_timer))
 		evtimer_del(&c->message_timer);
 	for (i = 0; i < ARRAY_LENGTH(&c->message_log); i++) {
 		msg = &ARRAY_ITEM(&c->message_log, i);
-		xfree(msg->msg);
+		free(msg->msg);
 	}
 	ARRAY_FREE(&c->message_log);
 
-	if (c->prompt_string != NULL)
-		xfree(c->prompt_string);
-	if (c->prompt_buffer != NULL)
-		xfree(c->prompt_buffer);
-
-	if (c->cwd != NULL)
-		xfree(c->cwd);
+	free(c->prompt_string);
+	free(c->prompt_buffer);
+	free(c->cwd);
 
 	environ_free(&c->environ);
 
@@ -344,7 +339,6 @@ server_client_handle_key(struct client *c, int key)
 	struct session		*s;
 	struct window		*w;
 	struct window_pane	*wp;
-	struct options		*oo;
 	struct timeval		 tv;
 	struct key_binding	*bd;
 	int		      	 xtimeout, isprefix;
@@ -363,7 +357,6 @@ server_client_handle_key(struct client *c, int key)
 
 	w = c->session->curw->window;
 	wp = w->active;
-	oo = &c->session->options;
 
 	/* Special case: number keys jump to pane in identify mode. */
 	if (c->flags & CLIENT_IDENTIFY && key >= '0' && key <= '9') {
@@ -663,12 +656,11 @@ server_client_set_title(struct client *c)
 
 	title = status_replace(c, NULL, NULL, NULL, template, time(NULL), 1);
 	if (c->title == NULL || strcmp(title, c->title) != 0) {
-		if (c->title != NULL)
-			xfree(c->title);
+		free(c->title);
 		c->title = xstrdup(title);
 		tty_set_title(&c->tty, c->title);
 	}
-	xfree(title);
+	free(title);
 }
 
 /* Dispatch message from client. */
@@ -875,8 +867,16 @@ server_client_msg_command(struct client *c, struct msg_command_data *data)
 	}
 	cmd_free_argv(argc, argv);
 
-	if (cmd_list_exec(cmdlist, &ctx) != 1)
+	switch (cmd_list_exec(cmdlist, &ctx))
+	{
+	case CMD_RETURN_ERROR:
+	case CMD_RETURN_NORMAL:
 		c->flags |= CLIENT_EXIT;
+		break;
+	case CMD_RETURN_ATTACH:
+	case CMD_RETURN_YIELD:
+		break;
+	}
 	cmd_list_free(cmdlist);
 	return;
 

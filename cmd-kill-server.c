@@ -1,4 +1,4 @@
-/* $Id: cmd-kill-server.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id: cmd-kill-server.c 2844 2012-07-11 19:37:32Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -27,7 +27,7 @@
  * Kill the server and do nothing else.
  */
 
-int	cmd_kill_server_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_kill_server_exec(struct cmd *, struct cmd_ctx *);
 
 const struct cmd_entry cmd_kill_server_entry = {
 	"kill-server", NULL,
@@ -40,10 +40,10 @@ const struct cmd_entry cmd_kill_server_entry = {
 };
 
 /* ARGSUSED */
-int
+enum cmd_retval
 cmd_kill_server_exec(unused struct cmd *self, unused struct cmd_ctx *ctx)
 {
 	kill(getpid(), SIGTERM);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

@@ -1,4 +1,4 @@
-/* $Id: screen-write.c 2734 2012-03-18 01:57:01Z tcunha $ */
+/* $Id: screen-write.c 2843 2012-07-11 19:34:16Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -18,6 +18,7 @@
 
 #include <sys/types.h>
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "tmux.h"
@@ -102,8 +103,8 @@ screen_write_cstrlen(int utf8flag, const char *fmt, ...)
 
 	size = screen_write_strlen(utf8flag, "%s", msg2);
 
-	xfree(msg);
-	xfree(msg2);
+	free(msg);
+	free(msg2);
 
 	return (size);
 }
@@ -141,7 +142,7 @@ screen_write_strlen(int utf8flag, const char *fmt, ...)
 		}
 	}
 
-	xfree(msg);
+	free(msg);
 	return (size);
 }
 
@@ -215,7 +216,7 @@ screen_write_vnputs(struct screen_write_ctx *ctx, ssize_t maxlen,
 		}
 	}
 
-	xfree(msg);
+	free(msg);
 }
 
 /* Write string, similar to nputs, but with embedded formatting (#[]). */
@@ -285,7 +286,7 @@ screen_write_cnputs(struct screen_write_ctx *ctx,
 		}
 	}
 
-	xfree(msg);
+	free(msg);
 }
 
 /* Parse an embedded style of the form "fg=colour,bg=colour,bright,...". */

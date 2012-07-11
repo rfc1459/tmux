@@ -15,7 +15,7 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.am 2827 2012-06-18 15:24:17Z tcunha $
+# $Id: Makefile.am 2839 2012-07-11 17:15:23Z tcunha $
 
 VPATH = @srcdir@
 am__make_dryrun = \
@@ -119,48 +119,48 @@ dist_tmux_OBJECTS = arguments.$(OBJEXT) attributes.$(OBJEXT) \
 	cmd-attach-session.$(OBJEXT) cmd-bind-key.$(OBJEXT) \
 	cmd-break-pane.$(OBJEXT) cmd-capture-pane.$(OBJEXT) \
 	cmd-choose-buffer.$(OBJEXT) cmd-choose-client.$(OBJEXT) \
-	cmd-choose-session.$(OBJEXT) cmd-choose-window.$(OBJEXT) \
-	cmd-clear-history.$(OBJEXT) cmd-clock-mode.$(OBJEXT) \
-	cmd-command-prompt.$(OBJEXT) cmd-confirm-before.$(OBJEXT) \
-	cmd-copy-mode.$(OBJEXT) cmd-delete-buffer.$(OBJEXT) \
-	cmd-detach-client.$(OBJEXT) cmd-display-message.$(OBJEXT) \
-	cmd-display-panes.$(OBJEXT) cmd-find-window.$(OBJEXT) \
-	cmd-has-session.$(OBJEXT) cmd-if-shell.$(OBJEXT) \
-	cmd-join-pane.$(OBJEXT) cmd-kill-pane.$(OBJEXT) \
-	cmd-kill-server.$(OBJEXT) cmd-kill-session.$(OBJEXT) \
-	cmd-kill-window.$(OBJEXT) cmd-link-window.$(OBJEXT) \
-	cmd-list-buffers.$(OBJEXT) cmd-list-clients.$(OBJEXT) \
-	cmd-list-commands.$(OBJEXT) cmd-list-keys.$(OBJEXT) \
-	cmd-list-panes.$(OBJEXT) cmd-list-sessions.$(OBJEXT) \
-	cmd-list-windows.$(OBJEXT) cmd-list.$(OBJEXT) \
-	cmd-load-buffer.$(OBJEXT) cmd-lock-server.$(OBJEXT) \
-	cmd-move-window.$(OBJEXT) cmd-new-session.$(OBJEXT) \
-	cmd-new-window.$(OBJEXT) cmd-paste-buffer.$(OBJEXT) \
-	cmd-pipe-pane.$(OBJEXT) cmd-refresh-client.$(OBJEXT) \
-	cmd-rename-session.$(OBJEXT) cmd-rename-window.$(OBJEXT) \
-	cmd-resize-pane.$(OBJEXT) cmd-respawn-pane.$(OBJEXT) \
-	cmd-respawn-window.$(OBJEXT) cmd-rotate-window.$(OBJEXT) \
-	cmd-run-shell.$(OBJEXT) cmd-save-buffer.$(OBJEXT) \
-	cmd-select-layout.$(OBJEXT) cmd-select-pane.$(OBJEXT) \
-	cmd-select-window.$(OBJEXT) cmd-send-keys.$(OBJEXT) \
-	cmd-send-prefix.$(OBJEXT) cmd-server-info.$(OBJEXT) \
-	cmd-set-buffer.$(OBJEXT) cmd-set-environment.$(OBJEXT) \
-	cmd-set-option.$(OBJEXT) cmd-show-buffer.$(OBJEXT) \
-	cmd-show-environment.$(OBJEXT) cmd-show-messages.$(OBJEXT) \
-	cmd-show-options.$(OBJEXT) cmd-source-file.$(OBJEXT) \
-	cmd-split-window.$(OBJEXT) cmd-start-server.$(OBJEXT) \
-	cmd-string.$(OBJEXT) cmd-suspend-client.$(OBJEXT) \
-	cmd-swap-pane.$(OBJEXT) cmd-swap-window.$(OBJEXT) \
-	cmd-switch-client.$(OBJEXT) cmd-unbind-key.$(OBJEXT) \
-	cmd-unlink-window.$(OBJEXT) cmd.$(OBJEXT) colour.$(OBJEXT) \
-	control.$(OBJEXT) environ.$(OBJEXT) format.$(OBJEXT) \
-	grid-utf8.$(OBJEXT) grid-view.$(OBJEXT) grid.$(OBJEXT) \
-	input-keys.$(OBJEXT) input.$(OBJEXT) job.$(OBJEXT) \
-	key-bindings.$(OBJEXT) key-string.$(OBJEXT) \
-	layout-custom.$(OBJEXT) layout-set.$(OBJEXT) layout.$(OBJEXT) \
-	log.$(OBJEXT) mode-key.$(OBJEXT) names.$(OBJEXT) \
-	notify.$(OBJEXT) options-table.$(OBJEXT) options.$(OBJEXT) \
-	paste.$(OBJEXT) resize.$(OBJEXT) screen-redraw.$(OBJEXT) \
+	cmd-choose-tree.$(OBJEXT) cmd-clear-history.$(OBJEXT) \
+	cmd-clock-mode.$(OBJEXT) cmd-command-prompt.$(OBJEXT) \
+	cmd-confirm-before.$(OBJEXT) cmd-copy-mode.$(OBJEXT) \
+	cmd-delete-buffer.$(OBJEXT) cmd-detach-client.$(OBJEXT) \
+	cmd-display-message.$(OBJEXT) cmd-display-panes.$(OBJEXT) \
+	cmd-find-window.$(OBJEXT) cmd-has-session.$(OBJEXT) \
+	cmd-if-shell.$(OBJEXT) cmd-join-pane.$(OBJEXT) \
+	cmd-kill-pane.$(OBJEXT) cmd-kill-server.$(OBJEXT) \
+	cmd-kill-session.$(OBJEXT) cmd-kill-window.$(OBJEXT) \
+	cmd-link-window.$(OBJEXT) cmd-list-buffers.$(OBJEXT) \
+	cmd-list-clients.$(OBJEXT) cmd-list-commands.$(OBJEXT) \
+	cmd-list-keys.$(OBJEXT) cmd-list-panes.$(OBJEXT) \
+	cmd-list-sessions.$(OBJEXT) cmd-list-windows.$(OBJEXT) \
+	cmd-list.$(OBJEXT) cmd-load-buffer.$(OBJEXT) \
+	cmd-lock-server.$(OBJEXT) cmd-move-window.$(OBJEXT) \
+	cmd-new-session.$(OBJEXT) cmd-new-window.$(OBJEXT) \
+	cmd-paste-buffer.$(OBJEXT) cmd-pipe-pane.$(OBJEXT) \
+	cmd-refresh-client.$(OBJEXT) cmd-rename-session.$(OBJEXT) \
+	cmd-rename-window.$(OBJEXT) cmd-resize-pane.$(OBJEXT) \
+	cmd-respawn-pane.$(OBJEXT) cmd-respawn-window.$(OBJEXT) \
+	cmd-rotate-window.$(OBJEXT) cmd-run-shell.$(OBJEXT) \
+	cmd-save-buffer.$(OBJEXT) cmd-select-layout.$(OBJEXT) \
+	cmd-select-pane.$(OBJEXT) cmd-select-window.$(OBJEXT) \
+	cmd-send-keys.$(OBJEXT) cmd-send-prefix.$(OBJEXT) \
+	cmd-server-info.$(OBJEXT) cmd-set-buffer.$(OBJEXT) \
+	cmd-set-environment.$(OBJEXT) cmd-set-option.$(OBJEXT) \
+	cmd-show-buffer.$(OBJEXT) cmd-show-environment.$(OBJEXT) \
+	cmd-show-messages.$(OBJEXT) cmd-show-options.$(OBJEXT) \
+	cmd-source-file.$(OBJEXT) cmd-split-window.$(OBJEXT) \
+	cmd-start-server.$(OBJEXT) cmd-string.$(OBJEXT) \
+	cmd-suspend-client.$(OBJEXT) cmd-swap-pane.$(OBJEXT) \
+	cmd-swap-window.$(OBJEXT) cmd-switch-client.$(OBJEXT) \
+	cmd-unbind-key.$(OBJEXT) cmd-unlink-window.$(OBJEXT) \
+	cmd.$(OBJEXT) colour.$(OBJEXT) control.$(OBJEXT) \
+	environ.$(OBJEXT) format.$(OBJEXT) grid-utf8.$(OBJEXT) \
+	grid-view.$(OBJEXT) grid.$(OBJEXT) input-keys.$(OBJEXT) \
+	input.$(OBJEXT) job.$(OBJEXT) key-bindings.$(OBJEXT) \
+	key-string.$(OBJEXT) layout-custom.$(OBJEXT) \
+	layout-set.$(OBJEXT) layout.$(OBJEXT) log.$(OBJEXT) \
+	mode-key.$(OBJEXT) names.$(OBJEXT) notify.$(OBJEXT) \
+	options-table.$(OBJEXT) options.$(OBJEXT) paste.$(OBJEXT) \
+	resize.$(OBJEXT) screen-redraw.$(OBJEXT) \
 	screen-write.$(OBJEXT) screen.$(OBJEXT) \
 	server-client.$(OBJEXT) server-fn.$(OBJEXT) \
 	server-window.$(OBJEXT) server.$(OBJEXT) session.$(OBJEXT) \
@@ -380,8 +380,7 @@ dist_tmux_SOURCES = \
 	cmd-capture-pane.c \
 	cmd-choose-buffer.c \
 	cmd-choose-client.c \
-	cmd-choose-session.c \
-	cmd-choose-window.c \
+	cmd-choose-tree.c \
 	cmd-clear-history.c \
 	cmd-clock-mode.c \
 	cmd-command-prompt.c \
@@ -602,8 +601,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-capture-pane.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-choose-buffer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-choose-client.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-choose-session.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-choose-window.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-choose-tree.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-clear-history.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-clock-mode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-command-prompt.Po@am__quote@
