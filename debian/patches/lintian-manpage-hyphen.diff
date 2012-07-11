@@ -46,7 +46,7 @@ Forwarded: not-needed
  .Ed
  .Sh CLIENTS AND SESSIONS
  The
-@@ -1052,7 +1052,7 @@
+@@ -1062,7 +1062,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -55,7 +55,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1075,7 +1075,7 @@
+@@ -1085,7 +1085,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -64,7 +64,16 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1098,7 +1098,7 @@
+@@ -1127,7 +1127,7 @@
+ Note that
+ .Ql %%
+ can be used, and will be replaced with the session name.
+-The default option if not specified is "switch-client -t '%%'".
++The default option if not specified is "switch-client \-t '%%'".
+ If
+ .Fl c
+ is given, will override the default window command.
+@@ -1169,7 +1169,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -73,7 +82,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1411,7 +1411,7 @@
+@@ -1482,7 +1482,7 @@
  option only opens a new pipe if no previous pipe exists, allowing a pipe to
  be toggled with a single key, for example:
  .Bd -literal -offset indent
@@ -82,7 +91,7 @@ Forwarded: not-needed
  .Ed
  .It Xo Ic previous-layout
  .Op Fl t Ar target-window
-@@ -2299,7 +2299,7 @@
+@@ -2370,7 +2370,7 @@
  Examples are:
  .Bd -literal -offset indent
  #(sysctl vm.loadavg)
@@ -91,7 +100,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  Where appropriate, special character sequences may be prefixed with a number to
-@@ -2522,7 +2522,7 @@
+@@ -2593,7 +2593,7 @@
  or with a terminal escape sequence.
  It may be switched off globally with:
  .Bd -literal -offset indent
@@ -100,7 +109,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  .It Ic c0-change-interval Ar interval
-@@ -3184,7 +3184,7 @@
+@@ -3255,7 +3255,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -109,7 +118,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -3407,29 +3407,29 @@
+@@ -3478,29 +3478,29 @@
  .Pp
  Changing the default prefix key:
  .Bd -literal -offset indent
