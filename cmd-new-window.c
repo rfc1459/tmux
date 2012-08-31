@@ -1,4 +1,4 @@
-/* $Id: cmd-new-window.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-new-window.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -123,7 +123,7 @@ cmd_new_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 
 	if (args_has(args, 'P')) {
 		if ((template = args_get(args, 'F')) == NULL)
-			template = DEFAULT_PANE_INFO_TEMPLATE;
+			template = NEW_WINDOW_TEMPLATE;
 
 		ft = format_create();
 		if ((c = cmd_find_client(ctx, NULL)) != NULL)

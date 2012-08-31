@@ -1,4 +1,4 @@
-/* $Id: cmd-list-buffers.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-list-buffers.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -51,7 +51,7 @@ cmd_list_buffers_exec(unused struct cmd *self, struct cmd_ctx *ctx)
 	const char		*template;
 
 	if ((template = args_get(args, 'F')) == NULL)
-		template = DEFAULT_BUFFER_LIST_TEMPLATE;
+		template = LIST_BUFFERS_TEMPLATE;
 
 	idx = 0;
 	while ((pb = paste_walk_stack(&global_buffers, &idx)) != NULL) {

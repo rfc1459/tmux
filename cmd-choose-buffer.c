@@ -1,4 +1,4 @@
-/* $Id: cmd-choose-buffer.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-choose-buffer.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2010 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -59,7 +59,7 @@ cmd_choose_buffer_exec(struct cmd *self, struct cmd_ctx *ctx)
 	}
 
 	if ((template = args_get(args, 'F')) == NULL)
-		template = DEFAULT_BUFFER_LIST_TEMPLATE;
+		template = CHOOSE_BUFFER_TEMPLATE;
 
 	if ((wl = cmd_find_window(ctx, args_get(args, 't'), NULL)) == NULL)
 		return (CMD_RETURN_ERROR);

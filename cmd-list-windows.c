@@ -1,4 +1,4 @@
-/* $Id: cmd-list-windows.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-list-windows.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -85,12 +85,10 @@ cmd_list_windows_session(
 	if (template == NULL) {
 		switch (type) {
 		case 0:
-			template = DEFAULT_WINDOW_TEMPLATE \
-				" [layout #{window_layout}] #{window_id}" \
-				"#{?window_active, (active),}";
+			template = LIST_WINDOWS_TEMPLATE;
 			break;
 		case 1:
-			template = "#{session_name}:" DEFAULT_WINDOW_TEMPLATE;
+			template = LIST_WINDOWS_WITH_SESSION_TEMPLATE;
 			break;
 		}
 	}

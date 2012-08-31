@@ -1,4 +1,4 @@
-/* $Id: cmd-display-message.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-display-message.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Tiago Cunha <me@tiagocunha.org>
@@ -76,7 +76,7 @@ cmd_display_message_exec(struct cmd *self, struct cmd_ctx *ctx)
 	if (args->argc != 0)
 		template = args->argv[0];
 	if (template == NULL)
-		template = DEFAULT_DISPLAY_MESSAGE_TEMPLATE;
+		template = DISPLAY_MESSAGE_TEMPLATE;
 
 	ft = format_create();
 	format_client(ft, c);

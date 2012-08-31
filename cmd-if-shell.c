@@ -1,4 +1,4 @@
-/* $Id: cmd-if-shell.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-if-shell.c 2857 2012-08-12 19:30:54Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Tiago Cunha <me@tiagocunha.org>
@@ -106,11 +106,9 @@ cmd_if_shell_free(void *data)
 {
 	struct cmd_if_shell_data	*cdata = data;
 	struct cmd_ctx			*ctx = &cdata->ctx;
-	struct msg_exit_data		 exitdata;
 
 	if (ctx->cmdclient != NULL) {
 		ctx->cmdclient->references--;
-		exitdata.retcode = ctx->cmdclient->retcode;
 		ctx->cmdclient->flags |= CLIENT_EXIT;
 	}
 	if (ctx->curclient != NULL)

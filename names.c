@@ -1,4 +1,4 @@
-/* $Id: names.c 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id: names.c 2864 2012-08-31 09:22:08Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -49,6 +49,9 @@ window_name_callback(unused int fd, unused short events, void *data)
 {
 	struct window	*w = data;
 	char		*name, *wname;
+
+	if (w->active == NULL)
+		return;
 
 	if (!options_get_number(&w->options, "automatic-rename")) {
 		if (event_initialized(&w->name_timer))

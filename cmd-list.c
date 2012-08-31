@@ -1,4 +1,4 @@
-/* $Id: cmd-list.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-list.c 2851 2012-08-12 19:23:01Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -91,6 +91,8 @@ cmd_list_exec(struct cmd_list *cmdlist, struct cmd_ctx *ctx)
 	if (c != NULL && c->session != NULL)
 		guards = c->flags & CLIENT_CONTROL;
 
+	notify_disable();
+
 	retval = 0;
 	TAILQ_FOREACH(cmd, &cmdlist->list, qentry) {
 		if (guards)
@@ -128,6 +130,8 @@ cmd_list_exec(struct cmd_list *cmdlist, struct cmd_ctx *ctx)
 			break;
 		}
 	}
+
+	notify_enable();
 	return (retval);
 }
 
