@@ -1,4 +1,4 @@
-/* $Id: cmd-list-sessions.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-list-sessions.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -51,7 +51,7 @@ cmd_list_sessions_exec(struct cmd *self, struct cmd_ctx *ctx)
 	char			*line;
 
 	if ((template = args_get(args, 'F')) == NULL)
-		template = DEFAULT_SESSION_TEMPLATE;
+		template = LIST_SESSIONS_TEMPLATE;
 
 	n = 0;
 	RB_FOREACH(s, sessions, &sessions) {

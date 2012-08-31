@@ -1,4 +1,4 @@
-/* $Id: client.c 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id: client.c 2867 2012-08-31 09:25:19Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -189,7 +189,7 @@ client_main(int argc, char **argv, int flags)
 		 * flag.
 		 */
 		if ((cmdlist = cmd_list_parse(argc, argv, &cause)) == NULL) {
-			log_warnx("%s", cause);
+			fprintf(stderr, "%s\n", cause);
 			return (1);
 		}
 		cmdflags &= ~CMD_STARTSERVER;

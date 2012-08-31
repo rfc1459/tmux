@@ -1,4 +1,4 @@
-/* $Id: cmd-find-window.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-find-window.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -98,7 +98,7 @@ cmd_find_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 		return (CMD_RETURN_ERROR);
 
 	if ((template = args_get(args, 'F')) == NULL)
-		template = DEFAULT_FIND_WINDOW_TEMPLATE;
+		template = FIND_WINDOW_TEMPLATE;
 
 	match_flags = cmd_find_window_match_flags(args);
 	str = args->argv[0];

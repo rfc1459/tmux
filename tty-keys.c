@@ -1,4 +1,4 @@
-/* $Id: tty-keys.c 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id: tty-keys.c 2865 2012-08-31 09:22:50Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -734,7 +734,8 @@ tty_keys_device(struct tty *tty, const char *buf, size_t len, size_t *size)
 		a = b = 0;
 
 	log_debug("received xterm version %u", b);
-	tty_set_version(tty, b);
+	if (b < 500)
+		tty_set_version(tty, b);
 
 	return (0);
 }

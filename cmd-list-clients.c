@@ -1,4 +1,4 @@
-/* $Id: cmd-list-clients.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id: cmd-list-clients.c 2861 2012-08-31 09:18:50Z tcunha $ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -60,7 +60,7 @@ cmd_list_clients_exec(struct cmd *self, struct cmd_ctx *ctx)
 		s = NULL;
 
 	if ((template = args_get(args, 'F')) == NULL)
-		template = DEFAULT_CLIENT_TEMPLATE;
+		template = LIST_CLIENTS_TEMPLATE;
 
 	for (i = 0; i < ARRAY_LENGTH(&clients); i++) {
 		c = ARRAY_ITEM(&clients, i);
