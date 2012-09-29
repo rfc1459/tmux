@@ -1,3 +1,9 @@
+tmux (1.7~z20120929-1) experimental; urgency=low
+
+  * New upstream snapshot, from Git commit 80b5c0e076.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 29 Sep 2012 16:36:18 +0200
+
 tmux (1.7~svn2867-1) experimental; urgency=low
 
   * New upstream snapshot from Subversion (r2867).
