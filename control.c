@@ -1,4 +1,4 @@
-/* $Id: control.c 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2012 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -28,7 +28,6 @@
 void printflike2 control_msg_error(struct cmd_ctx *, const char *, ...);
 void printflike2 control_msg_print(struct cmd_ctx *, const char *, ...);
 void printflike2 control_msg_info(struct cmd_ctx *, const char *, ...);
-void printflike2 control_write(struct client *, const char *, ...);
 
 /* Command error callback. */
 void printflike2
@@ -76,6 +75,15 @@ control_write(struct client *c, const char *fmt, ...)
 	evbuffer_add_vprintf(c->stdout_data, fmt, ap);
 	va_end(ap);
 
+	evbuffer_add(c->stdout_data, "\n", 1);
+	server_push_stdout(c);
+}
+
+/* Write a buffer, adding a terminal newline. Empties buffer. */
+void
+control_write_buffer(struct client *c, struct evbuffer *buffer)
+{
+	evbuffer_add_buffer(c->stdout_data, buffer);
 	evbuffer_add(c->stdout_data, "\n", 1);
 	server_push_stdout(c);
 }

@@ -1,4 +1,4 @@
-/* $Id: screen-redraw.c 2810 2012-05-30 13:41:58Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>

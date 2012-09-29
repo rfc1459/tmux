@@ -1,4 +1,4 @@
-/* $Id: log.c 2819 2012-05-30 15:01:57Z nicm $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>

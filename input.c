@@ -1,4 +1,4 @@
-/* $Id: input.c 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -752,6 +752,7 @@ input_parse(struct window_pane *wp)
 
 	buf = EVBUFFER_DATA(evb);
 	len = EVBUFFER_LENGTH(evb);
+	notify_input(wp, evb);
 	off = 0;
 
 	/* Parse the input. */

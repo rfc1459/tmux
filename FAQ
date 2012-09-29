@@ -442,4 +442,4 @@ Or the default window options:
 
         $ tmux -Lfoo -f/dev/null start\; show -gw
  
-$Id: FAQ 2834 2012-07-08 13:32:09Z nicm $
+$Id$

@@ -1,4 +1,4 @@
-/* $Id: grid-view.c 2687 2012-01-31 11:58:55Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2008 Nicholas Marriott <nicm@users.sourceforge.net>

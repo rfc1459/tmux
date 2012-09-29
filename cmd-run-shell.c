@@ -1,4 +1,4 @@
-/* $Id: cmd-run-shell.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Tiago Cunha <me@tiagocunha.org>

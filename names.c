@@ -1,4 +1,4 @@
-/* $Id: names.c 2864 2012-08-31 09:22:08Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>

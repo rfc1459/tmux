@@ -1,4 +1,4 @@
-/* $Id: mode-key.c 2866 2012-08-31 09:24:51Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2008 Nicholas Marriott <nicm@users.sourceforge.net>

@@ -1,4 +1,4 @@
-/* $Id: cmd-list-buffers.c 2861 2012-08-31 09:18:50Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>

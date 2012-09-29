@@ -1,4 +1,4 @@
-/* $Id: resize.c 2747 2012-03-18 02:22:09Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>

@@ -1,4 +1,4 @@
-/* $Id: server-fn.c 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -581,5 +581,8 @@ server_set_stdin_callback(struct client *c, void (*cb)(struct client *, int,
 
 	if (c->stdin_closed)
 		c->stdin_callback (c, 1, c->stdin_callback_data);
+
+	server_write_client(c, MSG_STDIN, NULL, 0);
+
 	return (0);
 }

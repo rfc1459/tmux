@@ -1,4 +1,4 @@
-/* $Id: paste.c 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -161,10 +161,8 @@ paste_print(struct paste_buffer *pb, size_t width)
 		len = width;
 
 	used = strvisx(buf, pb->data, len, VIS_OCTAL|VIS_TAB|VIS_NL);
-	if (pb->size > width || used > width) {
-		buf[width - 3] = '\0';
-		strlcat(buf, "...", width);
-	}
+	if (pb->size > width || used > width)
+		strlcpy(buf + width - 3, "...", 4);
 
 	return (buf);
 }

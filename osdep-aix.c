@@ -1,4 +1,4 @@
-/* $Id: osdep-aix.c 2647 2011-12-09 16:37:29Z nicm $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2011 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -29,7 +29,7 @@ osdep_get_name(unused int fd, unused char *tty)
 }
 
 char *
-osdep_get_cwd(pid_t pid)
+osdep_get_cwd(unused int fd)
 {
 	return (NULL);
 }
