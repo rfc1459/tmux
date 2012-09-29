@@ -1,4 +1,4 @@
-/* $Id: asprintf.c 2845 2012-07-11 19:50:46Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2006 Nicholas Marriott <nicm@users.sourceforge.net>

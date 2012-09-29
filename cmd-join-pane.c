@@ -1,4 +1,4 @@
-/* $Id: cmd-join-pane.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2011 George Nachman <tmux@georgester.com>

@@ -1,4 +1,4 @@
-/* $Id: window.c 2864 2012-08-31 09:22:08Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>

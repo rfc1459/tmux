@@ -1,4 +1,4 @@
-/* $Id: window-copy.c 2854 2012-08-12 19:28:20Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -1068,7 +1068,7 @@ window_copy_search_down(struct window_pane *wp, const char *searchstr)
 
 retry:
 	sgd = ss.grid;
-	for (i = fy + 1; i < gd->hsize + gd->sy; i++) {
+	for (i = fy + 1; i < gd->hsize + gd->sy + 1; i++) {
 		first = 0;
 		if (i == fy + 1)
 			first = fx;

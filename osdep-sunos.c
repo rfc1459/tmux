@@ -1,4 +1,4 @@
-/* $Id: osdep-sunos.c 2845 2012-07-11 19:50:46Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Todd Carson <toc@daybefore.net>
@@ -65,13 +65,17 @@ osdep_get_name(int fd, char *tty)
 }
 
 char *
-osdep_get_cwd(pid_t pid)
+osdep_get_cwd(int fd)
 {
 	static char	 target[MAXPATHLEN + 1];
 	char		*path;
 	ssize_t		 n;
+	pid_t		 pgrp;
 
-	xasprintf(&path, "/proc/%u/path/cwd", (u_int) pid);
+	if ((pgrp = tcgetpgrp(fd)) == -1)
+		return (NULL);
+
+	xasprintf(&path, "/proc/%u/path/cwd", (u_int) pgrp);
 	n = readlink(path, target, MAXPATHLEN);
 	free(path);
 	if (n > 0) {

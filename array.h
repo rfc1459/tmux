@@ -1,4 +1,4 @@
-/* $Id: array.h 2843 2012-07-11 19:34:16Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2006 Nicholas Marriott <nicm@users.sourceforge.net>

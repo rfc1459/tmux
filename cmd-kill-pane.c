@@ -1,4 +1,4 @@
-/* $Id: cmd-kill-pane.c 2847 2012-07-12 21:04:43Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>

@@ -1,4 +1,4 @@
-/* $Id: cmd-unbind-key.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>

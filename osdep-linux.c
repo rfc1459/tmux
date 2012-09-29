@@ -1,4 +1,4 @@
-/* $Id: osdep-linux.c 2845 2012-07-11 19:50:46Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -61,13 +61,17 @@ osdep_get_name(int fd, unused char *tty)
 }
 
 char *
-osdep_get_cwd(pid_t pid)
+osdep_get_cwd(int fd)
 {
 	static char	 target[MAXPATHLEN + 1];
 	char		*path;
+	pid_t		 pgrp;
 	ssize_t		 n;
 
-	xasprintf(&path, "/proc/%d/cwd", pid);
+	if ((pgrp = tcgetpgrp(fd)) == -1)
+		return (NULL);
+
+	xasprintf(&path, "/proc/%lld/cwd", (long long) pgrp);
 	n = readlink(path, target, MAXPATHLEN);
 	free(path);
 	if (n > 0) {

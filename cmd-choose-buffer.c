@@ -1,4 +1,4 @@
-/* $Id: cmd-choose-buffer.c 2861 2012-08-31 09:18:50Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2010 Nicholas Marriott <nicm@users.sourceforge.net>

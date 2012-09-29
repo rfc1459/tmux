@@ -1,4 +1,4 @@
-/* $Id: cmd.c 2844 2012-07-11 19:37:32Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -34,6 +34,7 @@ const struct cmd_entry *cmd_table[] = {
 	&cmd_capture_pane_entry,
 	&cmd_choose_buffer_entry,
 	&cmd_choose_client_entry,
+	&cmd_choose_list_entry,
 	&cmd_choose_session_entry,
 	&cmd_choose_tree_entry,
 	&cmd_choose_window_entry,
@@ -1296,7 +1297,7 @@ cmd_get_default_path(struct cmd_ctx *ctx, const char *cwd)
 		if (ctx->cmdclient != NULL && ctx->cmdclient->cwd != NULL)
 			root = ctx->cmdclient->cwd;
 		else if (ctx->curclient != NULL && s->curw != NULL)
-			root = osdep_get_cwd(s->curw->window->active->pid);
+			root = osdep_get_cwd(s->curw->window->active->fd);
 		else
 			return (s->cwd);
 		skip = 0;
