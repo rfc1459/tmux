@@ -1,3 +1,10 @@
+tmux (1.7-1) experimental; urgency=low
+
+  * New upstream release.
+  * Use dh-autoreconf to update upstream's old config.{guess,sub} scripts.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 13 Oct 2012 14:55:38 +0200
+
 tmux (1.7~z20121007-1) experimental; urgency=low
 
   * New upstream snapshot, from Git commit 43d2b6a648.
