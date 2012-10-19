@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tmux.1
 +++ b/tmux.1
-@@ -450,7 +450,7 @@
+@@ -451,7 +451,7 @@
  .Ql -
  may be followed by an offset, for example:
  .Bd -literal -offset indent
@@ -13,7 +13,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  When dealing with a session that doesn't contain sequential window indexes,
-@@ -505,13 +505,13 @@
+@@ -507,13 +507,13 @@
  .Nm
  commands include:
  .Bd -literal -offset indent
@@ -31,7 +31,7 @@ Forwarded: not-needed
  
  bind-key R source-file ~/.tmux.conf \e; \e
  	display-message "source-file done"
-@@ -520,11 +520,11 @@
+@@ -522,11 +522,11 @@
  Or from
  .Xr sh 1 :
  .Bd -literal -offset indent
@@ -46,34 +46,43 @@ Forwarded: not-needed
  .Ed
  .Sh CLIENTS AND SESSIONS
  The
-@@ -1041,7 +1041,7 @@
+@@ -1062,7 +1062,7 @@
  and the result executed as a command.
  If
  .Ar template
 -is not given, "detach-client -t '%%'" is used.
 +is not given, "detach-client \-t '%%'" is used.
- This command works only from inside
- .Nm .
- .It Xo
-@@ -1058,7 +1058,7 @@
+ For the meaning of the
+ .Fl F
+ flag, see the
+@@ -1112,7 +1112,7 @@
  and the result executed as a command.
  If
  .Ar template
 -is not given, "switch-client -t '%%'" is used.
 +is not given, "switch-client \-t '%%'" is used.
- This command works only from inside
- .Nm .
- .It Xo
-@@ -1075,7 +1075,7 @@
+ For the meaning of the
+ .Fl F
+ flag, see the
+@@ -1154,7 +1154,7 @@
+ Note that
+ .Ql %%
+ can be used, and will be replaced with the session name.
+-The default option if not specified is "switch-client -t '%%'".
++The default option if not specified is "switch-client \-t '%%'".
+ If
+ .Fl c
+ is given, will override the default window command.
+@@ -1196,7 +1196,7 @@
  and the result executed as a command.
  If
  .Ar template
 -is not given, "select-window -t '%%'" is used.
 +is not given, "select-window \-t '%%'" is used.
- This command works only from inside
- .Nm .
- .It Ic display-panes Op Fl t Ar target-client
-@@ -1317,7 +1317,7 @@
+ For the meaning of the
+ .Fl F
+ flag, see the
+@@ -1509,7 +1509,7 @@
  option only opens a new pipe if no previous pipe exists, allowing a pipe to
  be toggled with a single key, for example:
  .Bd -literal -offset indent
@@ -82,7 +91,7 @@ Forwarded: not-needed
  .Ed
  .It Xo Ic previous-layout
  .Op Fl t Ar target-window
-@@ -2180,7 +2180,7 @@
+@@ -2398,7 +2398,7 @@
  Examples are:
  .Bd -literal -offset indent
  #(sysctl vm.loadavg)
@@ -91,7 +100,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  Where appropriate, special character sequences may be prefixed with a number to
-@@ -2398,7 +2398,7 @@
+@@ -2621,7 +2621,7 @@
  or with a terminal escape sequence.
  It may be switched off globally with:
  .Bd -literal -offset indent
@@ -99,17 +108,17 @@ Forwarded: not-needed
 +set-window-option \-g automatic-rename off
  .Ed
  .Pp
- .It Ic clock-mode-colour Ar colour
-@@ -3019,7 +3019,7 @@
+ .It Ic c0-change-interval Ar interval
+@@ -3288,7 +3288,7 @@
  and the result executed as a command.
  If
  .Ar template
 -is not given, "paste-buffer -b '%%'" is used.
 +is not given, "paste-buffer \-b '%%'" is used.
- This command works only from inside
- .Nm .
- .It Ic clear-history Op Fl t Ar target-pane
-@@ -3226,29 +3226,29 @@
+ For the meaning of the
+ .Fl F
+ flag, see the
+@@ -3511,29 +3511,29 @@
  .Pp
  Changing the default prefix key:
  .Bd -literal -offset indent

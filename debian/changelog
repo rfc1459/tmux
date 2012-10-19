@@ -1,3 +1,112 @@
+tmux (1.7-2) experimental; urgency=low
+
+  * Add build-dep on pkg-config for dh-autoreconf.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 13 Oct 2012 15:37:36 +0200
+
+tmux (1.7-1) experimental; urgency=low
+
+  * New upstream release.
+  * Use dh-autoreconf to update upstream's old config.{guess,sub} scripts.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 13 Oct 2012 14:55:38 +0200
+
+tmux (1.7~z20121007-1) experimental; urgency=low
+
+  * New upstream snapshot, from Git commit 43d2b6a648.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 07 Oct 2012 12:43:23 +0200
+
+tmux (1.7~z20120929-1) experimental; urgency=low
+
+  * New upstream snapshot, from Git commit 80b5c0e076.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 29 Sep 2012 16:36:18 +0200
+
+tmux (1.7~svn2867-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2867).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 31 Aug 2012 18:03:41 +0200
+
+tmux (1.7~svn2845-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2845).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 11 Jul 2012 21:57:13 +0200
+
+tmux (1.7~svn2829-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2829).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 24 Jun 2012 21:39:54 +0200
+
+tmux (1.7~svn2819-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2819).
+  * Warn about protocol change in debian/NEWS.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 30 May 2012 19:49:57 +0200
+
+tmux (1.7~svn2788-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2788).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 04 May 2012 18:03:11 +0200
+
+tmux (1.7~svn2773-2) experimental; urgency=low
+
+  * Revert automatic-rename changes from r2773.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 10 Apr 2012 19:14:58 +0200
+
+tmux (1.7~svn2773-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2773).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 10 Apr 2012 18:49:54 +0200
+
+tmux (1.7~svn2760-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2760).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 30 Mar 2012 19:11:50 +0200
+
+tmux (1.7~svn2749-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2749).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 18 Mar 2012 12:42:10 +0100
+
+tmux (1.7~svn2717-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2717).
+  * Quote backslash in examples/screen-keys.conf to avoid syntax error
+    (closes: #662250).
+  * Bump Standards-Version to 3.9.3.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 08 Mar 2012 20:19:30 +0100
+
+tmux (1.7~svn2703-1) experimental; urgency=low
+
+  [ Romain Francoise ]
+  * New upstream snapshot from Subversion (r2703).
+
+  [ Colin Watson ]
+  * Use maintscript support in dh_installdeb rather than writing out
+    dpkg-maintscript-helper commands by hand.  We now simply Pre-Depend on a
+    new enough version of dpkg rather than using 'dpkg-maintscript-helper
+    supports' guards, leading to more predictable behaviour on upgrades
+    (closes: #659794).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 20 Feb 2012 21:15:09 +0100
+
+tmux (1.7~svn2691-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2691).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 31 Jan 2012 20:22:50 +0100
+
 tmux (1.6-2) unstable; urgency=low
 
   [ Colin Watson ]

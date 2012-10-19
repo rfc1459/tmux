@@ -1,4 +1,4 @@
-/* $Id: resize.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -141,5 +141,6 @@ recalculate_sizes(void)
 		}
 
 		server_redraw_window(w);
+		notify_window_layout_changed(w);
 	}
 }

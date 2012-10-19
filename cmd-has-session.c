@@ -1,4 +1,4 @@
-/* $Id: cmd-has-session.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -24,7 +24,7 @@
  * Cause client to report an error and exit with 1 if session doesn't exist.
  */
 
-int	cmd_has_session_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_has_session_exec(struct cmd *, struct cmd_ctx *);
 
 const struct cmd_entry cmd_has_session_entry = {
 	"has-session", "has",
@@ -36,13 +36,13 @@ const struct cmd_entry cmd_has_session_entry = {
 	cmd_has_session_exec
 };
 
-int
+enum cmd_retval
 cmd_has_session_exec(struct cmd *self, struct cmd_ctx *ctx)
 {
 	struct args	*args = self->args;
 
 	if (cmd_find_session(ctx, args_get(args, 't'), 0) == NULL)
-		return (-1);
+		return (CMD_RETURN_ERROR);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }
