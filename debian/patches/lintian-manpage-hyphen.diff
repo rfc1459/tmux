@@ -46,6 +46,15 @@ Forwarded: not-needed
  .Ed
  .Sh CLIENTS AND SESSIONS
  The
+@@ -954,7 +954,7 @@
+ .Pa /tmp
+ as well as the paste buffer:
+ .Bd -literal -offset indent
+-bind-key -temacs-copy C-q copy-pipe "cat >/tmp/out"
++bind-key \-temacs-copy C-q copy-pipe "cat >/tmp/out"
+ .Ed
+ .Pp
+ The paste buffer key pastes the first line from the top paste buffer on the
 @@ -1134,7 +1134,7 @@
  and the result executed as a command.
  If
@@ -91,6 +100,17 @@ Forwarded: not-needed
  .Ed
  .It Xo Ic previous-layout
  .Op Fl t Ar target-window
+@@ -2030,8 +2030,8 @@
+ and be set to any string.
+ For example
+ .Bd -literal -offset indent
+-$ tmux setw -q @foo "abc123"
+-$ tmux showw -v @foo
++$ tmux setw \-q @foo "abc123"
++$ tmux showw \-v @foo
+ abc123
+ .Ed
+ .Pp
 @@ -2502,7 +2502,7 @@
  Examples are:
  .Bd -literal -offset indent
