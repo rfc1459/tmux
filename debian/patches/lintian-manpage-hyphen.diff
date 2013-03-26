@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tmux.1
 +++ b/tmux.1
-@@ -451,7 +451,7 @@
+@@ -466,7 +466,7 @@
  .Ql -
  may be followed by an offset, for example:
  .Bd -literal -offset indent
@@ -13,7 +13,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  When dealing with a session that doesn't contain sequential window indexes,
-@@ -507,13 +507,13 @@
+@@ -522,13 +522,13 @@
  .Nm
  commands include:
  .Bd -literal -offset indent
@@ -31,7 +31,7 @@ Forwarded: not-needed
  
  bind-key R source-file ~/.tmux.conf \e; \e
  	display-message "source-file done"
-@@ -522,11 +522,11 @@
+@@ -537,11 +537,11 @@
  Or from
  .Xr sh 1 :
  .Bd -literal -offset indent
@@ -46,7 +46,7 @@ Forwarded: not-needed
  .Ed
  .Sh CLIENTS AND SESSIONS
  The
-@@ -1062,7 +1062,7 @@
+@@ -1134,7 +1134,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -55,7 +55,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1112,7 +1112,7 @@
+@@ -1182,7 +1182,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -64,16 +64,16 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1154,7 +1154,7 @@
+@@ -1229,7 +1229,7 @@
  Note that
  .Ql %%
- can be used, and will be replaced with the session name.
+ can be used and will be replaced with the session name.
 -The default option if not specified is "switch-client -t '%%'".
 +The default option if not specified is "switch-client \-t '%%'".
  If
  .Fl c
  is given, will override the default window command.
-@@ -1196,7 +1196,7 @@
+@@ -1272,7 +1272,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -82,7 +82,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1509,7 +1509,7 @@
+@@ -1583,7 +1583,7 @@
  option only opens a new pipe if no previous pipe exists, allowing a pipe to
  be toggled with a single key, for example:
  .Bd -literal -offset indent
@@ -91,7 +91,7 @@ Forwarded: not-needed
  .Ed
  .It Xo Ic previous-layout
  .Op Fl t Ar target-window
-@@ -2398,7 +2398,7 @@
+@@ -2502,7 +2502,7 @@
  Examples are:
  .Bd -literal -offset indent
  #(sysctl vm.loadavg)
@@ -100,7 +100,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  Where appropriate, special character sequences may be prefixed with a number to
-@@ -2621,7 +2621,7 @@
+@@ -2725,7 +2725,7 @@
  or with a terminal escape sequence.
  It may be switched off globally with:
  .Bd -literal -offset indent
@@ -109,7 +109,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  .It Ic c0-change-interval Ar interval
-@@ -3288,7 +3288,7 @@
+@@ -3429,7 +3429,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -118,7 +118,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -3511,29 +3511,29 @@
+@@ -3780,29 +3780,29 @@
  .Pp
  Changing the default prefix key:
  .Bd -literal -offset indent
