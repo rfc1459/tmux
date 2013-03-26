@@ -60,45 +60,47 @@ bin_PROGRAMS = tmux$(EXEEXT)
 
 # Set flags for gcc. gcc4 whines abouts silly stuff so it needs slightly
 # different flags.
-@IS_GCC_TRUE@am__append_2 = -std=c99
-@IS_DEBUG_TRUE@@IS_GCC_TRUE@am__append_3 = -g -ggdb -O0 -Wno-long-long \
-@IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wall -W -Wnested-externs \
-@IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wformat=2 -Wmissing-prototypes \
+@IS_GCC_TRUE@am__append_2 = -std=gnu99
+@IS_DEBUG_TRUE@@IS_GCC_TRUE@am__append_3 = -O0 -g -Wno-long-long -Wall \
+@IS_DEBUG_TRUE@@IS_GCC_TRUE@	-W -Wnested-externs -Wformat=2 \
+@IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wmissing-prototypes \
 @IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wstrict-prototypes \
 @IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wmissing-declarations \
 @IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wwrite-strings -Wshadow \
 @IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wpointer-arith -Wsign-compare \
 @IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wundef -Wbad-function-cast \
-@IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Winline -Wcast-align
+@IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Winline -Wcast-align \
+@IS_DEBUG_TRUE@@IS_GCC_TRUE@	-Wdeclaration-after-statement
 @IS_DEBUG_TRUE@@IS_GCC_TRUE@am__append_4 = -DDEBUG
-@IS_GCC4_TRUE@@IS_GCC_TRUE@am__append_5 = -iquote. -I/usr/local/include
-@IS_DEBUG_TRUE@@IS_GCC4_TRUE@@IS_GCC_TRUE@am__append_6 = -Wno-pointer-sign
-@IS_GCC4_FALSE@@IS_GCC_TRUE@am__append_7 = -I. -I- -I/usr/local/include
+@IS_DEBUG_FALSE@@IS_GCC_TRUE@am__append_5 = -O2
+@IS_GCC4_TRUE@@IS_GCC_TRUE@am__append_6 = -iquote. -I/usr/local/include
+@IS_DEBUG_TRUE@@IS_GCC4_TRUE@@IS_GCC_TRUE@am__append_7 = -Wno-pointer-sign
+@IS_GCC4_FALSE@@IS_GCC_TRUE@am__append_8 = -I. -I- -I/usr/local/include
 
 # Set flags for Solaris.
-@IS_SUNOS_TRUE@am__append_8 = -D_XPG4_2 -D__EXTENSIONS__ -D_POSIX_PTHREAD_SEMANTICS
+@IS_SUNOS_TRUE@am__append_9 = -D_XPG4_2 -D__EXTENSIONS__ -D_POSIX_PTHREAD_SEMANTICS
 
 # Set flags for Sun CC.
-@IS_SUNCC_TRUE@am__append_9 = -erroff=E_EMPTY_DECLARATION
+@IS_SUNCC_TRUE@am__append_10 = -erroff=E_EMPTY_DECLARATION
 
 # Pile in all the compat/ stuff that is needed.
-@NO_FORKPTY_TRUE@am__append_10 = compat/forkpty-@PLATFORM@.c
-@NO_IMSG_TRUE@am__append_11 = compat/imsg.c compat/imsg-buffer.c
-@NO_CLOSEFROM_TRUE@am__append_12 = compat/closefrom.c
-@NO_DAEMON_TRUE@am__append_13 = compat/daemon.c
-@NO_SETENV_TRUE@am__append_14 = compat/setenv.c
-@NO_STRLCAT_TRUE@am__append_15 = compat/strlcat.c
-@NO_STRLCPY_TRUE@am__append_16 = compat/strlcpy.c
-@NO_ASPRINTF_TRUE@am__append_17 = compat/asprintf.c
-@NO_FGETLN_TRUE@am__append_18 = compat/fgetln.c
-@NO_GETOPT_TRUE@am__append_19 = compat/getopt.c
-@NO_STRCASESTR_TRUE@am__append_20 = compat/strcasestr.c
-@NO_STRSEP_TRUE@am__append_21 = compat/strsep.c
-@NO_VIS_TRUE@am__append_22 = compat/vis.c compat/unvis.c
-@NO_STRTONUM_TRUE@am__append_23 = compat/strtonum.c
-@NO_B64_NTOP_TRUE@am__append_24 = compat/b64_ntop.c
+@NO_FORKPTY_TRUE@am__append_11 = compat/forkpty-@PLATFORM@.c
+@NO_IMSG_TRUE@am__append_12 = compat/imsg.c compat/imsg-buffer.c
+@NO_CLOSEFROM_TRUE@am__append_13 = compat/closefrom.c
+@NO_DAEMON_TRUE@am__append_14 = compat/daemon.c
+@NO_SETENV_TRUE@am__append_15 = compat/setenv.c
+@NO_STRLCAT_TRUE@am__append_16 = compat/strlcat.c
+@NO_STRLCPY_TRUE@am__append_17 = compat/strlcpy.c
+@NO_ASPRINTF_TRUE@am__append_18 = compat/asprintf.c
+@NO_FGETLN_TRUE@am__append_19 = compat/fgetln.c
+@NO_GETOPT_TRUE@am__append_20 = compat/getopt.c
+@NO_STRCASESTR_TRUE@am__append_21 = compat/strcasestr.c
+@NO_STRSEP_TRUE@am__append_22 = compat/strsep.c
+@NO_VIS_TRUE@am__append_23 = compat/vis.c compat/unvis.c
+@NO_STRTONUM_TRUE@am__append_24 = compat/strtonum.c
+@NO_B64_NTOP_TRUE@am__append_25 = compat/b64_ntop.c
 subdir = .
-DIST_COMMON = $(am__configure_deps) $(dist_man1_MANS) \
+DIST_COMMON = README $(am__configure_deps) $(dist_man1_MANS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/configure $(top_srcdir)/etc/compile \
 	$(top_srcdir)/etc/config.guess $(top_srcdir)/etc/config.sub \
@@ -138,25 +140,25 @@ dist_tmux_OBJECTS = arguments.$(OBJEXT) attributes.$(OBJEXT) \
 	cmd-load-buffer.$(OBJEXT) cmd-lock-server.$(OBJEXT) \
 	cmd-move-window.$(OBJEXT) cmd-new-session.$(OBJEXT) \
 	cmd-new-window.$(OBJEXT) cmd-paste-buffer.$(OBJEXT) \
-	cmd-pipe-pane.$(OBJEXT) cmd-refresh-client.$(OBJEXT) \
-	cmd-rename-session.$(OBJEXT) cmd-rename-window.$(OBJEXT) \
-	cmd-resize-pane.$(OBJEXT) cmd-respawn-pane.$(OBJEXT) \
-	cmd-respawn-window.$(OBJEXT) cmd-rotate-window.$(OBJEXT) \
-	cmd-run-shell.$(OBJEXT) cmd-save-buffer.$(OBJEXT) \
-	cmd-select-layout.$(OBJEXT) cmd-select-pane.$(OBJEXT) \
-	cmd-select-window.$(OBJEXT) cmd-send-keys.$(OBJEXT) \
-	cmd-send-prefix.$(OBJEXT) cmd-server-info.$(OBJEXT) \
+	cmd-pipe-pane.$(OBJEXT) cmd-queue.$(OBJEXT) \
+	cmd-refresh-client.$(OBJEXT) cmd-rename-session.$(OBJEXT) \
+	cmd-rename-window.$(OBJEXT) cmd-resize-pane.$(OBJEXT) \
+	cmd-respawn-pane.$(OBJEXT) cmd-respawn-window.$(OBJEXT) \
+	cmd-rotate-window.$(OBJEXT) cmd-run-shell.$(OBJEXT) \
+	cmd-save-buffer.$(OBJEXT) cmd-select-layout.$(OBJEXT) \
+	cmd-select-pane.$(OBJEXT) cmd-select-window.$(OBJEXT) \
+	cmd-send-keys.$(OBJEXT) cmd-server-info.$(OBJEXT) \
 	cmd-set-buffer.$(OBJEXT) cmd-set-environment.$(OBJEXT) \
-	cmd-set-option.$(OBJEXT) cmd-show-buffer.$(OBJEXT) \
-	cmd-show-environment.$(OBJEXT) cmd-show-messages.$(OBJEXT) \
-	cmd-show-options.$(OBJEXT) cmd-source-file.$(OBJEXT) \
-	cmd-split-window.$(OBJEXT) cmd-start-server.$(OBJEXT) \
-	cmd-string.$(OBJEXT) cmd-suspend-client.$(OBJEXT) \
-	cmd-swap-pane.$(OBJEXT) cmd-swap-window.$(OBJEXT) \
-	cmd-switch-client.$(OBJEXT) cmd-unbind-key.$(OBJEXT) \
-	cmd-unlink-window.$(OBJEXT) cmd.$(OBJEXT) colour.$(OBJEXT) \
+	cmd-set-option.$(OBJEXT) cmd-show-environment.$(OBJEXT) \
+	cmd-show-messages.$(OBJEXT) cmd-show-options.$(OBJEXT) \
+	cmd-source-file.$(OBJEXT) cmd-split-window.$(OBJEXT) \
+	cmd-start-server.$(OBJEXT) cmd-string.$(OBJEXT) \
+	cmd-suspend-client.$(OBJEXT) cmd-swap-pane.$(OBJEXT) \
+	cmd-swap-window.$(OBJEXT) cmd-switch-client.$(OBJEXT) \
+	cmd-unbind-key.$(OBJEXT) cmd-unlink-window.$(OBJEXT) \
+	cmd-wait-for.$(OBJEXT) cmd.$(OBJEXT) colour.$(OBJEXT) \
 	control.$(OBJEXT) control-notify.$(OBJEXT) environ.$(OBJEXT) \
-	format.$(OBJEXT) grid-utf8.$(OBJEXT) grid-view.$(OBJEXT) \
+	format.$(OBJEXT) grid-cell.$(OBJEXT) grid-view.$(OBJEXT) \
 	grid.$(OBJEXT) input-keys.$(OBJEXT) input.$(OBJEXT) \
 	job.$(OBJEXT) key-bindings.$(OBJEXT) key-string.$(OBJEXT) \
 	layout-custom.$(OBJEXT) layout-set.$(OBJEXT) layout.$(OBJEXT) \
@@ -269,12 +271,12 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@ $(am__append_1) $(am__append_2) $(am__append_3) \
-	$(am__append_6) $(am__append_9)
+	$(am__append_5) $(am__append_7) $(am__append_10)
 CPP = @CPP@
 
 # Preprocessor flags.
-CPPFLAGS = @CPPFLAGS@ @XOPEN_DEFINES@ $(am__append_4) $(am__append_5) \
-	$(am__append_7) $(am__append_8)
+CPPFLAGS = @CPPFLAGS@ @XOPEN_DEFINES@ $(am__append_4) $(am__append_6) \
+	$(am__append_8) $(am__append_9)
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -369,7 +371,7 @@ dist_man1_MANS = tmux.1
 
 # Distribution tarball options.
 EXTRA_DIST = \
-	CHANGES FAQ NOTES TODO examples compat \
+	CHANGES FAQ README TODO examples compat \
 	array.h compat.h tmux.h osdep-*.c
 
 
@@ -421,6 +423,7 @@ dist_tmux_SOURCES = \
 	cmd-new-window.c \
 	cmd-paste-buffer.c \
 	cmd-pipe-pane.c \
+	cmd-queue.c \
 	cmd-refresh-client.c \
 	cmd-rename-session.c \
 	cmd-rename-window.c \
@@ -434,12 +437,10 @@ dist_tmux_SOURCES = \
 	cmd-select-pane.c \
 	cmd-select-window.c \
 	cmd-send-keys.c \
-	cmd-send-prefix.c \
 	cmd-server-info.c \
 	cmd-set-buffer.c \
 	cmd-set-environment.c \
 	cmd-set-option.c \
-	cmd-show-buffer.c \
 	cmd-show-environment.c \
 	cmd-show-messages.c \
 	cmd-show-options.c \
@@ -453,13 +454,14 @@ dist_tmux_SOURCES = \
 	cmd-switch-client.c \
 	cmd-unbind-key.c \
 	cmd-unlink-window.c \
+	cmd-wait-for.c \
 	cmd.c \
 	colour.c \
 	control.c \
 	control-notify.c \
 	environ.c \
 	format.c \
-	grid-utf8.c \
+	grid-cell.c \
 	grid-view.c \
 	grid.c \
 	input-keys.c \
@@ -501,12 +503,12 @@ dist_tmux_SOURCES = \
 	xmalloc.c \
 	xterm-keys.c
 
-nodist_tmux_SOURCES = osdep-@PLATFORM@.c $(am__append_10) \
-	$(am__append_11) $(am__append_12) $(am__append_13) \
-	$(am__append_14) $(am__append_15) $(am__append_16) \
-	$(am__append_17) $(am__append_18) $(am__append_19) \
-	$(am__append_20) $(am__append_21) $(am__append_22) \
-	$(am__append_23) $(am__append_24)
+nodist_tmux_SOURCES = osdep-@PLATFORM@.c $(am__append_11) \
+	$(am__append_12) $(am__append_13) $(am__append_14) \
+	$(am__append_15) $(am__append_16) $(am__append_17) \
+	$(am__append_18) $(am__append_19) $(am__append_20) \
+	$(am__append_21) $(am__append_22) $(am__append_23) \
+	$(am__append_24) $(am__append_25)
 all: all-am
 
 .SUFFIXES:
@@ -644,6 +646,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-new-window.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-paste-buffer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-pipe-pane.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-queue.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-refresh-client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-rename-session.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-rename-window.Po@am__quote@
@@ -657,12 +660,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-select-pane.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-select-window.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-send-keys.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-send-prefix.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-server-info.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-set-buffer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-set-environment.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-set-option.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-show-buffer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-show-environment.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-show-messages.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-show-options.Po@am__quote@
@@ -676,6 +677,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-switch-client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-unbind-key.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-unlink-window.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd-wait-for.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colour.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/control-notify.Po@am__quote@
@@ -686,7 +688,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/forkpty-@PLATFORM@.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/format.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid-utf8.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid-cell.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid-view.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imsg-buffer.Po@am__quote@
