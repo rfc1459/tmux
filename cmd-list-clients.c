@@ -1,4 +1,4 @@
-/* $Id: cmd-list-clients.c 2617 2011-10-23 15:03:50Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -18,6 +18,7 @@
 
 #include <sys/types.h>
 
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
@@ -27,7 +28,7 @@
  * List all clients.
  */
 
-int	cmd_list_clients_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	cmd_list_clients_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_list_clients_entry = {
 	"list-clients", "lsc",
@@ -39,9 +40,8 @@ const struct cmd_entry cmd_list_clients_entry = {
 	cmd_list_clients_exec
 };
 
-/* ARGSUSED */
-int
-cmd_list_clients_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_list_clients_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args 		*args = self->args;
 	struct client		*c;
@@ -52,19 +52,14 @@ cmd_list_clients_exec(struct cmd *self, struct cmd_ctx *ctx)
 	char			*line;
 
 	if (args_has(args, 't')) {
-		s = cmd_find_session(ctx, args_get(args, 't'), 0);
+		s = cmd_find_session(cmdq, args_get(args, 't'), 0);
 		if (s == NULL)
-			return (-1);
+			return (CMD_RETURN_ERROR);
 	} else
 		s = NULL;
 
-	template = args_get(args, 'F');
-	if (template == NULL) {
-		template = "#{client_tty}: #{session_name} "
-		    "[#{client_width}x#{client_height} #{client_termname}]"
-		    "#{?client_utf8, (utf8),}"
-		    "#{?client_readonly, (ro),}";
-	}
+	if ((template = args_get(args, 'F')) == NULL)
+		template = LIST_CLIENTS_TEMPLATE;
 
 	for (i = 0; i < ARRAY_LENGTH(&clients); i++) {
 		c = ARRAY_ITEM(&clients, i);
@@ -80,11 +75,11 @@ cmd_list_clients_exec(struct cmd *self, struct cmd_ctx *ctx)
 		format_client(ft, c);
 
 		line = format_expand(ft, template);
-		ctx->print(ctx, "%s", line);
-		xfree(line);
+		cmdq_print(cmdq, "%s", line);
+		free(line);
 
 		format_free(ft);
 	}
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

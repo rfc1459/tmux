@@ -1,4 +1,4 @@
-/* $Id: osdep-dragonfly.c 2647 2011-12-09 16:37:29Z nicm $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -31,7 +31,7 @@
 
 struct kinfo_proc	*cmp_procs(struct kinfo_proc *, struct kinfo_proc *);
 char			*osdep_get_name(int, char *);
-char			*osdep_get_cwd(pid_t);
+char			*osdep_get_cwd(int);
 struct event_base	*osdep_event_init(void);
 
 #ifndef nitems
@@ -121,7 +121,7 @@ error:
 }
 
 char *
-osdep_get_cwd(pid_t pid)
+osdep_get_cwd(int fd)
 {
 	return (NULL);
 }

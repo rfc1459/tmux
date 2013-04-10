@@ -1,4 +1,4 @@
-/* $Id: cmd-command-prompt.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2008 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -19,6 +19,7 @@
 #include <sys/types.h>
 
 #include <ctype.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
@@ -30,7 +31,7 @@
 
 void	cmd_command_prompt_key_binding(struct cmd *, int);
 int	cmd_command_prompt_check(struct args *);
-int	cmd_command_prompt_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	cmd_command_prompt_exec(struct cmd *, struct cmd_q *);
 
 int	cmd_command_prompt_callback(void *, const char *);
 void	cmd_command_prompt_free(void *);
@@ -83,8 +84,8 @@ cmd_command_prompt_key_binding(struct cmd *self, int key)
 	}
 }
 
-int
-cmd_command_prompt_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_command_prompt_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args			*args = self->args;
 	const char			*inputs, *prompts;
@@ -93,11 +94,11 @@ cmd_command_prompt_exec(struct cmd *self, struct cmd_ctx *ctx)
 	char				*prompt, *ptr, *input = NULL;
 	size_t				 n;
 
-	if ((c = cmd_find_client(ctx, args_get(args, 't'))) == NULL)
-		return (-1);
+	if ((c = cmd_find_client(cmdq, args_get(args, 't'), 0)) == NULL)
+		return (CMD_RETURN_ERROR);
 
 	if (c->prompt_string != NULL)
-		return (0);
+		return (CMD_RETURN_NORMAL);
 
 	cdata = xmalloc(sizeof *cdata);
 	cdata->c = c;
@@ -138,9 +139,9 @@ cmd_command_prompt_exec(struct cmd *self, struct cmd_ctx *ctx)
 
 	status_prompt_set(c, prompt, input, cmd_command_prompt_callback,
 	    cmd_command_prompt_free, cdata, 0);
-	xfree(prompt);
+	free(prompt);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }
 
 int
@@ -149,7 +150,6 @@ cmd_command_prompt_callback(void *data, const char *s)
 	struct cmd_command_prompt_cdata	*cdata = data;
 	struct client			*c = cdata->c;
 	struct cmd_list			*cmdlist;
-	struct cmd_ctx			 ctx;
 	char				*cause, *new_template, *prompt, *ptr;
 	char				*input = NULL;
 
@@ -157,7 +157,7 @@ cmd_command_prompt_callback(void *data, const char *s)
 		return (0);
 
 	new_template = cmd_template_replace(cdata->template, s, cdata->idx);
-	xfree(cdata->template);
+	free(cdata->template);
 	cdata->template = new_template;
 
 	/*
@@ -169,30 +169,21 @@ cmd_command_prompt_callback(void *data, const char *s)
 		input = strsep(&cdata->next_input, ",");
 		status_prompt_update(c, prompt, input);
 
-		xfree(prompt);
+		free(prompt);
 		cdata->idx++;
 		return (1);
 	}
 
-	if (cmd_string_parse(new_template, &cmdlist, &cause) != 0) {
+	if (cmd_string_parse(new_template, &cmdlist, NULL, 0, &cause) != 0) {
 		if (cause != NULL) {
 			*cause = toupper((u_char) *cause);
 			status_message_set(c, "%s", cause);
-			xfree(cause);
+			free(cause);
 		}
 		return (0);
 	}
 
-	ctx.msgdata = NULL;
-	ctx.curclient = c;
-
-	ctx.error = key_bindings_error;
-	ctx.print = key_bindings_print;
-	ctx.info = key_bindings_info;
-
-	ctx.cmdclient = NULL;
-
-	cmd_list_exec(cmdlist, &ctx);
+	cmdq_run(c->cmdq, cmdlist);
 	cmd_list_free(cmdlist);
 
 	if (c->prompt_callbackfn != (void *) &cmd_command_prompt_callback)
@@ -205,11 +196,8 @@ cmd_command_prompt_free(void *data)
 {
 	struct cmd_command_prompt_cdata	*cdata = data;
 
-	if (cdata->inputs != NULL)
-		xfree(cdata->inputs);
-	if (cdata->prompts != NULL)
-		xfree(cdata->prompts);
-	if (cdata->template != NULL)
-		xfree(cdata->template);
-	xfree(cdata);
+	free(cdata->inputs);
+	free(cdata->prompts);
+	free(cdata->template);
+	free(cdata);
 }

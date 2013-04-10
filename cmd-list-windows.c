@@ -1,4 +1,4 @@
-/* $Id: cmd-list-windows.c 2604 2011-10-02 11:30:26Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -18,6 +18,7 @@
 
 #include <sys/types.h>
 
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "tmux.h"
@@ -26,15 +27,15 @@
  * List windows on given session.
  */
 
-int	cmd_list_windows_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_list_windows_exec(struct cmd *, struct cmd_q *);
 
-void	cmd_list_windows_server(struct cmd *, struct cmd_ctx *);
+void	cmd_list_windows_server(struct cmd *, struct cmd_q *);
 void	cmd_list_windows_session(
-	    struct cmd *, struct session *, struct cmd_ctx *, int);
+	    struct cmd *, struct session *, struct cmd_q *, int);
 
 const struct cmd_entry cmd_list_windows_entry = {
 	"list-windows", "lsw",
-	"aF:t:", 0, 0,
+	"F:at:", 0, 0,
 	"[-a] [-F format] " CMD_TARGET_SESSION_USAGE,
 	0,
 	NULL,
@@ -42,36 +43,36 @@ const struct cmd_entry cmd_list_windows_entry = {
 	cmd_list_windows_exec
 };
 
-int
-cmd_list_windows_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_list_windows_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args	*args = self->args;
 	struct session	*s;
 
 	if (args_has(args, 'a'))
-		cmd_list_windows_server(self, ctx);
+		cmd_list_windows_server(self, cmdq);
 	else {
-		s = cmd_find_session(ctx, args_get(args, 't'), 0);
+		s = cmd_find_session(cmdq, args_get(args, 't'), 0);
 		if (s == NULL)
-			return (-1);
-		cmd_list_windows_session(self, s, ctx, 0);
+			return (CMD_RETURN_ERROR);
+		cmd_list_windows_session(self, s, cmdq, 0);
 	}
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }
 
 void
-cmd_list_windows_server(struct cmd *self, struct cmd_ctx *ctx)
+cmd_list_windows_server(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct session	*s;
 
 	RB_FOREACH(s, sessions, &sessions)
-		cmd_list_windows_session(self, s, ctx, 1);
+		cmd_list_windows_session(self, s, cmdq, 1);
 }
 
 void
 cmd_list_windows_session(
-    struct cmd *self, struct session *s, struct cmd_ctx *ctx, int type)
+    struct cmd *self, struct session *s, struct cmd_q *cmdq, int type)
 {
 	struct args		*args = self->args;
 	struct winlink		*wl;
@@ -84,18 +85,10 @@ cmd_list_windows_session(
 	if (template == NULL) {
 		switch (type) {
 		case 0:
-			template = "#{window_index}: "
-			    "#{window_name} "
-			    "[#{window_width}x#{window_height}] "
-			    "[layout #{window_layout}]"
-			    "#{?window_active, (active),}";
+			template = LIST_WINDOWS_TEMPLATE;
 			break;
 		case 1:
-			template = "#{session_name}:#{window_index}: "
-			    "#{window_name} "
-			    "[#{window_width}x#{window_height}] "
-			    "[layout #{window_layout}]"
-			    "#{?window_active, (active),}";
+			template = LIST_WINDOWS_WITH_SESSION_TEMPLATE;
 			break;
 		}
 	}
@@ -106,10 +99,11 @@ cmd_list_windows_session(
 		format_add(ft, "line", "%u", n);
 		format_session(ft, s);
 		format_winlink(ft, s, wl);
+		format_window_pane(ft, wl->window->active);
 
 		line = format_expand(ft, template);
-		ctx->print(ctx, "%s", line);
-		xfree(line);
+		cmdq_print(cmdq, "%s", line);
+		free(line);
 
 		format_free(ft);
 		n++;

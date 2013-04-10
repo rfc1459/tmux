@@ -1,4 +1,4 @@
-/* $Id: paste.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "tmux.h"
@@ -69,8 +70,8 @@ paste_free_top(struct paste_stack *ps)
 	pb = ARRAY_FIRST(ps);
 	ARRAY_REMOVE(ps, 0);
 
-	xfree(pb->data);
-	xfree(pb);
+	free(pb->data);
+	free(pb);
 
 	return (0);
 }
@@ -87,8 +88,8 @@ paste_free_index(struct paste_stack *ps, u_int idx)
 	pb = ARRAY_ITEM(ps, idx);
 	ARRAY_REMOVE(ps, idx);
 
-	xfree(pb->data);
-	xfree(pb);
+	free(pb->data);
+	free(pb);
 
 	return (0);
 }
@@ -107,8 +108,8 @@ paste_add(struct paste_stack *ps, char *data, size_t size, u_int limit)
 
 	while (ARRAY_LENGTH(ps) >= limit) {
 		pb = ARRAY_LAST(ps);
-		xfree(pb->data);
-		xfree(pb);
+		free(pb->data);
+		free(pb);
 		ARRAY_TRUNC(ps, 1);
 	}
 
@@ -136,7 +137,7 @@ paste_replace(struct paste_stack *ps, u_int idx, char *data, size_t size)
 		return (-1);
 
 	pb = ARRAY_ITEM(ps, idx);
-	xfree(pb->data);
+	free(pb->data);
 
 	pb->data = data;
 	pb->size = size;
@@ -160,10 +161,34 @@ paste_print(struct paste_buffer *pb, size_t width)
 		len = width;
 
 	used = strvisx(buf, pb->data, len, VIS_OCTAL|VIS_TAB|VIS_NL);
-	if (pb->size > width || used > width) {
-		buf[width - 3] = '\0';
-		strlcat(buf, "...", width);
-	}
+	if (pb->size > width || used > width)
+		strlcpy(buf + width - 3, "...", 4);
 
 	return (buf);
+}
+
+/* Paste into a window pane, filtering '\n' according to separator. */
+void
+paste_send_pane (struct paste_buffer *pb, struct window_pane *wp,
+    const char *sep, int bracket)
+{
+	const char	*data = pb->data, *end = data + pb->size, *lf;
+	size_t		 seplen;
+
+	if (bracket)
+		bufferevent_write(wp->event, "\033[200~", 6);
+
+	seplen = strlen(sep);
+	while ((lf = memchr(data, '\n', end - data)) != NULL) {
+		if (lf != data)
+			bufferevent_write(wp->event, data, lf - data);
+		bufferevent_write(wp->event, sep, seplen);
+		data = lf + 1;
+	}
+
+	if (end != data)
+		bufferevent_write(wp->event, data, end - data);
+
+	if (bracket)
+		bufferevent_write(wp->event, "\033[201~", 6);
 }

@@ -1,4 +1,4 @@
-/* $Id: cmd-copy-mode.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -24,8 +24,8 @@
  * Enter copy mode.
  */
 
-void	cmd_copy_mode_key_binding(struct cmd *, int);
-int	cmd_copy_mode_exec(struct cmd *, struct cmd_ctx *);
+void		 cmd_copy_mode_key_binding(struct cmd *, int);
+enum cmd_retval	 cmd_copy_mode_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_copy_mode_entry = {
 	"copy-mode", NULL,
@@ -45,20 +45,20 @@ cmd_copy_mode_key_binding(struct cmd *self, int key)
 		args_set(self->args, 'u', NULL);
 }
 
-int
-cmd_copy_mode_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_copy_mode_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args		*args = self->args;
 	struct window_pane	*wp;
 
-	if (cmd_find_pane(ctx, args_get(args, 't'), NULL, &wp) == NULL)
-		return (-1);
+	if (cmd_find_pane(cmdq, args_get(args, 't'), NULL, &wp) == NULL)
+		return (CMD_RETURN_ERROR);
 
 	if (window_pane_set_mode(wp, &window_copy_mode) != 0)
-		return (0);
+		return (CMD_RETURN_NORMAL);
 	window_copy_init_from_pane(wp);
 	if (wp->mode == &window_copy_mode && args_has(self->args, 'u'))
 		window_copy_pageup(wp);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

@@ -1,4 +1,4 @@
-/* $Id: cmd-respawn-window.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2008 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -18,6 +18,7 @@
 
 #include <sys/types.h>
 
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "tmux.h"
@@ -26,7 +27,7 @@
  * Respawn a window (restart the command). Kill existing if -k given.
  */
 
-int	cmd_respawn_window_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_respawn_window_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_respawn_window_entry = {
 	"respawn-window", "respawnw",
@@ -38,8 +39,8 @@ const struct cmd_entry cmd_respawn_window_entry = {
 	cmd_respawn_window_exec
 };
 
-int
-cmd_respawn_window_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_respawn_window_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args		*args = self->args;
 	struct winlink		*wl;
@@ -50,17 +51,17 @@ cmd_respawn_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 	const char		*cmd;
 	char		 	*cause;
 
-	if ((wl = cmd_find_window(ctx, args_get(args, 't'), &s)) == NULL)
-		return (-1);
+	if ((wl = cmd_find_window(cmdq, args_get(args, 't'), &s)) == NULL)
+		return (CMD_RETURN_ERROR);
 	w = wl->window;
 
 	if (!args_has(self->args, 'k')) {
 		TAILQ_FOREACH(wp, &w->panes, entry) {
 			if (wp->fd == -1)
 				continue;
-			ctx->error(ctx,
+			cmdq_error(cmdq,
 			    "window still active: %s:%d", s->name, wl->idx);
-			return (-1);
+			return (CMD_RETURN_ERROR);
 		}
 	}
 
@@ -80,13 +81,13 @@ cmd_respawn_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 	else
 		cmd = NULL;
 	if (window_pane_spawn(wp, cmd, NULL, NULL, &env, s->tio, &cause) != 0) {
-		ctx->error(ctx, "respawn window failed: %s", cause);
-		xfree(cause);
+		cmdq_error(cmdq, "respawn window failed: %s", cause);
+		free(cause);
 		environ_free(&env);
 		server_destroy_pane(wp);
-		return (-1);
+		return (CMD_RETURN_ERROR);
 	}
-	layout_init(w);
+	layout_init(w, wp);
 	window_pane_reset_mode(wp);
 	screen_reinit(&wp->base);
 	input_init(wp);
@@ -96,5 +97,5 @@ cmd_respawn_window_exec(struct cmd *self, struct cmd_ctx *ctx)
 	server_redraw_window(w);
 
 	environ_free(&env);
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

@@ -1,4 +1,4 @@
-/* $Id: tty-term.c 2645 2011-12-06 18:48:45Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2008 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -65,6 +65,7 @@ const struct tty_term_code_entry tty_term_codes[NTTYCODE] = {
 	{ TTYC_DL, TTYCODE_STRING, "dl" },
 	{ TTYC_DL1, TTYCODE_STRING, "dl1" },
 	{ TTYC_E3, TTYCODE_STRING, "E3" },
+	{ TTYC_ECH, TTYCODE_STRING, "ech" },
 	{ TTYC_EL, TTYCODE_STRING, "el" },
 	{ TTYC_EL1, TTYCODE_STRING, "el1" },
 	{ TTYC_ENACS, TTYCODE_STRING, "enacs" },
@@ -177,7 +178,6 @@ const struct tty_term_code_entry tty_term_codes[NTTYCODE] = {
 	{ TTYC_RI, TTYCODE_STRING, "ri" },
 	{ TTYC_RMACS, TTYCODE_STRING, "rmacs" },
 	{ TTYC_RMCUP, TTYCODE_STRING, "rmcup" },
-	{ TTYC_RMIR, TTYCODE_STRING, "rmir" },
 	{ TTYC_RMKX, TTYCODE_STRING, "rmkx" },
 	{ TTYC_SETAB, TTYCODE_STRING, "setab" },
 	{ TTYC_SETAF, TTYCODE_STRING, "setaf" },
@@ -185,7 +185,6 @@ const struct tty_term_code_entry tty_term_codes[NTTYCODE] = {
 	{ TTYC_SITM, TTYCODE_STRING, "sitm" },
 	{ TTYC_SMACS, TTYCODE_STRING, "smacs" },
 	{ TTYC_SMCUP, TTYCODE_STRING, "smcup" },
-	{ TTYC_SMIR, TTYCODE_STRING, "smir" },
 	{ TTYC_SMKX, TTYCODE_STRING, "smkx" },
 	{ TTYC_SMSO, TTYCODE_STRING, "smso" },
 	{ TTYC_SMUL, TTYCODE_STRING, "smul" },
@@ -257,7 +256,7 @@ tty_term_override(struct tty_term *term, const char *overrides)
 				*ptr++ = '\0';
 				val = xstrdup(ptr);
 				if (strunvis(val, ptr) == -1) {
-					xfree(val);
+					free(val);
 					val = xstrdup(ptr);
 				}
 			} else if (entstr[strlen(entstr) - 1] == '@') {
@@ -283,7 +282,7 @@ tty_term_override(struct tty_term *term, const char *overrides)
 					break;
 				case TTYCODE_STRING:
 					if (code->type == TTYCODE_STRING)
-						xfree(code->value.string);
+						free(code->value.string);
 					code->value.string = xstrdup(val);
 					code->type = ent->type;
 					break;
@@ -301,12 +300,11 @@ tty_term_override(struct tty_term *term, const char *overrides)
 				}
 			}
 
-			if (val != NULL)
-				xfree(val);
+			free(val);
 		}
 	}
 
-	xfree(s);
+	free(s);
 }
 
 struct tty_term *
@@ -391,7 +389,8 @@ tty_term_find(char *name, int fd, const char *overrides, char **cause)
 	tty_term_override(term, overrides);
 
 	/* Delete curses data. */
-#if !defined(__FreeBSD_version) || __FreeBSD_version >= 700000
+#if !defined(NCURSES_VERSION_MAJOR) || NCURSES_VERSION_MAJOR > 5 || \
+    (NCURSES_VERSION_MAJOR == 5 && NCURSES_VERSION_MINOR > 6)
 	del_curterm(cur_term);
 #endif
 
@@ -470,10 +469,10 @@ tty_term_free(struct tty_term *term)
 
 	for (i = 0; i < NTTYCODE; i++) {
 		if (term->codes[i].type == TTYCODE_STRING)
-			xfree(term->codes[i].value.string);
+			free(term->codes[i].value.string);
 	}
-	xfree(term->name);
-	xfree(term);
+	free(term->name);
+	free(term);
 }
 
 int

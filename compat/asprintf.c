@@ -1,4 +1,4 @@
-/* $Id: asprintf.c 2567 2011-07-25 09:56:43Z nicm $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2006 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -53,7 +53,7 @@ vasprintf(char **ret, const char *fmt, va_list ap)
 
 	*ret = xmalloc(n + 1);
 	if ((n = vsnprintf(*ret, n + 1, fmt, ap2)) < 0) {
-		xfree(*ret);
+		free(*ret);
 		goto error;
 	}
 

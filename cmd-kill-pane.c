@@ -1,4 +1,4 @@
-/* $Id: cmd-kill-pane.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -26,7 +26,7 @@
  * Kill pane.
  */
 
-int	cmd_kill_pane_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_kill_pane_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_kill_pane_entry = {
 	"kill-pane", "killp",
@@ -38,32 +38,30 @@ const struct cmd_entry cmd_kill_pane_entry = {
 	cmd_kill_pane_exec
 };
 
-int
-cmd_kill_pane_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_kill_pane_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args		*args = self->args;
 	struct winlink		*wl;
-	struct window_pane	*loopwp, *nextwp, *wp;
+	struct window_pane	*loopwp, *tmpwp, *wp;
 
-	if ((wl = cmd_find_pane(ctx, args_get(args, 't'), NULL, &wp)) == NULL)
-		return (-1);
+	if ((wl = cmd_find_pane(cmdq, args_get(args, 't'), NULL, &wp)) == NULL)
+		return (CMD_RETURN_ERROR);
+	server_unzoom_window(wl->window);
 
 	if (window_count_panes(wl->window) == 1) {
 		/* Only one pane, kill the window. */
 		server_kill_window(wl->window);
 		recalculate_sizes();
-		return (0);
+		return (CMD_RETURN_NORMAL);
 	}
 
 	if (args_has(self->args, 'a')) {
-		loopwp = TAILQ_FIRST(&wl->window->panes);
-		while (loopwp != NULL) {
-			nextwp = TAILQ_NEXT(loopwp, entry);
-			if (loopwp != wp) {
-				layout_close_pane(loopwp);
-				window_remove_pane(wl->window, loopwp);
-			}
-			loopwp = nextwp;
+		TAILQ_FOREACH_SAFE(loopwp, &wl->window->panes, entry, tmpwp) {
+			if (loopwp == wp)
+				continue;
+			layout_close_pane(loopwp);
+			window_remove_pane(wl->window, loopwp);
 		}
 	} else {
 		layout_close_pane(wp);
@@ -71,5 +69,5 @@ cmd_kill_pane_exec(struct cmd *self, struct cmd_ctx *ctx)
 	}
 	server_redraw_window(wl->window);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

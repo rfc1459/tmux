@@ -1,4 +1,4 @@
-/* $Id: layout-set.c 2634 2011-11-10 21:41:37Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>

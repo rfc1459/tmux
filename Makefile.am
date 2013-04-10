@@ -1,4 +1,4 @@
-# $Id: Makefile.am 2592 2011-09-21 16:32:31Z tcunha $
+# $Id$
 
 # Obvious program stuff.
 bin_PROGRAMS = tmux
@@ -6,7 +6,7 @@ dist_man1_MANS = tmux.1
 
 # Distribution tarball options.
 EXTRA_DIST = \
-	CHANGES FAQ NOTES TODO examples compat \
+	CHANGES FAQ README TODO examples compat \
 	array.h compat.h tmux.h osdep-*.c
 dist-hook:
 	grep "^#found_debug=" configure
@@ -24,14 +24,17 @@ endif
 # Set flags for gcc. gcc4 whines abouts silly stuff so it needs slightly
 # different flags.
 if IS_GCC
-CFLAGS += -std=c99
+CFLAGS += -std=gnu99
 if IS_DEBUG
-CFLAGS += -g -ggdb -O0
+CFLAGS += -O0 -g
 CFLAGS += -Wno-long-long -Wall -W -Wnested-externs -Wformat=2
 CFLAGS += -Wmissing-prototypes -Wstrict-prototypes -Wmissing-declarations
 CFLAGS += -Wwrite-strings -Wshadow -Wpointer-arith -Wsign-compare
 CFLAGS += -Wundef -Wbad-function-cast -Winline -Wcast-align
+CFLAGS += -Wdeclaration-after-statement
 CPPFLAGS += -DDEBUG
+else
+CFLAGS += -O2
 endif
 if IS_GCC4
 CPPFLAGS += -iquote. -I/usr/local/include
@@ -66,8 +69,8 @@ dist_tmux_SOURCES = \
 	cmd-capture-pane.c \
 	cmd-choose-buffer.c \
 	cmd-choose-client.c \
-	cmd-choose-session.c \
-	cmd-choose-window.c \
+	cmd-choose-list.c \
+	cmd-choose-tree.c \
 	cmd-clear-history.c \
 	cmd-clock-mode.c \
 	cmd-command-prompt.c \
@@ -101,6 +104,7 @@ dist_tmux_SOURCES = \
 	cmd-new-window.c \
 	cmd-paste-buffer.c \
 	cmd-pipe-pane.c \
+	cmd-queue.c \
 	cmd-refresh-client.c \
 	cmd-rename-session.c \
 	cmd-rename-window.c \
@@ -114,12 +118,10 @@ dist_tmux_SOURCES = \
 	cmd-select-pane.c \
 	cmd-select-window.c \
 	cmd-send-keys.c \
-	cmd-send-prefix.c \
 	cmd-server-info.c \
 	cmd-set-buffer.c \
 	cmd-set-environment.c \
 	cmd-set-option.c \
-	cmd-show-buffer.c \
 	cmd-show-environment.c \
 	cmd-show-messages.c \
 	cmd-show-options.c \
@@ -133,11 +135,14 @@ dist_tmux_SOURCES = \
 	cmd-switch-client.c \
 	cmd-unbind-key.c \
 	cmd-unlink-window.c \
+	cmd-wait-for.c \
 	cmd.c \
 	colour.c \
+	control.c \
+	control-notify.c \
 	environ.c \
 	format.c \
-	grid-utf8.c \
+	grid-cell.c \
 	grid-view.c \
 	grid.c \
 	input-keys.c \
@@ -151,6 +156,7 @@ dist_tmux_SOURCES = \
 	log.c \
 	mode-key.c \
 	names.c \
+	notify.c \
 	options-table.c \
 	options.c \
 	paste.c \

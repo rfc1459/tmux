@@ -1,3 +1,114 @@
+CHANGES FROM 1.7 to 1.8, 26 March 2013
+
+Incompatible Changes
+====================
+
+* layout redo/undo has been removed.
+
+Normal Changes
+==============
+
+* Add halfpage up/down bindings to copy mode.
+* Session choosing fixed to work with unattached sessions.
+* New window options window-status-last-{attr,bg,fg} to denote the last
+  window which was active.
+* Scrolling in copy-mode now scrolls the region without moving the mouse
+  cursor.
+* run-shell learnt '-t' to specify the pane to use when displaying output.
+* Support for middle-click pasting.
+* choose-tree learns '-u' to start uncollapsed.
+* select-window learnt '-T; to toggle to the last window if it's already
+  current.
+* New session option 'assume-paste-time' for pasting text versus key-binding
+  actions.
+* choose-* commands now work outside of an attached client.
+* Aliases are now shown for list-commands command.
+* Status learns about formats.
+* Free-form options can be set with set-option if prepended with an '@'
+  sign.
+* capture-pane learnt '-p' to send to stdout, and '-e' for capturing escape
+  sequences, and '-a' to capture the alternate screen, and '-P' to dump
+  pending output.
+* Many new formats added (client_session, client_last_session, etc.)
+* Control mode, which is a way for a client to send tmux commands.
+  Currently more useful to users of iterm2.
+* resize-pane learnt '-x' and '-y' for absolute pane sizing.
+* Config file loading now reports errors from all files which are loaded via
+  the 'source-file' command.
+* 'copy-pipe' mode command to copy selection and pipe the selection to a
+  command.
+* Changes panes can now emit focus notifications for certain applications
+  which use those.
+* run-shell and if-shell now accept format placeholders.
+* resize-pane learnt '-Z' for zooming a pane temporarily.
+* new-session learnt '-A' to make it behave like attach-session.
+* set-option learnt '-o' to prevent setting an option which is already set.
+* capture-pane and show-options learns '-q' to silence errors.
+* New command 'wait-for' which blocks a client until woken up again.
+* Resizing panes will now reflow the text inside them.
+* Lots and lots of bug fixes, fixing memory-leaks, etc.
+* Various manpage improvements.
+
+CHANGES FROM 1.6 to 1.7, 13 October 2012
+
+* tmux configuration files now support line-continuation with a "\" at the
+  end of a line.
+* New option status-position to move the status line to the top or bottom of
+  the screen.
+* Enforce history-limit option when clearing the screen.
+* Give each window a unique id, like panes but prefixed with @.
+* Add pane id to each pane in layout description (while still accepting
+  the old form).
+* Provide defined ways to set the various default-path possibilities: ~
+  for home directory, . for server start directory, - for session start
+  directory and empty for the pane's working directory (the default). All
+  can also be used as part of a relative path (eg -/foo). Also provide -c
+  flags to neww and splitw to override default-path setting.
+* Add -l flag to send-keys to send input literally (without translating
+  key names).
+* Allow a single option to be specified to show-options to show just that
+  option.
+* New command "move-pane" (like join-pane but allows the same window).
+* join-pane and move-pane commands learn "-b" option to place the pane to
+  the left or above.
+* Support for bracketed-paste mode.
+* Allow send-keys command to accept hex values.
+* Add locking around "start-server" to avoid race-conditions.
+* break-pane learns -P/-F arguments for display formatting.
+* set-option learns "-q" to make it quiet, and not print out anything.
+* copy mode learns "wrap-search" option.
+* Add a simple form of output rate limiting by counting the number of
+  certain C0 sequences (linefeeds, backspaces, carriage returns) and if it
+  exceeds a threshold (current default 250/millisecond), start to redraw
+  the pane every 100 milliseconds instead of making each change as it
+  comes. Two configuration options - c0-change-trigger and
+  c0-change-interval.
+* find-window learns new flags:  "-C", "-N", "-T" to match against either or
+  all of a window's content, name, or title.  Defaults to all three options
+  if none specified.
+* find-window automatically selects the appropriate pane for the found
+  matches.
+* show-environment can now accept one option to show that environment value.
+* Exit mouse mode when end-of-screen reached when scrolling with the mouse
+  wheel.
+* select-layout learns -u and -U for layout history stacks.
+* kill-window, detach-client, kill-session all  learn "-a" option for
+  killing all but the current thing specified.
+* move-window learns "-r" option to renumber window sequentially in a
+  session.
+* New session option "renumber-windows" to automatically renumber windows in
+  a session when a window is closed.  (see "move-window -r").
+* Only enter copy-mode on scroll up.
+* choose-* and list-* commands all use "-F" for format specifiers.
+* When spawning external commands, the value from the "default-shell" option
+  is now used, rather than assuming /bin/sh.
+* New choose-tree command to render window/sessions as a tree for selection.
+* display-message learns new format options.
+* For linked-windows across sessions, all flags for that window are now
+  cleared across sessions.
+* Lots and lots of bug fixes, fixing memory-leaks, etc.
+* Various manpage improvements.
+
 CHANGES FROM 1.5 TO 1.6, 23 January 2012
 
 * Extend the mode-mouse option to add a third choice which means the mouse
@@ -1689,7 +1800,7 @@ The list of older changes is below.
   (including mutt, emacs). No status bar yet and no key remapping or other
   customisation.
 
-$Id: CHANGES 2678 2012-01-23 12:41:36Z tcunha $
+$Id$
 
  LocalWords:  showw utf UTF fulvio ciriaco joshe OSC APC gettime abc DEF OA clr
  LocalWords:  rivo nurges lscm Erdely eol smysession mysession ek dstname RB ms

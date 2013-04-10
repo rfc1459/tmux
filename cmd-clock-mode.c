@@ -1,4 +1,4 @@
-/* $Id: cmd-clock-mode.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -24,7 +24,7 @@
  * Enter clock mode.
  */
 
-int	cmd_clock_mode_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_clock_mode_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_clock_mode_entry = {
 	"clock-mode", NULL,
@@ -36,16 +36,16 @@ const struct cmd_entry cmd_clock_mode_entry = {
 	cmd_clock_mode_exec
 };
 
-int
-cmd_clock_mode_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_clock_mode_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args		*args = self->args;
 	struct window_pane	*wp;
 
-	if (cmd_find_pane(ctx, args_get(args, 't'), NULL, &wp) == NULL)
-		return (-1);
+	if (cmd_find_pane(cmdq, args_get(args, 't'), NULL, &wp) == NULL)
+		return (CMD_RETURN_ERROR);
 
 	window_pane_set_mode(wp, &window_clock_mode);
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

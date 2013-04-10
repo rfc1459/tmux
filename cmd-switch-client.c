@@ -1,4 +1,4 @@
-/* $Id: cmd-switch-client.c 2665 2012-01-21 19:30:07Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -27,8 +27,8 @@
  * Switch client to a different session.
  */
 
-void	cmd_switch_client_key_binding(struct cmd *, int);
-int	cmd_switch_client_exec(struct cmd *, struct cmd_ctx *);
+void		 cmd_switch_client_key_binding(struct cmd *, int);
+enum cmd_retval	 cmd_switch_client_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_switch_client_entry = {
 	"switch-client", "switchc",
@@ -57,48 +57,48 @@ cmd_switch_client_key_binding(struct cmd *self, int key)
 	}
 }
 
-int
-cmd_switch_client_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_switch_client_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args	*args = self->args;
 	struct client	*c;
 	struct session	*s;
 
-	if ((c = cmd_find_client(ctx, args_get(args, 'c'))) == NULL)
-		return (-1);
+	if ((c = cmd_find_client(cmdq, args_get(args, 'c'), 0)) == NULL)
+		return (CMD_RETURN_ERROR);
 
 	if (args_has(args, 'r')) {
 		if (c->flags & CLIENT_READONLY) {
 			c->flags &= ~CLIENT_READONLY;
-			ctx->info(ctx, "made client writable");
+			cmdq_info(cmdq, "made client writable");
 		} else {
 			c->flags |= CLIENT_READONLY;
-			ctx->info(ctx, "made client read-only");
+			cmdq_info(cmdq, "made client read-only");
 		}
 	}
 
 	s = NULL;
 	if (args_has(args, 'n')) {
 		if ((s = session_next_session(c->session)) == NULL) {
-			ctx->error(ctx, "can't find next session");
-			return (-1);
+			cmdq_error(cmdq, "can't find next session");
+			return (CMD_RETURN_ERROR);
 		}
 	} else if (args_has(args, 'p')) {
 		if ((s = session_previous_session(c->session)) == NULL) {
-			ctx->error(ctx, "can't find previous session");
-			return (-1);
+			cmdq_error(cmdq, "can't find previous session");
+			return (CMD_RETURN_ERROR);
 		}
 	} else if (args_has(args, 'l')) {
 		if (c->last_session != NULL && session_alive(c->last_session))
 			s = c->last_session;
 		if (s == NULL) {
-			ctx->error(ctx, "can't find last session");
-			return (-1);
+			cmdq_error(cmdq, "can't find last session");
+			return (CMD_RETURN_ERROR);
 		}
 	} else
-		s = cmd_find_session(ctx, args_get(args, 't'), 0);
+		s = cmd_find_session(cmdq, args_get(args, 't'), 0);
 	if (s == NULL)
-		return (-1);
+		return (CMD_RETURN_ERROR);
 
 	if (c->session != NULL)
 		c->last_session = c->session;
@@ -110,5 +110,5 @@ cmd_switch_client_exec(struct cmd *self, struct cmd_ctx *ctx)
 	server_redraw_client(c);
 	s->curw->flags &= ~WINLINK_ALERTFLAGS;
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

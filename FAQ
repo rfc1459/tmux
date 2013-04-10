@@ -326,51 +326,6 @@ lock(1) or vlock(1)) by using the following:
 
 bind x set lock-command '/usr/bin/vlock' \; lock-client \; set lock-command 'tput civis && read -s -n1'
 
-* How can I open a new window in the same directory as the current window?
-
-One option is to just run "TMUX= tmux" in the window. However, this only works if no
-command is running, so that you can input the command.
-
-A workaround is to let tmux know about the current path through an environment
-variable. To do so, use the following command:
-
-    [ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#I") $PWD
-
-Which sets TMUXPWD_i (where i is the number of the current window) to the path
-of the current directory. This command can be added to PS1, for example:
-
-    PS1='$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#I") $PWD)\h$ '
-
-When a new window is created, the shell should be asked to change
-directory. You can define a new binding (for example, if using GNU bash):
-
-    bind-key C-c run-shell 'tmux neww "cd $(tmux display -p "\$TMUXPWD_#I"); exec bash"'
-
-This solution will work even if a command is currently running in the terminal,
-but it will not work from a window that has just been swapped with another
-because TMUXPWD_i will not be updated after a swap. However, once a new prompt
-is displayed, TMUXPWD_i is updated properly.
-
-* tmux doesn't start with "daemon failed"
-
-tmux shows something similar to this when started:
-
-    fatal: server_start: daemon failed: No such file or directory
-    fatal: main_dispatch: imsg_read failed
-
-A possible reason is that /dev/null is not a character device or is otherwise
-inaccessible.
-
-Check with:
-
-    file /dev/null
-    ls -l /dev/null
-
-If it is not a character device or has incorrect permissions, it can typically
-be recreated with:
-
-    cd /dev && rm null && ./MAKEDEV null
-
 * vim displays reverse video instead of italics, while less displays italics
   (or just regular text) instead of reverse. What's wrong?
 
@@ -409,5 +364,37 @@ If your urxvt cannot display italics at all, make sure you have an italics
 capable font enabled, for example, add to ~/.Xdefaults:
 
 	urxvt.italicFont: xft:Bitstream Vera Sans Mono:italic:autohint=true
+
+* How can I make tmux use my terminal's scrollback buffer?
+
+Normally, tmux enables the terminal's "alternate screen". Most terminals (such
+as xterm) do not save scrollback for the alternate screen. You might prefer
+tmux to use the normal screen, so it uses your terminal's scrollback
+buffer. This way, you can access the scrollback buffer as usual, for example
+using the mouse wheel - although there is no guarantee output inside tmux will
+always (or ever) be added to the scrollback.
+
+You can make tmux use the normal screen by telling it that your terminal does
+not have an alternate screen. Put the following in ~/.tmux.conf:
+
+        set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+
+Adjust if your $TERM does not start with xterm.
+
+tmux will still emulate the alternate screen for applications run under tmux,
+so you don't really lose anything with this setting. The only disadvantage is
+that when you exit tmux, it will not restore whatever was there before you
+started.
+
+* How do I see the default configuration?
+
+Show the default session options by starting a new tmux server with no
+configuration file:
+
+        $ tmux -Lfoo -f/dev/null start\; show -g
+
+Or the default window options:
+
+        $ tmux -Lfoo -f/dev/null start\; show -gw
  
-$Id: FAQ 2554 2011-07-09 09:46:15Z tcunha $
+$Id$

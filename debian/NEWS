@@ -1,3 +1,10 @@
+tmux (1.7~svn2819-1) experimental; urgency=low
+
+  The server protocol version was changed from 6 to 7, we recommend that
+  you close any open tmux sessions before proceeding with the upgrade.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 30 May 2012 19:52:56 +0200
+
 tmux (1.4-7) unstable; urgency=low
 
   Starting with version 1.4-7, tmux is no longer installed setgid utmp and

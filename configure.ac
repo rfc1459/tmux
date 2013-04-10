@@ -1,7 +1,7 @@
-# $Id: configure.ac 2675 2012-01-23 12:34:47Z tcunha $
+# $Id$
 
 # Miscellaneous autofoo bullshit.
-AC_INIT(tmux, 1.6)
+AC_INIT(tmux, 1.8)
 
 AC_CONFIG_AUX_DIR(etc)
 AM_INIT_AUTOMAKE([foreign])
@@ -53,8 +53,11 @@ AM_CONDITIONAL(IS_DEBUG, test "x$found_debug" = xyes)
 AC_ARG_ENABLE(
        static,
        AC_HELP_STRING(--enable-static, create a static build),
-       [LDFLAGS="$LDFLAGS -static"]
+       found_static=$enable_static
 )
+if test "x$found_static" = xyes; then
+   LDFLAGS="$LDFLAGS -static"
+fi
 
 # Is this gcc?
 AM_CONDITIONAL(IS_GCC, test "x$GCC" = xyes)

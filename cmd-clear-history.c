@@ -1,4 +1,4 @@
-/* $Id: cmd-clear-history.c 2553 2011-07-09 09:42:33Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2009 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -24,7 +24,7 @@
  * Clear pane history.
  */
 
-int	cmd_clear_history_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_clear_history_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_clear_history_entry = {
 	"clear-history", "clearhist",
@@ -36,19 +36,19 @@ const struct cmd_entry cmd_clear_history_entry = {
 	cmd_clear_history_exec
 };
 
-int
-cmd_clear_history_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_clear_history_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args		*args = self->args;
 	struct window_pane	*wp;
 	struct grid		*gd;
 
-	if (cmd_find_pane(ctx, args_get(args, 't'), NULL, &wp) == NULL)
-		return (-1);
+	if (cmd_find_pane(cmdq, args_get(args, 't'), NULL, &wp) == NULL)
+		return (CMD_RETURN_ERROR);
 	gd = wp->base.grid;
 
 	grid_move_lines(gd, 0, gd->hsize, gd->sy);
 	gd->hsize = 0;
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }

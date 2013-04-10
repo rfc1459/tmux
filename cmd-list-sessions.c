@@ -1,4 +1,4 @@
-/* $Id: cmd-list-sessions.c 2591 2011-09-21 16:31:15Z tcunha $ */
+/* $Id$ */
 
 /*
  * Copyright (c) 2007 Nicholas Marriott <nicm@users.sourceforge.net>
@@ -18,6 +18,7 @@
 
 #include <sys/types.h>
 
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
@@ -27,7 +28,7 @@
  * List all sessions.
  */
 
-int	cmd_list_sessions_exec(struct cmd *, struct cmd_ctx *);
+enum cmd_retval	 cmd_list_sessions_exec(struct cmd *, struct cmd_q *);
 
 const struct cmd_entry cmd_list_sessions_entry = {
 	"list-sessions", "ls",
@@ -39,8 +40,8 @@ const struct cmd_entry cmd_list_sessions_entry = {
 	cmd_list_sessions_exec
 };
 
-int
-cmd_list_sessions_exec(struct cmd *self, struct cmd_ctx *ctx)
+enum cmd_retval
+cmd_list_sessions_exec(struct cmd *self, struct cmd_q *cmdq)
 {
 	struct args		*args = self->args;
 	struct session		*s;
@@ -49,14 +50,8 @@ cmd_list_sessions_exec(struct cmd *self, struct cmd_ctx *ctx)
 	const char		*template;
 	char			*line;
 
-	template = args_get(args, 'F');
-	if (template == NULL) {
-		template = "#{session_name}: #{session_windows} windows "
-		    "(created #{session_created_string}) [#{session_width}x"
-		    "#{session_height}]#{?session_grouped, (group ,}"
-		    "#{session_group}#{?session_grouped,),}"
-		    "#{?session_attached, (attached),}";
-	}
+	if ((template = args_get(args, 'F')) == NULL)
+		template = LIST_SESSIONS_TEMPLATE;
 
 	n = 0;
 	RB_FOREACH(s, sessions, &sessions) {
@@ -65,12 +60,12 @@ cmd_list_sessions_exec(struct cmd *self, struct cmd_ctx *ctx)
 		format_session(ft, s);
 
 		line = format_expand(ft, template);
-		ctx->print(ctx, "%s", line);
-		xfree(line);
+		cmdq_print(cmdq, "%s", line);
+		free(line);
 
 		format_free(ft);
 		n++;
 	}
 
-	return (0);
+	return (CMD_RETURN_NORMAL);
 }
