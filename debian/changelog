@@ -1,3 +1,11 @@
+tmux (1.8-2) UNRELEASED; urgency=low
+
+  * Cherry-pick important fixes from upstream Git:
+    + 9fcda95a6f: hang in if-shell/run-shell
+    + caa8290510: missing client context in source-file
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 21 Apr 2013 21:18:02 +0200
+
 tmux (1.8-1) unstable; urgency=low
 
   * New upstream release.
