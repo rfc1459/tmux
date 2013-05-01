@@ -1,3 +1,14 @@
+tmux (1.8-2) unstable; urgency=low
+
+  * Cherry-pick important fixes from upstream Git:
+    + 9fcda95a6f: hang in if-shell/run-shell
+    + caa8290510: missing client context in source-file
+    + 5dda1abc32: server crash with `remain-on-exit' and focus reporting
+    + 46c7dbef0f: grouped window sizes not properly recalculated
+  * debian/control: Use canonical locations in Vcs-* fields.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 23 Apr 2013 20:19:26 +0200
+
 tmux (1.8-1~bpo70+1) wheezy-backports; urgency=low
 
   * Rebuild for wheezy-backports.
