@@ -15,7 +15,7 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/tmux.git
 Vcs-Git: git://anonscm.debian.org/collab-maint/tmux.git
 
 Package: tmux
-Architecture: any
+Architecture: i386 amd64
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: terminal multiplexer

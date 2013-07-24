@@ -1,3 +1,9 @@
+tmux (1.8-3~bpo60+2) squeeze-backports-sloppy; urgency=low
+
+  * Restrict architectures.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 24 Jul 2013 22:22:58 +0200
+
 tmux (1.8-3~bpo60+1) squeeze-backports-sloppy; urgency=low
 
   * Rebuild for squeeze-backports-sloppy.
