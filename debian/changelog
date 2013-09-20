@@ -1,3 +1,14 @@
+tmux (1.8-4) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 9fb9f78e43: UTF-8 mangled in send-keys
+    + 965edf8a5c: crash when window in a grouped session is killed
+    + b0b5cad496: memory leak when grouped sessions are destroyed
+    + 27364345bf: avoid processing NULL client formats
+    + 939f796f08: memory leak with repeated formats
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 02 Aug 2013 19:39:29 +0200
+
 tmux (1.8-3~bpo70+1) wheezy-backports; urgency=low
 
   * Rebuild for wheezy-backports.
