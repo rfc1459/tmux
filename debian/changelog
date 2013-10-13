@@ -1,3 +1,12 @@
+tmux (1.8-5) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 5532766b19: fix last after movew -r
+    + c103f2fbcb: consistently clear window flags for all sessions
+    + 21bca549d3: consider only visible panes for resize-pane-mouse
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 13 Oct 2013 12:48:38 +0200
+
 tmux (1.8-4) unstable; urgency=low
 
   * Cherry-pick fixes from upstream Git:
