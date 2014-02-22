@@ -1,3 +1,11 @@
+tmux (1.9-1) experimental; urgency=low
+
+  * New upstream release.
+  * Warn about protocol change in debian/NEWS.
+  * Bump Standards-Version to 3.9.5.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 22 Feb 2014 17:49:33 +0100
+
 tmux (1.8-5) unstable; urgency=low
 
   * Cherry-pick fixes from upstream Git:
