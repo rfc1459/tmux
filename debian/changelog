@@ -1,3 +1,11 @@
+tmux (1.9-2) experimental; urgency=low
+
+  * Add urgent fixes from upstream version 1.9a:
+    + 315d45a0eb: crash in last active pane handling
+    + c7f3599ebc: -fg/-bg/-style broken on 256-color terminals
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 23 Feb 2014 00:45:15 +0100
+
 tmux (1.9-1) experimental; urgency=low
 
   * New upstream release.
