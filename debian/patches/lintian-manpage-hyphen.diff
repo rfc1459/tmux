@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tmux.1
 +++ b/tmux.1
-@@ -466,7 +466,7 @@
+@@ -465,7 +465,7 @@
  .Ql -
  may be followed by an offset, for example:
  .Bd -literal -offset indent
@@ -13,7 +13,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  When dealing with a session that doesn't contain sequential window indexes,
-@@ -522,13 +522,13 @@
+@@ -521,13 +521,13 @@
  .Nm
  commands include:
  .Bd -literal -offset indent
@@ -31,7 +31,7 @@ Forwarded: not-needed
  
  bind-key R source-file ~/.tmux.conf \e; \e
  	display-message "source-file done"
-@@ -537,11 +537,11 @@
+@@ -536,11 +536,11 @@
  Or from
  .Xr sh 1 :
  .Bd -literal -offset indent
@@ -46,7 +46,7 @@ Forwarded: not-needed
  .Ed
  .Sh CLIENTS AND SESSIONS
  The
-@@ -954,7 +954,7 @@
+@@ -970,7 +970,7 @@
  .Pa /tmp
  as well as the paste buffer:
  .Bd -literal -offset indent
@@ -55,7 +55,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  The paste buffer key pastes the first line from the top paste buffer on the
-@@ -1134,7 +1134,7 @@
+@@ -1150,7 +1150,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -64,7 +64,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1182,7 +1182,7 @@
+@@ -1198,7 +1198,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -73,7 +73,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1229,7 +1229,7 @@
+@@ -1245,7 +1245,7 @@
  Note that
  .Ql %%
  can be used and will be replaced with the session name.
@@ -82,7 +82,7 @@ Forwarded: not-needed
  If
  .Fl c
  is given, will override the default window command.
-@@ -1272,7 +1272,7 @@
+@@ -1288,7 +1288,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -91,7 +91,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -1583,7 +1583,7 @@
+@@ -1592,7 +1592,7 @@
  option only opens a new pipe if no previous pipe exists, allowing a pipe to
  be toggled with a single key, for example:
  .Bd -literal -offset indent
@@ -100,7 +100,7 @@ Forwarded: not-needed
  .Ed
  .It Xo Ic previous-layout
  .Op Fl t Ar target-window
-@@ -2030,8 +2030,8 @@
+@@ -2039,8 +2039,8 @@
  and be set to any string.
  For example
  .Bd -literal -offset indent
@@ -111,7 +111,7 @@ Forwarded: not-needed
  abc123
  .Ed
  .Pp
-@@ -2502,7 +2502,7 @@
+@@ -2537,7 +2537,7 @@
  Examples are:
  .Bd -literal -offset indent
  #(sysctl vm.loadavg)
@@ -120,7 +120,7 @@ Forwarded: not-needed
  .Ed
  .Pp
  Where appropriate, special character sequences may be prefixed with a number to
-@@ -2725,7 +2725,7 @@
+@@ -2770,7 +2770,7 @@
  or with a terminal escape sequence.
  It may be switched off globally with:
  .Bd -literal -offset indent
@@ -128,8 +128,8 @@ Forwarded: not-needed
 +set-window-option \-g automatic-rename off
  .Ed
  .Pp
- .It Ic c0-change-interval Ar interval
-@@ -3429,7 +3429,7 @@
+ .It Ic automatic-rename-format Ar format
+@@ -3479,7 +3479,7 @@
  and the result executed as a command.
  If
  .Ar template
@@ -138,7 +138,7 @@ Forwarded: not-needed
  For the meaning of the
  .Fl F
  flag, see the
-@@ -3780,29 +3780,29 @@
+@@ -3827,22 +3827,22 @@
  .Pp
  Changing the default prefix key:
  .Bd -literal -offset indent
@@ -151,9 +151,9 @@ Forwarded: not-needed
  Turning the status line off, or changing its colour:
  .Bd -literal -offset indent
 -set-option -g status off
--set-option -g status-bg blue
+-set-option -g status-style bg=blue
 +set-option \-g status off
-+set-option \-g status-bg blue
++set-option \-g status-style bg=blue
  .Ed
  .Pp
  Setting other options, such as the default command,
@@ -166,11 +166,3 @@ Forwarded: not-needed
  .Ed
  .Pp
  Creating new key bindings:
- .Bd -literal -offset indent
- bind-key b set-option status
- bind-key / command-prompt "split-window 'exec man %%'"
--bind-key S command-prompt "new-window -n %1 'ssh %1'"
-+bind-key S command-prompt "new-window \-n %1 'ssh %1'"
- .Ed
- .Sh SEE ALSO
- .Xr pty 4
