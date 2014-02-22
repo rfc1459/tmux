@@ -1,2 +1,4 @@
 platform-quirks.diff
 lintian-manpage-hyphen.diff
+upstream-315d45a0eb.diff
+upstream-c7f3599ebc.diff
