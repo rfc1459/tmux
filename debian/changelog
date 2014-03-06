@@ -1,3 +1,12 @@
+tmux (1.9-3) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 0bb9d51965: crash at startup with MALLOC_CHECK_=2
+    + 78e783e786: server crash with swap-pane
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 06 Mar 2014 20:32:38 +0100
+
 tmux (1.9-2) experimental; urgency=low
 
   * Add urgent fixes from upstream version 1.9a:
