@@ -1,3 +1,28 @@
+tmux (1.9-3) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 0bb9d51965: crash at startup with MALLOC_CHECK_=2
+    + 78e783e786: server crash with swap-pane
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 06 Mar 2014 20:32:38 +0100
+
+tmux (1.9-2) experimental; urgency=low
+
+  * Add urgent fixes from upstream version 1.9a:
+    + 315d45a0eb: crash in last active pane handling
+    + c7f3599ebc: -fg/-bg/-style broken on 256-color terminals
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 23 Feb 2014 00:45:15 +0100
+
+tmux (1.9-1) experimental; urgency=low
+
+  * New upstream release.
+  * Warn about protocol change in debian/NEWS.
+  * Bump Standards-Version to 3.9.5.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 22 Feb 2014 17:49:33 +0100
+
 tmux (1.8-5~bpo70+1) wheezy-backports; urgency=low
 
   * Rebuild for wheezy-backports.

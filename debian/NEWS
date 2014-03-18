@@ -1,3 +1,10 @@
+tmux (1.9-1) experimental; urgency=low
+
+  The server protocol version was changed from 7 to 8, we recommend that
+  you close any open tmux sessions before proceeding with the upgrade.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 22 Feb 2014 17:42:35 +0100
+
 tmux (1.7~svn2819-1) experimental; urgency=low
 
   The server protocol version was changed from 6 to 7, we recommend that
