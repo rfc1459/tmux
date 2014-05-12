@@ -1,3 +1,14 @@
+tmux (1.9-4) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 030437e33e: server crash due to wrong snprintf() usage
+    + 0d14f81d76: change osdep_get_cwd() logic on Linux to also try sid
+    + 0f0db07c49: incorrect handling of 4-byte UTF-8 sequences
+    + 57f2de093a: use O_TRUNC in save-buffer
+    + 806cc11008: don't leak two fds on subjob fork() failure
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 26 Apr 2014 18:05:47 +0200
+
 tmux (1.9-3~bpo70+1) wheezy-backports; urgency=low
 
   * Rebuild for wheezy-backports.
