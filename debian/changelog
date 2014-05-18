@@ -1,3 +1,10 @@
+tmux (1.9-5) unstable; urgency=medium
+
+  * Cherry-pick 8880bdb67c from upstream Git to fix escaping of '#' in
+    status formats (closes: #747133).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 13 May 2014 22:41:09 +0200
+
 tmux (1.9-4~bpo70+1) wheezy-backports; urgency=low
 
   * Rebuild for wheezy-backports.
