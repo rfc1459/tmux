@@ -1,3 +1,12 @@
+tmux (1.9-6) unstable; urgency=medium
+
+  * Cherry-pick fixes from upstream Git:
+    + 189017c078: memory leak in find-window
+    + 8e4ae12b4d: locking was broken in move to lockf, move back to flock
+    + f117c7d94a: crash if a client is killed while suspended
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 14 Aug 2014 21:31:23 +0200
+
 tmux (1.9-5~bpo70+1) wheezy-backports; urgency=medium
 
   * Rebuild for wheezy-backports.
