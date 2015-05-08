@@ -1,3 +1,11 @@
+tmux (2.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Drop upstream patches from 1.9
+  * Rebase remaining patches against 2.0
+
+ -- Matteo Panella <morpheus@level28.org>  Sat, 09 May 2015 00:04:15 +0200
+
 tmux (1.9-6) unstable; urgency=medium
 
   * Cherry-pick fixes from upstream Git:
