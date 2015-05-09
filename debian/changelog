@@ -1,3 +1,9 @@
+tmux (2.0-1~bpo8+1) jessie; urgency=low
+
+  * Rebuild for jessie-backports.
+
+ -- Matteo Panella <morpheus@level28.org>  Sat, 09 May 2015 15:21:10 +0200
+
 tmux (2.0-1) unstable; urgency=medium
 
   * New upstream release.
